@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../shared/models/wifi_network_model.dart';
 import '../controllers/wifi_shield_controller.dart';
 import '../widgets/evil_twin_alert.dart';
 import '../widgets/network_tile.dart';
