@@ -1,0 +1,48 @@
+name: optisec_mobile
+description: OptiSec Mobile - Advanced Security & Privacy Suite
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management & navigation
+  get: ^4.6.6
+
+  # Network & WiFi
+  wifi_scan: ^0.4.1
+  network_info_plus: ^5.0.3
+
+  # Permissions
+  permission_handler: ^11.3.1
+
+  # Charts
+  fl_chart: ^0.68.0
+
+  # Fonts & animations
+  google_fonts: ^6.2.1
+  flutter_animate: ^4.5.0
+
+  # Utilities
+  intl: ^0.20.2
+  get_storage: ^2.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/lottie/

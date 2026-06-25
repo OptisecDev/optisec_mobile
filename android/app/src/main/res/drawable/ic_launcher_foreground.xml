@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- OptiSec shield — vector foreground for adaptive icon -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer glow ring -->
+    <path
+        android:fillColor="#1400D4AA"
+        android:pathData="M54,12 A42,42 0 1,1 53.99,12 Z"/>
+
+    <!-- Shield body -->
+    <path
+        android:fillColor="#00D4AA"
+        android:pathData="
+            M54,16
+            L76,19
+            L76,57
+            L54,80
+            L32,57
+            L32,19
+            Z"/>
+
+    <!-- Shield inner highlight strip -->
+    <path
+        android:fillColor="#2000D4AA"
+        android:pathData="
+            M54,20
+            L63,22
+            L63,54
+            L54,68
+            L45,54
+            L45,22
+            Z"/>
+
+    <!-- Lock body -->
+    <rect
+        android:fillColor="#060A0F"
+        android:x="45"
+        android:y="50"
+        android:width="18"
+        android:height="14"
+        android:rx="2"/>
+
+    <!-- Lock shackle -->
+    <path
+        android:strokeColor="#060A0F"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:pathData="M48,50 A6,6 0 0,1 60,50"/>
+
+    <!-- Keyhole -->
+    <circle
+        android:fillColor="#0D1420"
+        android:cx="54"
+        android:cy="55"
+        android:r="2.5"/>
+    <rect
+        android:fillColor="#0D1420"
+        android:x="52.5"
+        android:y="55"
+        android:width="3"
+        android:height="5"/>
+</vector>
