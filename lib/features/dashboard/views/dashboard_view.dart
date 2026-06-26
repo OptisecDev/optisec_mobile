@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../features/home/controllers/home_controller.dart';
-import '../../../navigation/app_routes.dart';
 import '../../../shared/models/security_score_model.dart';
 import '../../../shared/widgets/score_ring.dart';
 import '../controllers/dashboard_controller.dart';
@@ -127,7 +126,7 @@ class DashboardView extends GetView<DashboardController> {
         IconButton(
           icon: const Icon(Icons.settings_outlined),
           color: AppColors.textSecondary,
-          onPressed: () => Get.toNamed(AppRoutes.settings),
+          onPressed: () => Get.find<HomeController>().navigateTo(4),
         ),
         const SizedBox(width: 4),
       ],

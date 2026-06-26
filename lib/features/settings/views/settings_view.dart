@@ -93,10 +93,7 @@ class _SettingsAppBar extends StatelessWidget {
       pinned: true,
       backgroundColor: AppColors.background,
       surfaceTintColor: Colors.transparent,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
-        onPressed: Get.back,
-      ),
+      automaticallyImplyLeading: false,
       title: const Text(
         'Settings',
         style: TextStyle(

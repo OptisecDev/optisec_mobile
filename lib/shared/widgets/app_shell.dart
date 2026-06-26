@@ -5,6 +5,7 @@ import '../../features/cyber_academy/views/cyber_academy_view.dart';
 import '../../features/dashboard/views/dashboard_view.dart';
 import '../../features/home/controllers/home_controller.dart';
 import '../../features/privacy_guard/views/privacy_guard_view.dart';
+import '../../features/settings/views/settings_view.dart';
 import '../../features/wifi_shield/views/wifi_shield_view.dart';
 
 class AppShell extends GetView<HomeController> {
@@ -22,6 +23,7 @@ class AppShell extends GetView<HomeController> {
             WifiShieldView(),
             PrivacyGuardView(),
             CyberAcademyView(),
+            SettingsView(),
           ],
         ),
       ),
@@ -60,6 +62,12 @@ class _ShellNavBar extends StatelessWidget {
       inactiveIcon: Icons.school_outlined,
       label: 'Academy',
       color: AppColors.warning,
+    ),
+    _TabDef(
+      activeIcon: Icons.settings_rounded,
+      inactiveIcon: Icons.settings_outlined,
+      label: 'Settings',
+      color: Color(0xFF8B5CF6),
     ),
   ];
 

@@ -44,6 +44,7 @@ class AppPages {
         Get.lazyPut(() => WifiShieldController());
         Get.lazyPut(() => PrivacyGuardController());
         Get.lazyPut(() => CyberAcademyController());
+        Get.lazyPut(() => SettingsController());
       }),
       transition: Transition.fadeIn,
     ),
