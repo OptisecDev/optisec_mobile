@@ -490,7 +490,7 @@ class _ExposureSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Obx(() => ExposureChart(permissions: controller.permissions)),
+          Obx(() => ExposureChart(permissions: controller.permissions.toList())),
         ],
       ),
     ).animate().fadeIn(duration: 500.ms, delay: 150.ms);

@@ -32,30 +32,40 @@ class WifiShieldController extends GetxController {
   }
 
   Future<void> _checkPermissionAndInit() async {
-    final status = await Permission.locationWhenInUse.status;
-    if (status.isGranted) {
-      hasPermission.value = true;
-      await _loadConnectedInfo();
-      await startScan();
-    } else {
+    try {
+      final status = await Permission.locationWhenInUse.status;
+      if (status.isGranted) {
+        hasPermission.value = true;
+        await _loadConnectedInfo();
+        await startScan();
+      } else {
+        hasPermission.value = false;
+      }
+    } catch (_) {
       hasPermission.value = false;
     }
   }
 
   Future<void> requestPermission() async {
-    final result = await Permission.locationWhenInUse.request();
-    if (result.isGranted) {
-      hasPermission.value = true;
-      await _loadConnectedInfo();
-      await startScan();
+    try {
+      final result = await Permission.locationWhenInUse.request();
+      if (result.isGranted) {
+        hasPermission.value = true;
+        await _loadConnectedInfo();
+        await startScan();
+      }
+    } catch (_) {
+      hasPermission.value = false;
     }
   }
 
   Future<void> _loadConnectedInfo() async {
-    connectedSsid.value =
-        (await _networkInfo.getWifiName() ?? '').replaceAll('"', '');
-    connectedIp.value = await _networkInfo.getWifiIP() ?? '';
-    connectedGateway.value = await _networkInfo.getWifiGatewayIP() ?? '';
+    try {
+      connectedSsid.value =
+          (await _networkInfo.getWifiName() ?? '').replaceAll('"', '');
+      connectedIp.value = await _networkInfo.getWifiIP() ?? '';
+      connectedGateway.value = await _networkInfo.getWifiGatewayIP() ?? '';
+    } catch (_) {}
   }
 
   Future<void> startScan() async {
