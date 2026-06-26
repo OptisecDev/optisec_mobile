@@ -35,14 +35,10 @@
             L45,22
             Z"/>
 
-    <!-- Lock body -->
-    <rect
+    <!-- Lock body (rect x=45 y=50 w=18 h=14 rx=2 → rounded-rect path) -->
+    <path
         android:fillColor="#060A0F"
-        android:x="45"
-        android:y="50"
-        android:width="18"
-        android:height="14"
-        android:rx="2"/>
+        android:pathData="M47,50 H61 A2,2 0 0,1 63,52 V62 A2,2 0 0,1 61,64 H47 A2,2 0 0,1 45,62 V52 A2,2 0 0,1 47,50 Z"/>
 
     <!-- Lock shackle -->
     <path
@@ -52,16 +48,13 @@
         android:strokeLineCap="round"
         android:pathData="M48,50 A6,6 0 0,1 60,50"/>
 
-    <!-- Keyhole -->
-    <circle
+    <!-- Keyhole circle (cx=54 cy=55 r=2.5 → two-arc path) -->
+    <path
         android:fillColor="#0D1420"
-        android:cx="54"
-        android:cy="55"
-        android:r="2.5"/>
-    <rect
+        android:pathData="M51.5,55 A2.5,2.5 0 1,0 56.5,55 A2.5,2.5 0 1,0 51.5,55 Z"/>
+
+    <!-- Keyhole stem (rect x=52.5 y=55 w=3 h=5) -->
+    <path
         android:fillColor="#0D1420"
-        android:x="52.5"
-        android:y="55"
-        android:width="3"
-        android:height="5"/>
+        android:pathData="M52.5,55 H55.5 V60 H52.5 Z"/>
 </vector>
