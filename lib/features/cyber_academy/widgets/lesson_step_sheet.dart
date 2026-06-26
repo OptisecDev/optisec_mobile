@@ -4,10 +4,9 @@ import '../../../core/theme/app_colors.dart';
 import '../../../shared/models/lesson_model.dart';
 import '../controllers/cyber_academy_controller.dart';
 
-// Use GetView so the controller is resolved through the proper GetX binding
-// rather than a bare Get.find() inside StatelessWidget.build().
-class LessonStepSheet extends GetView<CyberAcademyController> {
-  const LessonStepSheet({super.key});
+class LessonStepSheet extends StatefulWidget {
+  final LessonModel lesson;
+  const LessonStepSheet({super.key, required this.lesson});
 
   static void show(BuildContext context, LessonModel lesson) {
     Get.find<CyberAcademyController>().startLesson(lesson);
@@ -15,12 +14,51 @@ class LessonStepSheet extends GetView<CyberAcademyController> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => const LessonStepSheet(),
+      builder: (_) => LessonStepSheet(lesson: lesson),
     );
   }
 
   @override
+  State<LessonStepSheet> createState() => _LessonStepSheetState();
+}
+
+class _LessonStepSheetState extends State<LessonStepSheet> {
+  int _stepIndex = 0;
+  int _selectedOption = -1;
+  bool _answered = false;
+
+  void _selectOption(int idx) {
+    if (_answered) return;
+    setState(() {
+      _selectedOption = idx;
+      _answered = true;
+    });
+  }
+
+  void _onNext(BuildContext sheetContext) {
+    final steps = widget.lesson.steps;
+    if (_stepIndex == steps.length - 1) {
+      Get.find<CyberAcademyController>().completeLesson(widget.lesson);
+      Navigator.pop(sheetContext);
+    } else {
+      setState(() {
+        _stepIndex += 1;
+        _selectedOption = -1;
+        _answered = false;
+      });
+    }
+  }
+
+  void _onClose(BuildContext sheetContext) {
+    Get.find<CyberAcademyController>().closeLesson();
+    Navigator.pop(sheetContext);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final lesson = widget.lesson;
+    final steps = lesson.steps;
+
     return DraggableScrollableSheet(
       initialChildSize: 0.92,
       minChildSize: 0.5,
@@ -31,63 +69,42 @@ class LessonStepSheet extends GetView<CyberAcademyController> {
             color: AppColors.surface,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          child: Obx(() {
-            final lesson = controller.activeLesson.value;
-            if (lesson == null) return const SizedBox.shrink();
-
-            final stepIndex = controller.activeStepIndex.value;
-            final steps = lesson.steps;
-
-            if (steps.isEmpty) {
-              return _NoStepsBody(
-                lesson: lesson,
-                onClose: () {
-                  controller.closeLesson();
-                  Navigator.pop(sheetContext);
-                },
-              );
-            }
-
-            final step = steps[stepIndex];
-            final progress = (stepIndex + 1) / steps.length;
-            final isLast = stepIndex == steps.length - 1;
-
-            return Column(
-              children: [
-                _SheetHeader(
+          child: steps.isEmpty
+              ? _NoStepsBody(
                   lesson: lesson,
-                  stepIndex: stepIndex,
-                  totalSteps: steps.length,
-                  progress: progress,
-                  onClose: () {
-                    controller.closeLesson();
-                    Navigator.pop(sheetContext);
-                  },
+                  onClose: () => _onClose(sheetContext),
+                )
+              : Column(
+                  children: [
+                    _SheetHeader(
+                      lesson: lesson,
+                      stepIndex: _stepIndex,
+                      totalSteps: steps.length,
+                      progress: (_stepIndex + 1) / steps.length,
+                      onClose: () => _onClose(sheetContext),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+                        child: steps[_stepIndex].isQuiz
+                            ? _QuizStep(
+                                step: steps[_stepIndex],
+                                selectedOption: _selectedOption,
+                                answered: _answered,
+                                onSelect: _selectOption,
+                              )
+                            : _InfoStep(step: steps[_stepIndex]),
+                      ),
+                    ),
+                    _StepFooter(
+                      step: steps[_stepIndex],
+                      isLast: _stepIndex == steps.length - 1,
+                      canProceed: !steps[_stepIndex].isQuiz || _answered,
+                      onNext: () => _onNext(sheetContext),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-                    child: step.isQuiz
-                        ? _QuizStep(step: step)
-                        : _InfoStep(step: step),
-                  ),
-                ),
-                _StepFooter(
-                  step: step,
-                  isLast: isLast,
-                  onNext: () {
-                    if (isLast) {
-                      controller.nextStep();
-                      Navigator.pop(sheetContext);
-                    } else {
-                      controller.nextStep();
-                    }
-                  },
-                ),
-              ],
-            );
-          }),
         );
       },
     );
@@ -264,15 +281,22 @@ class _InfoStep extends StatelessWidget {
 // ── Quiz step ─────────────────────────────────────────────────────
 class _QuizStep extends StatelessWidget {
   final LessonStep step;
-  const _QuizStep({required this.step});
+  final int selectedOption;
+  final bool answered;
+  final void Function(int) onSelect;
+
+  const _QuizStep({
+    required this.step,
+    required this.selectedOption,
+    required this.answered,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<CyberAcademyController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Static quiz badge
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
@@ -317,149 +341,134 @@ class _QuizStep extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
-        // Single Obx owns all reactive quiz state: options + feedback card.
-        // Merging the previous two Obx blocks eliminates the dual-setState
-        // that fired when answerQuiz() set both selectedQuizOption and
-        // quizAnswered in the same synchronous call.
-        Obx(() {
-          final answered = c.quizAnswered.value;
-          final selected = c.selectedQuizOption.value;
+        // Answer options
+        ...step.options.asMap().entries.map((e) {
+          final idx = e.key;
+          final option = e.value;
+          final isSelected = selectedOption == idx;
+          final isCorrect = idx == step.correctIndex;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Answer options
-              ...step.options.asMap().entries.map((e) {
-                final idx = e.key;
-                final option = e.value;
-                final isSelected = selected == idx;
-                final isCorrect = idx == step.correctIndex;
+          Color borderColor = AppColors.cardBorder;
+          Color bgColor = AppColors.card;
+          Color textColor = AppColors.textPrimary;
+          Widget? trailingIcon;
 
-                Color borderColor = AppColors.cardBorder;
-                Color bgColor = AppColors.card;
-                Color textColor = AppColors.textPrimary;
-                Widget? trailingIcon;
+          if (answered) {
+            if (isCorrect) {
+              borderColor = AppColors.safe;
+              bgColor = AppColors.safe.withOpacity(0.1);
+              textColor = AppColors.safe;
+              trailingIcon = const Icon(Icons.check_circle_rounded,
+                  color: AppColors.safe, size: 18);
+            } else if (isSelected) {
+              borderColor = AppColors.danger;
+              bgColor = AppColors.danger.withOpacity(0.08);
+              textColor = AppColors.danger;
+              trailingIcon = const Icon(Icons.cancel_rounded,
+                  color: AppColors.danger, size: 18);
+            }
+          } else if (isSelected) {
+            borderColor = AppColors.primary;
+            bgColor = AppColors.primary.withOpacity(0.1);
+          }
 
-                if (answered) {
-                  if (isCorrect) {
-                    borderColor = AppColors.safe;
-                    bgColor = AppColors.safe.withOpacity(0.1);
-                    textColor = AppColors.safe;
-                    trailingIcon = const Icon(Icons.check_circle_rounded,
-                        color: AppColors.safe, size: 18);
-                  } else if (isSelected) {
-                    borderColor = AppColors.danger;
-                    bgColor = AppColors.danger.withOpacity(0.08);
-                    textColor = AppColors.danger;
-                    trailingIcon = const Icon(Icons.cancel_rounded,
-                        color: AppColors.danger, size: 18);
-                  }
-                } else if (isSelected) {
-                  borderColor = AppColors.primary;
-                  bgColor = AppColors.primary.withOpacity(0.1);
-                }
-
-                return GestureDetector(
-                  onTap: answered ? null : () => c.answerQuiz(idx),
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
+          return GestureDetector(
+            onTap: answered ? null : () => onSelect(idx),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: borderColor),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 26,
+                    height: 26,
                     decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(12),
+                      shape: BoxShape.circle,
+                      color: borderColor.withOpacity(0.15),
                       border: Border.all(color: borderColor),
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: borderColor.withOpacity(0.15),
-                            border: Border.all(color: borderColor),
-                          ),
-                          child: Center(
-                            child: Text(
-                              String.fromCharCode(65 + idx),
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: borderColor,
-                              ),
-                            ),
-                          ),
+                    child: Center(
+                      child: Text(
+                        String.fromCharCode(65 + idx),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: borderColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            option.text,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: textColor,
-                              height: 1.4,
-                            ),
-                          ),
-                        ),
-                        if (trailingIcon != null) ...[
-                          const SizedBox(width: 8),
-                          trailingIcon,
-                        ],
-                      ],
-                    ),
-                  ),
-                );
-              }),
-
-              // Feedback card — shown only after answering
-              if (answered) ...[
-                const SizedBox(height: 6),
-                Builder(builder: (_) {
-                  final correct = c.isAnswerCorrect(step);
-                  return Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: correct
-                          ? AppColors.safe.withOpacity(0.08)
-                          : AppColors.danger.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: correct
-                            ? AppColors.safe.withOpacity(0.3)
-                            : AppColors.danger.withOpacity(0.3),
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          correct
-                              ? Icons.emoji_events_rounded
-                              : Icons.lightbulb_rounded,
-                          color: correct ? AppColors.safe : AppColors.warning,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            correct
-                                ? 'Correct! Well done.'
-                                : 'Not quite — the correct answer is highlighted above.',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color:
-                                  correct ? AppColors.safe : AppColors.warning,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      option.text,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: textColor,
+                        height: 1.4,
+                      ),
                     ),
-                  );
-                }),
-              ],
-            ],
+                  ),
+                  if (trailingIcon != null) ...[
+                    const SizedBox(width: 8),
+                    trailingIcon,
+                  ],
+                ],
+              ),
+            ),
           );
         }),
+
+        // Feedback card — shown after answering
+        if (answered) ...[
+          const SizedBox(height: 6),
+          Builder(builder: (_) {
+            final correct = selectedOption == step.correctIndex;
+            return Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: correct
+                    ? AppColors.safe.withOpacity(0.08)
+                    : AppColors.danger.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: correct
+                      ? AppColors.safe.withOpacity(0.3)
+                      : AppColors.danger.withOpacity(0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    correct
+                        ? Icons.emoji_events_rounded
+                        : Icons.lightbulb_rounded,
+                    color: correct ? AppColors.safe : AppColors.warning,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      correct
+                          ? 'Correct! Well done.'
+                          : 'Not quite — the correct answer is highlighted above.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: correct ? AppColors.safe : AppColors.warning,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
       ],
     );
   }
@@ -469,67 +478,61 @@ class _QuizStep extends StatelessWidget {
 class _StepFooter extends StatelessWidget {
   final LessonStep step;
   final bool isLast;
+  final bool canProceed;
   final VoidCallback onNext;
 
   const _StepFooter({
     required this.step,
     required this.isLast,
+    required this.canProceed,
     required this.onNext,
   });
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<CyberAcademyController>();
-    return Obx(() {
-      final canProceed = !step.isQuiz || c.quizAnswered.value;
-
-      return Container(
-        padding: EdgeInsets.fromLTRB(
-            20, 12, 20, MediaQuery.of(context).padding.bottom + 12),
-        decoration: const BoxDecoration(
-          color: AppColors.surface,
-          border: Border(
-            top: BorderSide(color: AppColors.cardBorder),
-          ),
+    return Container(
+      padding: EdgeInsets.fromLTRB(
+          20, 12, 20, MediaQuery.of(context).padding.bottom + 12),
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        border: Border(
+          top: BorderSide(color: AppColors.cardBorder),
         ),
-        child: SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: ElevatedButton(
-            onPressed: canProceed ? onNext : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  isLast ? const Color(0xFFFFD700) : AppColors.primary,
-              foregroundColor: Colors.black,
-              disabledBackgroundColor: AppColors.cardBorder,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 52,
+        child: ElevatedButton(
+          onPressed: canProceed ? onNext : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isLast ? const Color(0xFFFFD700) : AppColors.primary,
+            foregroundColor: Colors.black,
+            disabledBackgroundColor: AppColors.cardBorder,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+            elevation: 0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                isLast ? Icons.emoji_events_rounded : Icons.arrow_forward_rounded,
+                size: 18,
               ),
-              elevation: 0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  isLast
-                      ? Icons.emoji_events_rounded
-                      : Icons.arrow_forward_rounded,
-                  size: 18,
+              const SizedBox(width: 8),
+              Text(
+                isLast ? 'Complete Lesson' : 'Next Step',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  isLast ? 'Complete Lesson' : 'Next Step',
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
 

@@ -105,7 +105,7 @@ class CyberAcademyController extends GetxController {
 
     final next = activeStepIndex.value + 1;
     if (next >= lesson.steps.length) {
-      _completeLesson(lesson);
+      completeLesson(lesson);
       return;
     }
 
@@ -130,7 +130,7 @@ class CyberAcademyController extends GetxController {
   bool isAnswerCorrect(LessonStep step) =>
       selectedQuizOption.value == step.correctIndex;
 
-  void _completeLesson(LessonModel lesson) {
+  void completeLesson(LessonModel lesson) {
     final idx = lessons.indexWhere((l) => l.id == lesson.id);
     if (idx != -1 && lessons[idx].status != LessonStatus.completed) {
       lessons[idx] =
