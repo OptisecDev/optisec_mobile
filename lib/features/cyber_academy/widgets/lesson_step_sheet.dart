@@ -4,12 +4,13 @@ import '../../../core/theme/app_colors.dart';
 import '../../../shared/models/lesson_model.dart';
 import '../controllers/cyber_academy_controller.dart';
 
-class LessonStepSheet extends StatelessWidget {
+// Use GetView so the controller is resolved through the proper GetX binding
+// rather than a bare Get.find() inside StatelessWidget.build().
+class LessonStepSheet extends GetView<CyberAcademyController> {
   const LessonStepSheet({super.key});
 
   static void show(BuildContext context, LessonModel lesson) {
-    final c = Get.find<CyberAcademyController>();
-    c.startLesson(lesson);
+    Get.find<CyberAcademyController>().startLesson(lesson);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -20,30 +21,31 @@ class LessonStepSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<CyberAcademyController>();
     return DraggableScrollableSheet(
       initialChildSize: 0.92,
       minChildSize: 0.5,
       maxChildSize: 0.97,
-      builder: (_, scrollController) {
+      builder: (sheetContext, scrollController) {
         return Container(
           decoration: const BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Obx(() {
-            final lesson = c.activeLesson.value;
+            final lesson = controller.activeLesson.value;
             if (lesson == null) return const SizedBox.shrink();
 
-            final stepIndex = c.activeStepIndex.value;
+            final stepIndex = controller.activeStepIndex.value;
             final steps = lesson.steps;
-            final hasSteps = steps.isNotEmpty;
 
-            if (!hasSteps) {
-              return _NoStepsBody(lesson: lesson, onClose: () {
-                c.closeLesson();
-                Navigator.pop(context);
-              });
+            if (steps.isEmpty) {
+              return _NoStepsBody(
+                lesson: lesson,
+                onClose: () {
+                  controller.closeLesson();
+                  Navigator.pop(sheetContext);
+                },
+              );
             }
 
             final step = steps[stepIndex];
@@ -52,19 +54,16 @@ class LessonStepSheet extends StatelessWidget {
 
             return Column(
               children: [
-                // Handle + header
                 _SheetHeader(
                   lesson: lesson,
                   stepIndex: stepIndex,
                   totalSteps: steps.length,
                   progress: progress,
                   onClose: () {
-                    c.closeLesson();
-                    Navigator.pop(context);
+                    controller.closeLesson();
+                    Navigator.pop(sheetContext);
                   },
                 ),
-
-                // Step body
                 Expanded(
                   child: SingleChildScrollView(
                     controller: scrollController,
@@ -74,18 +73,15 @@ class LessonStepSheet extends StatelessWidget {
                         : _InfoStep(step: step),
                   ),
                 ),
-
-                // Footer button
                 _StepFooter(
                   step: step,
                   isLast: isLast,
                   onNext: () {
-                    if (step.isQuiz && !c.quizAnswered.value) return;
                     if (isLast) {
-                      c.nextStep();
-                      Navigator.pop(context);
+                      controller.nextStep();
+                      Navigator.pop(sheetContext);
                     } else {
-                      c.nextStep();
+                      controller.nextStep();
                     }
                   },
                 ),
@@ -98,6 +94,7 @@ class LessonStepSheet extends StatelessWidget {
   }
 }
 
+// ── Sheet header: drag handle, title, step counter, progress bar ──
 class _SheetHeader extends StatelessWidget {
   final LessonModel lesson;
   final int stepIndex;
@@ -130,7 +127,6 @@ class _SheetHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Drag handle
         Center(
           child: Container(
             margin: const EdgeInsets.only(top: 12, bottom: 16),
@@ -173,7 +169,7 @@ class _SheetHeader extends StatelessWidget {
                 child: Container(
                   width: 32,
                   height: 32,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.cardBorder,
                     shape: BoxShape.circle,
                   ),
@@ -185,8 +181,6 @@ class _SheetHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-
-        // Progress bar
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: TweenAnimationBuilder<double>(
@@ -226,6 +220,7 @@ class _SheetHeader extends StatelessWidget {
   }
 }
 
+// ── Info (non-quiz) step ──────────────────────────────────────────
 class _InfoStep extends StatelessWidget {
   final LessonStep step;
   const _InfoStep({required this.step});
@@ -266,6 +261,7 @@ class _InfoStep extends StatelessWidget {
   }
 }
 
+// ── Quiz step ─────────────────────────────────────────────────────
 class _QuizStep extends StatelessWidget {
   final LessonStep step;
   const _QuizStep({required this.step});
@@ -276,7 +272,7 @@ class _QuizStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Quiz badge
+        // Static quiz badge
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
@@ -321,137 +317,147 @@ class _QuizStep extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
+        // Single Obx owns all reactive quiz state: options + feedback card.
+        // Merging the previous two Obx blocks eliminates the dual-setState
+        // that fired when answerQuiz() set both selectedQuizOption and
+        // quizAnswered in the same synchronous call.
         Obx(() {
           final answered = c.quizAnswered.value;
           final selected = c.selectedQuizOption.value;
 
           return Column(
-            children: step.options.asMap().entries.map((e) {
-              final idx = e.key;
-              final option = e.value;
-              final isSelected = selected == idx;
-              final isCorrect = idx == step.correctIndex;
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Answer options
+              ...step.options.asMap().entries.map((e) {
+                final idx = e.key;
+                final option = e.value;
+                final isSelected = selected == idx;
+                final isCorrect = idx == step.correctIndex;
 
-              Color borderColor = AppColors.cardBorder;
-              Color bgColor = AppColors.card;
-              Color textColor = AppColors.textPrimary;
-              Widget? trailingIcon;
+                Color borderColor = AppColors.cardBorder;
+                Color bgColor = AppColors.card;
+                Color textColor = AppColors.textPrimary;
+                Widget? trailingIcon;
 
-              if (answered) {
-                if (isCorrect) {
-                  borderColor = AppColors.safe;
-                  bgColor = AppColors.safe.withOpacity(0.1);
-                  textColor = AppColors.safe;
-                  trailingIcon = const Icon(Icons.check_circle_rounded,
-                      color: AppColors.safe, size: 18);
+                if (answered) {
+                  if (isCorrect) {
+                    borderColor = AppColors.safe;
+                    bgColor = AppColors.safe.withOpacity(0.1);
+                    textColor = AppColors.safe;
+                    trailingIcon = const Icon(Icons.check_circle_rounded,
+                        color: AppColors.safe, size: 18);
+                  } else if (isSelected) {
+                    borderColor = AppColors.danger;
+                    bgColor = AppColors.danger.withOpacity(0.08);
+                    textColor = AppColors.danger;
+                    trailingIcon = const Icon(Icons.cancel_rounded,
+                        color: AppColors.danger, size: 18);
+                  }
                 } else if (isSelected) {
-                  borderColor = AppColors.danger;
-                  bgColor = AppColors.danger.withOpacity(0.08);
-                  textColor = AppColors.danger;
-                  trailingIcon = const Icon(Icons.cancel_rounded,
-                      color: AppColors.danger, size: 18);
+                  borderColor = AppColors.primary;
+                  bgColor = AppColors.primary.withOpacity(0.1);
                 }
-              } else if (isSelected) {
-                borderColor = AppColors.primary;
-                bgColor = AppColors.primary.withOpacity(0.1);
-              }
 
-              return GestureDetector(
-                onTap: answered ? null : () => c.answerQuiz(idx),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: borderColor),
-                  ),
-                  child: Row(
-                    children: [
-                      // Index circle
-                      Container(
-                        width: 26,
-                        height: 26,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: borderColor.withOpacity(0.15),
-                          border: Border.all(color: borderColor),
-                        ),
-                        child: Center(
-                          child: Text(
-                            String.fromCharCode(65 + idx),
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: borderColor,
+                return GestureDetector(
+                  onTap: answered ? null : () => c.answerQuiz(idx),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
+                    decoration: BoxDecoration(
+                      color: bgColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: borderColor),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 26,
+                          height: 26,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: borderColor.withOpacity(0.15),
+                            border: Border.all(color: borderColor),
+                          ),
+                          child: Center(
+                            child: Text(
+                              String.fromCharCode(65 + idx),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: borderColor,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          option.text,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: textColor,
-                            height: 1.4,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            option.text,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: textColor,
+                              height: 1.4,
+                            ),
                           ),
                         ),
-                      ),
-                      if (trailingIcon != null) ...[
-                        const SizedBox(width: 8),
-                        trailingIcon,
+                        if (trailingIcon != null) ...[
+                          const SizedBox(width: 8),
+                          trailingIcon,
+                        ],
                       ],
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        }),
-
-        Obx(() {
-          if (!c.quizAnswered.value) return const SizedBox.shrink();
-          final correct = c.isAnswerCorrect(step);
-          return Container(
-            margin: const EdgeInsets.only(top: 6),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: correct
-                  ? AppColors.safe.withOpacity(0.08)
-                  : AppColors.danger.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                  color: correct
-                      ? AppColors.safe.withOpacity(0.3)
-                      : AppColors.danger.withOpacity(0.3)),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  correct
-                      ? Icons.emoji_events_rounded
-                      : Icons.lightbulb_rounded,
-                  color:
-                      correct ? AppColors.safe : AppColors.warning,
-                  size: 20,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    correct
-                        ? 'Correct! Well done.'
-                        : 'Not quite — the correct answer is highlighted above.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: correct ? AppColors.safe : AppColors.warning,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
+                );
+              }),
+
+              // Feedback card — shown only after answering
+              if (answered) ...[
+                const SizedBox(height: 6),
+                Builder(builder: (_) {
+                  final correct = c.isAnswerCorrect(step);
+                  return Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: correct
+                          ? AppColors.safe.withOpacity(0.08)
+                          : AppColors.danger.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: correct
+                            ? AppColors.safe.withOpacity(0.3)
+                            : AppColors.danger.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          correct
+                              ? Icons.emoji_events_rounded
+                              : Icons.lightbulb_rounded,
+                          color: correct ? AppColors.safe : AppColors.warning,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            correct
+                                ? 'Correct! Well done.'
+                                : 'Not quite — the correct answer is highlighted above.',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color:
+                                  correct ? AppColors.safe : AppColors.warning,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
               ],
-            ),
+            ],
           );
         }),
       ],
@@ -459,6 +465,7 @@ class _QuizStep extends StatelessWidget {
   }
 }
 
+// ── Footer: Next / Complete button ────────────────────────────────
 class _StepFooter extends StatelessWidget {
   final LessonStep step;
   final bool isLast;
@@ -474,15 +481,14 @@ class _StepFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = Get.find<CyberAcademyController>();
     return Obx(() {
-      final canProceed =
-          !step.isQuiz || c.quizAnswered.value;
+      final canProceed = !step.isQuiz || c.quizAnswered.value;
 
       return Container(
         padding: EdgeInsets.fromLTRB(
             20, 12, 20, MediaQuery.of(context).padding.bottom + 12),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.surface,
-          border: const Border(
+          border: Border(
             top: BorderSide(color: AppColors.cardBorder),
           ),
         ),
@@ -492,9 +498,8 @@ class _StepFooter extends StatelessWidget {
           child: ElevatedButton(
             onPressed: canProceed ? onNext : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: isLast
-                  ? const Color(0xFFFFD700)
-                  : AppColors.primary,
+              backgroundColor:
+                  isLast ? const Color(0xFFFFD700) : AppColors.primary,
               foregroundColor: Colors.black,
               disabledBackgroundColor: AppColors.cardBorder,
               shape: RoundedRectangleBorder(
@@ -528,6 +533,7 @@ class _StepFooter extends StatelessWidget {
   }
 }
 
+// ── Fallback for lessons with no steps ───────────────────────────
 class _NoStepsBody extends StatelessWidget {
   final LessonModel lesson;
   final VoidCallback onClose;

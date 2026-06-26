@@ -74,14 +74,21 @@ class PrivacyGuardController extends GetxController {
   Future<void> checkPermissions() async {
     isLoading.value = true;
 
-    final statuses = await Future.wait([
-      Permission.location.status,
-      Permission.camera.status,
-      Permission.microphone.status,
-      Permission.contacts.status,
-      Permission.phone.status,
-      Permission.storage.status,
-    ]);
+    List<PermissionStatus> statuses;
+    try {
+      statuses = await Future.wait([
+        Permission.location.status,
+        Permission.camera.status,
+        Permission.microphone.status,
+        Permission.contacts.status,
+        Permission.phone.status,
+        Permission.storage.status,
+      ]).timeout(const Duration(seconds: 2));
+    } catch (_) {
+      // Timeout or platform error — fall back to dummy denied statuses so the
+      // UI doesn't stay on the loading spinner forever.
+      statuses = List.filled(6, PermissionStatus.denied);
+    }
 
     permissions.value = [
       PermissionInfo(
