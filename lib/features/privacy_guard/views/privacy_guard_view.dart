@@ -7,6 +7,7 @@ import '../../../shared/widgets/score_ring.dart';
 import '../controllers/privacy_guard_controller.dart';
 import '../widgets/exposure_chart.dart';
 import '../widgets/permission_tile.dart';
+import '../widgets/permission_timeline_tile.dart';
 import '../widgets/privacy_recommendation_card.dart';
 
 class PrivacyGuardView extends GetView<PrivacyGuardController> {
@@ -76,6 +77,8 @@ class _ContentBody extends StatelessWidget {
                 _RecommendationsSection(controller: controller),
                 const SizedBox(height: 20),
                 _PermissionsSection(controller: controller),
+                const SizedBox(height: 20),
+                _UsageTimelineSection(controller: controller),
               ]),
             ),
           ),
@@ -637,6 +640,197 @@ class _FilterBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// ─── Usage Timeline Section (Pro) ─────────────────────────────────────────────
+
+class _UsageTimelineSection extends StatelessWidget {
+  final PrivacyGuardController controller;
+
+  const _UsageTimelineSection({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.cardBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text('Permission Usage Timeline',
+                  style: theme.textTheme.titleMedium),
+              const Spacer(),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Text(
+                  'PRO',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.primary,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Which apps with camera, microphone, or location access were recently open.',
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: AppColors.textDisabled),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            'Based on foreground app time, not confirmed sensor access.',
+            style: theme.textTheme.labelSmall?.copyWith(
+                color: AppColors.textDisabled,
+                fontSize: 10,
+                fontStyle: FontStyle.italic),
+          ),
+          const SizedBox(height: 14),
+          Obx(() {
+            if (controller.isLoadingUsage.value) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: Center(
+                  child: CircularProgressIndicator(color: AppColors.primary),
+                ),
+              );
+            }
+
+            if (!controller.hasUsageAccess.value) {
+              return _UsageAccessPrompt(controller: controller);
+            }
+
+            if (controller.hasUsageError.value) {
+              return _UsageErrorState(controller: controller);
+            }
+
+            final records = controller.usageRecords;
+            if (records.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text(
+                  'No apps with camera, microphone, or location access were open in the last 7 days.',
+                  style: theme.textTheme.bodySmall,
+                ),
+              );
+            }
+            return Column(
+              children: records
+                  .asMap()
+                  .entries
+                  .map((e) => PermissionTimelineTile(
+                        record: e.value,
+                        index: e.key,
+                      ))
+                  .toList(),
+            );
+          }),
+        ],
+      ),
+    ).animate().fadeIn(duration: 500.ms, delay: 200.ms);
+  }
+}
+
+class _UsageAccessPrompt extends StatelessWidget {
+  final PrivacyGuardController controller;
+
+  const _UsageAccessPrompt({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final alreadyChecked = controller.hasCheckedUsageAccess.value;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (alreadyChecked)
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: controller.requestUsageAccess,
+                  child: const Text('Open Settings'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: controller.loadPermissionUsage,
+                  child: const Text('Retry'),
+                ),
+              ),
+            ],
+          )
+        else
+          ElevatedButton(
+            onPressed: controller.loadPermissionUsage,
+            child: const Text('Load Usage Timeline'),
+          ),
+        const SizedBox(height: 10),
+        Text(
+          alreadyChecked
+              ? 'Usage Access isn\'t granted yet. Enable it for OptiSec in '
+                  'system settings, then tap Retry.'
+              : 'Requires "Usage Access" to be granted in system settings. '
+                  'This lets OptiSec see which apps were recently open — it '
+                  'does not grant access to any personal data.',
+          style: theme.textTheme.bodySmall
+              ?.copyWith(color: AppColors.textDisabled),
+        ),
+      ],
+    );
+  }
+}
+
+class _UsageErrorState extends StatelessWidget {
+  final PrivacyGuardController controller;
+
+  const _UsageErrorState({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Icon(Icons.error_outline_rounded,
+                color: AppColors.danger, size: 17),
+            const SizedBox(width: 7),
+            Expanded(
+              child: Text(
+                'Couldn\'t load the usage timeline.',
+                style: theme.textTheme.bodyMedium
+                    ?.copyWith(color: AppColors.danger),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: controller.loadPermissionUsage,
+          child: const Text('Retry'),
+        ),
+      ],
     );
   }
 }

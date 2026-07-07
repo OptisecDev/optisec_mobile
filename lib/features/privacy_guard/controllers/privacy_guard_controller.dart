@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../core/services/permission_usage_service.dart';
+import '../../../shared/models/permission_usage_record.dart';
+import '../../subscription/controllers/subscription_controller.dart';
 
 enum PrivacyFilterMode { all, granted, high, medium }
 
@@ -54,7 +57,7 @@ class PermissionInfo {
   }
 }
 
-class PrivacyGuardController extends GetxController {
+class PrivacyGuardController extends GetxController with WidgetsBindingObserver {
   final privacyScore = 0.obs;
   final isLoading = false.obs;
   final isScanning = false.obs;
@@ -65,10 +68,36 @@ class PrivacyGuardController extends GetxController {
   // 7-day privacy score history
   final scoreHistory = <double>[72, 68, 75, 70, 80, 78, 0].obs;
 
+  // Permission usage timeline (Pro-only)
+  final usageRecords = <PermissionUsageRecord>[].obs;
+  final hasUsageAccess = false.obs;
+  final hasCheckedUsageAccess = false.obs;
+  final isLoadingUsage = false.obs;
+  final hasUsageError = false.obs;
+  final usageErrorMessage = RxnString();
+
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     checkPermissions();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Detect returning from system Settings (e.g. after granting Usage
+    // Access) and retry automatically instead of leaving a stale prompt up.
+    if (state == AppLifecycleState.resumed &&
+        hasCheckedUsageAccess.value &&
+        (!hasUsageAccess.value || hasUsageError.value)) {
+      loadPermissionUsage();
+    }
   }
 
   Future<void> checkPermissions() async {
@@ -236,6 +265,37 @@ class PrivacyGuardController extends GetxController {
 
   Future<void> revokePermission(PermissionInfo perm) async {
     await openAppSettings();
+  }
+
+  Future<void> loadPermissionUsage() async {
+    final subscriptionController = Get.find<SubscriptionController>();
+    if (!subscriptionController.checkAccessOrPrompt(
+        feature: 'Permission usage timeline')) {
+      return;
+    }
+
+    isLoadingUsage.value = true;
+    hasUsageError.value = false;
+    usageErrorMessage.value = null;
+
+    hasUsageAccess.value =
+        await PermissionUsageService.instance.hasUsageAccess();
+    if (hasUsageAccess.value) {
+      final result = await PermissionUsageService.instance.getUsageRecords();
+      if (result.status == PermissionUsageStatus.error) {
+        hasUsageError.value = true;
+        usageErrorMessage.value = result.errorMessage;
+        usageRecords.clear();
+      } else {
+        usageRecords.value = result.records;
+      }
+    }
+    hasCheckedUsageAccess.value = true;
+    isLoadingUsage.value = false;
+  }
+
+  Future<void> requestUsageAccess() async {
+    await PermissionUsageService.instance.openUsageAccessSettings();
   }
 
   int get highRiskCount =>
