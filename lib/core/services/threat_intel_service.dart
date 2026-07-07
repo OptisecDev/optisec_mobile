@@ -18,7 +18,7 @@ class ThreatIntelService {
   // published, e.g.
   // 'https://raw.githubusercontent.com/<org>/<repo>/main/threat_feed.json'
   static const String feedUrl =
-      'https://example.com/REPLACE_ME/threat_feed.json';
+      'https://raw.githubusercontent.com/OptisecDev/optisec-threat-feed/main/threat_feed.json';
 
   static const _alertsStorageKey = 'threat_intel_alerts';
   static const _updatedAtStorageKey = 'threat_intel_updated_at';
