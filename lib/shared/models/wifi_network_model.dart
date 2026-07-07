@@ -7,6 +7,7 @@ enum EvilTwinReason {
   securityDowngrade,  // Same SSID but weaker encryption
   signalAnomaly,      // Unusually strong hidden network
   openImpersonation,  // Open clone of a secured network
+  historicalBssidChange, // SSID previously seen with a different BSSID
 }
 
 class WifiNetworkModel {

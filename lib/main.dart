@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'core/services/network_trust_service.dart';
 import 'core/services/purchase_service.dart';
 import 'core/theme/app_theme.dart';
 import 'navigation/app_pages.dart';
@@ -16,6 +17,9 @@ Future<void> main() async {
 
   // Loads persisted entitlement and attaches the purchase update listener
   await PurchaseService.instance.init();
+
+  // Loads persisted per-SSID BSSID history for historical evil-twin detection
+  await NetworkTrustService.instance.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

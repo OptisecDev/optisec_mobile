@@ -37,7 +37,14 @@ class PurchaseService {
 
     _loadPersistedSubscription();
 
-    final available = await _iap.isAvailable();
+    bool available;
+    try {
+      available = await _iap.isAvailable();
+    } catch (_) {
+      // No in_app_purchase platform implementation on this platform
+      // (e.g. desktop) — fall back to the free tier instead of crashing.
+      return;
+    }
     if (!available) return;
 
     _subscription = _iap.purchaseStream.listen(

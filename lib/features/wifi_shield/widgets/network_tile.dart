@@ -282,6 +282,8 @@ class NetworkTile extends StatelessWidget {
         return 'Signal';
       case EvilTwinReason.openImpersonation:
         return 'Honeypot';
+      case EvilTwinReason.historicalBssidChange:
+        return 'BSSID Changed';
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wifi_scan/wifi_scan.dart';
+import '../../../core/services/network_trust_service.dart';
 import '../../../shared/models/subscription_model.dart';
 import '../../../shared/models/wifi_network_model.dart';
 import '../../subscription/controllers/subscription_controller.dart';
@@ -101,9 +102,36 @@ class WifiShieldController extends GetxController {
         if (canGet == CanGetScannedResults.yes) {
           final results = await WiFiScan.instance.getScannedResults();
           final mapped = results.map(_mapResult).toList();
+
+          // Historical evil-twin signal: has this SSID's BSSID changed
+          // since we last saw it? Recorded before the real-time analysis
+          // below so it can't influence (or be influenced by) that pass.
+          final historicalChange = <String, bool>{}; // bssid -> bssidChanged
+          for (final n in mapped) {
+            final record =
+                NetworkTrustService.instance.recordSighting(n.ssid, n.bssid);
+            historicalChange[n.bssid] = record.bssidChanged;
+          }
+
+          final evaluated = _runEvilTwinAnalysis(mapped);
           _allNetworks
             ..clear()
-            ..addAll(_runEvilTwinAnalysis(mapped));
+            ..addAll(evaluated.map((n) {
+              if (historicalChange[n.bssid] != true) return n;
+              return n.copyWith(
+                isEvilTwin: true,
+                evilTwinReasons: [
+                  ...n.evilTwinReasons,
+                  EvilTwinReason.historicalBssidChange,
+                ],
+                threats: [
+                  ...n.threats,
+                  'Access point hardware changed for "${n.ssid}" — possible historical Evil Twin',
+                ],
+                riskScore: (n.riskScore + 40).clamp(0, 100),
+                threatLevel: ThreatLevel.danger,
+              );
+            }));
           _applyFiltersAndSort();
           if (!subscriptionController.isPro) {
             _incrementTodayScanCount();

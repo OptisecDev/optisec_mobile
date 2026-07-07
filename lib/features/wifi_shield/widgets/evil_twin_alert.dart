@@ -166,6 +166,7 @@ class EvilTwinAlert extends StatelessWidget {
       EvilTwinReason.securityDowngrade => 'Security Downgrade',
       EvilTwinReason.signalAnomaly => 'Signal Anomaly',
       EvilTwinReason.openImpersonation => 'Open Impersonation',
+      EvilTwinReason.historicalBssidChange => 'BSSID Changed',
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

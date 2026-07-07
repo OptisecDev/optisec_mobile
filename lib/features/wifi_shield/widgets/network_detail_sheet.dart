@@ -340,6 +340,8 @@ class NetworkDetailSheet extends StatelessWidget {
         return 'Hidden network with abnormally strong signal suggests a rogue access point nearby';
       case EvilTwinReason.openImpersonation:
         return 'Open network impersonating a secured SSID — honeypot or captive portal attack';
+      case EvilTwinReason.historicalBssidChange:
+        return 'SSID previously seen with a different BSSID — possible access point spoofing';
     }
   }
 
