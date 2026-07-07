@@ -12,6 +12,8 @@ import '../features/settings/views/settings_view.dart';
 import '../features/settings/controllers/settings_controller.dart';
 import '../features/subscription/views/paywall_view.dart';
 import '../features/subscription/controllers/subscription_controller.dart';
+import '../features/threat_intel/views/threat_intel_view.dart';
+import '../features/threat_intel/controllers/threat_intel_controller.dart';
 import '../shared/widgets/app_shell.dart';
 import 'app_routes.dart';
 
@@ -48,6 +50,7 @@ class AppPages {
         Get.lazyPut(() => CyberAcademyController());
         Get.lazyPut(() => SettingsController());
         Get.lazyPut(() => SubscriptionController());
+        Get.lazyPut(() => ThreatIntelController());
       }),
       transition: Transition.fadeIn,
     ),
@@ -66,6 +69,15 @@ class AppPages {
       page: () => const PaywallView(),
       binding: BindingsBuilder(
         () => Get.lazyPut(() => SubscriptionController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: AppRoutes.threatIntel,
+      page: () => const ThreatIntelView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => ThreatIntelController()),
       ),
       transition: Transition.rightToLeft,
     ),

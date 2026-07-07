@@ -3,8 +3,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../features/home/controllers/home_controller.dart';
+import '../../../navigation/app_routes.dart';
 import '../../../shared/models/security_score_model.dart';
 import '../../../shared/widgets/score_ring.dart';
+import '../../threat_intel/controllers/threat_intel_controller.dart';
+import '../../threat_intel/widgets/threat_alert_card.dart';
 import '../controllers/dashboard_controller.dart';
 import '../widgets/category_score_bar.dart';
 import '../widgets/quick_action_button.dart';
@@ -35,6 +38,8 @@ class DashboardView extends GetView<DashboardController> {
                 _StatsGrid(controller: controller),
                 const SizedBox(height: 20),
                 _QuickActions(controller: controller),
+                const SizedBox(height: 20),
+                const _ThreatIntelPreview(),
                 const SizedBox(height: 20),
                 _ChartsSection(controller: controller),
                 const SizedBox(height: 20),
@@ -482,6 +487,67 @@ class _QuickActions extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+// ─── Threat Intel Preview ──────────────────────────────────────────────────
+
+class _ThreatIntelPreview extends StatelessWidget {
+  const _ThreatIntelPreview();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final intel = Get.find<ThreatIntelController>();
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.cardBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text('Latest Threat Intel', style: theme.textTheme.titleMedium),
+              const Spacer(),
+              TextButton(
+                onPressed: () => Get.toNamed(AppRoutes.threatIntel),
+                child: const Text('View All', style: TextStyle(fontSize: 12)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Obx(() {
+            if (intel.isLoading.value && intel.alerts.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              );
+            }
+
+            final top = intel.topAlert;
+            if (top == null) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  'No active alerts',
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(color: AppColors.textDisabled),
+                ),
+              );
+            }
+
+            return ThreatAlertCard(alert: top, index: 0);
+          }),
+        ],
+      ),
+    ).animate().fadeIn(duration: 500.ms, delay: 200.ms);
   }
 }
 

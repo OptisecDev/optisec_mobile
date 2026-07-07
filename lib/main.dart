@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'core/services/network_trust_service.dart';
 import 'core/services/purchase_service.dart';
+import 'core/services/threat_intel_service.dart';
 import 'core/theme/app_theme.dart';
 import 'navigation/app_pages.dart';
 import 'navigation/app_routes.dart';
@@ -20,6 +21,9 @@ Future<void> main() async {
 
   // Loads persisted per-SSID BSSID history for historical evil-twin detection
   await NetworkTrustService.instance.init();
+
+  // Loads the last cached threat-intel feed so the dashboard has offline data
+  await ThreatIntelService.instance.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
