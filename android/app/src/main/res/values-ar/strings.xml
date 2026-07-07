@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Lock: foreground monitor notification -->
+    <string name="app_lock_notification_channel_name">قفل التطبيقات</string>
+    <string name="app_lock_notification_channel_description">يبقي قفل التطبيقات نشطًا في الخلفية</string>
+    <string name="app_lock_notification_title">قفل التطبيقات نشط</string>
+    <string name="app_lock_notification_text">جارٍ مراقبة التطبيقات المقفلة</string>
+
+    <!-- App Lock: native lock screen -->
+    <string name="app_lock_target_app_icon_description">أيقونة التطبيق</string>
+    <string name="app_lock_enter_pin_prompt">أدخل رمز PIN الخاص بك</string>
+    <string name="app_lock_biometric_retry_symbol">🔓</string>
+    <string name="app_lock_backspace_symbol">⌫</string>
+    <string name="app_lock_biometric_title">فتح %1$s</string>
+    <string name="app_lock_biometric_subtitle">قم بالمصادقة للمتابعة</string>
+    <string name="app_lock_biometric_negative_button">استخدام رمز PIN</string>
+    <string name="app_lock_wrong_pin">رمز PIN غير صحيح</string>
+    <string name="app_lock_locked_out">محاولات كثيرة جدًا. حاول مرة أخرى خلال %1$s</string>
+    <string name="app_lock_seconds_short">%1$dث</string>
+    <string name="app_lock_minutes_short">%1$dد</string>
+</resources>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lockScreenRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#060A0F"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingTop="72dp"
+    android:paddingBottom="32dp"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp">
+
+    <ImageView
+        android:id="@+id/appIconImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/app_lock_target_app_icon_description"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/appNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#E8F4FD"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_lock_enter_pin_prompt"
+        android:textColor="#8DA3BC"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:layout_marginBottom="28dp" />
+
+    <LinearLayout
+        android:id="@+id/pinDotsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="36dp">
+
+        <TextView
+            android:id="@+id/pinDot1"
+            style="@style/AppLockPinDot" />
+
+        <TextView
+            android:id="@+id/pinDot2"
+            style="@style/AppLockPinDot" />
+
+        <TextView
+            android:id="@+id/pinDot3"
+            style="@style/AppLockPinDot" />
+
+        <TextView
+            android:id="@+id/pinDot4"
+            style="@style/AppLockPinDot" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <GridLayout
+        android:id="@+id/pinPad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="4"
+        android:alignmentMode="alignMargins"
+        android:useDefaultMargins="true">
+
+        <TextView android:id="@+id/btn1" style="@style/AppLockPinKey" android:text="1" />
+        <TextView android:id="@+id/btn2" style="@style/AppLockPinKey" android:text="2" />
+        <TextView android:id="@+id/btn3" style="@style/AppLockPinKey" android:text="3" />
+        <TextView android:id="@+id/btn4" style="@style/AppLockPinKey" android:text="4" />
+        <TextView android:id="@+id/btn5" style="@style/AppLockPinKey" android:text="5" />
+        <TextView android:id="@+id/btn6" style="@style/AppLockPinKey" android:text="6" />
+        <TextView android:id="@+id/btn7" style="@style/AppLockPinKey" android:text="7" />
+        <TextView android:id="@+id/btn8" style="@style/AppLockPinKey" android:text="8" />
+        <TextView android:id="@+id/btn9" style="@style/AppLockPinKey" android:text="9" />
+
+        <TextView
+            android:id="@+id/btnRetryBiometric"
+            style="@style/AppLockPinKey"
+            android:text="@string/app_lock_biometric_retry_symbol"
+            android:textSize="20sp" />
+
+        <TextView android:id="@+id/btn0" style="@style/AppLockPinKey" android:text="0" />
+
+        <TextView
+            android:id="@+id/btnBackspace"
+            style="@style/AppLockPinKey"
+            android:text="@string/app_lock_backspace_symbol"
+            android:textSize="20sp" />
+    </GridLayout>
+
+</LinearLayout>

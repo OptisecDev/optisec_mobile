@@ -14,6 +14,10 @@ import '../features/subscription/views/paywall_view.dart';
 import '../features/subscription/controllers/subscription_controller.dart';
 import '../features/threat_intel/views/threat_intel_view.dart';
 import '../features/threat_intel/controllers/threat_intel_controller.dart';
+import '../features/app_lock/views/app_lock_settings_view.dart';
+import '../features/app_lock/views/pin_setup_view.dart';
+import '../features/app_lock/controllers/app_lock_controller.dart';
+import '../features/app_lock/controllers/pin_setup_controller.dart';
 import '../shared/widgets/app_shell.dart';
 import 'app_routes.dart';
 
@@ -78,6 +82,24 @@ class AppPages {
       page: () => const ThreatIntelView(),
       binding: BindingsBuilder(
         () => Get.lazyPut(() => ThreatIntelController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: AppRoutes.appLock,
+      page: () => const AppLockSettingsView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => AppLockController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: AppRoutes.pinSetup,
+      page: () => const PinSetupView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => PinSetupController()),
       ),
       transition: Transition.rightToLeft,
     ),

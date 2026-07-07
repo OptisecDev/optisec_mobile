@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../navigation/app_routes.dart';
 import '../controllers/settings_controller.dart';
 
 class SettingsView extends GetView<SettingsController> {
@@ -391,6 +392,14 @@ class _PrivacySection extends StatelessWidget {
               value: c.biometricLock.value,
               onChanged: (v) => c.biometricLock.value = v,
             )),
+        _Divider(),
+        _ArrowTile(
+          icon: Icons.lock_person_rounded,
+          iconColor: AppColors.primary,
+          title: 'App Lock',
+          subtitle: 'PIN or biometric protection for individual apps',
+          onTap: () => Get.toNamed(AppRoutes.appLock),
+        ),
         _Divider(),
         Obx(() => _SwitchTile(
               icon: Icons.analytics_outlined,

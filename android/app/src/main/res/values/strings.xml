@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Lock: foreground monitor notification -->
+    <string name="app_lock_notification_channel_name">App Lock</string>
+    <string name="app_lock_notification_channel_description">Keeps App Lock active in the background</string>
+    <string name="app_lock_notification_title">App Lock is active</string>
+    <string name="app_lock_notification_text">Monitoring locked apps</string>
+
+    <!-- App Lock: native lock screen -->
+    <string name="app_lock_target_app_icon_description">App icon</string>
+    <string name="app_lock_enter_pin_prompt">Enter your PIN</string>
+    <string name="app_lock_biometric_retry_symbol">🔓</string>
+    <string name="app_lock_backspace_symbol">⌫</string>
+    <string name="app_lock_biometric_title">Unlock %1$s</string>
+    <string name="app_lock_biometric_subtitle">Authenticate to continue</string>
+    <string name="app_lock_biometric_negative_button">Use PIN</string>
+    <string name="app_lock_wrong_pin">Incorrect PIN</string>
+    <string name="app_lock_locked_out">Too many attempts. Try again in %1$s</string>
+    <string name="app_lock_seconds_short">%1$ds</string>
+    <string name="app_lock_minutes_short">%1$dm</string>
+</resources>

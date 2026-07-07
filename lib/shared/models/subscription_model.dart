@@ -74,6 +74,7 @@ class FeatureGate {
   FeatureGate._();
 
   static const int freeScansPerDay = 3;
+  static const int freeAppLockLimit = 1;
 
   static const bool wifiUnlimitedScans = true;
   static const bool weeklySecurityReport = true;

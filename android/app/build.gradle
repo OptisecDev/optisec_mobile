@@ -50,3 +50,9 @@ android {
 flutter {
     source '../..'
 }
+
+dependencies {
+    // App Lock: BiometricPrompt + encrypted PIN/salt/locked-app storage
+    implementation "androidx.biometric:biometric:1.1.0"
+    implementation "androidx.security:security-crypto:1.1.0-alpha06"
+}
