@@ -10,6 +10,8 @@ import '../features/privacy_guard/controllers/privacy_guard_controller.dart';
 import '../features/cyber_academy/controllers/cyber_academy_controller.dart';
 import '../features/settings/views/settings_view.dart';
 import '../features/settings/controllers/settings_controller.dart';
+import '../features/subscription/views/paywall_view.dart';
+import '../features/subscription/controllers/subscription_controller.dart';
 import '../shared/widgets/app_shell.dart';
 import 'app_routes.dart';
 
@@ -45,6 +47,7 @@ class AppPages {
         Get.lazyPut(() => PrivacyGuardController());
         Get.lazyPut(() => CyberAcademyController());
         Get.lazyPut(() => SettingsController());
+        Get.lazyPut(() => SubscriptionController());
       }),
       transition: Transition.fadeIn,
     ),
@@ -54,6 +57,15 @@ class AppPages {
       page: () => const SettingsView(),
       binding: BindingsBuilder(
         () => Get.lazyPut(() => SettingsController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: AppRoutes.paywall,
+      page: () => const PaywallView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => SubscriptionController()),
       ),
       transition: Transition.rightToLeft,
     ),

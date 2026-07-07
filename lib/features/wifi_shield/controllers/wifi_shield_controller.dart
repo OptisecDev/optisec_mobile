@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wifi_scan/wifi_scan.dart';
+import '../../../shared/models/subscription_model.dart';
 import '../../../shared/models/wifi_network_model.dart';
+import '../../subscription/controllers/subscription_controller.dart';
 
 enum SortMode { signal, risk, name }
 
@@ -24,6 +27,10 @@ class WifiShieldController extends GetxController {
   final filterMode = FilterMode.all.obs;
 
   final _networkInfo = NetworkInfo();
+  final _box = GetStorage();
+
+  static const _dailyScanDateKey = 'wifi_scan_date';
+  static const _dailyScanCountKey = 'wifi_scan_count';
 
   @override
   void onInit() {
@@ -70,6 +77,15 @@ class WifiShieldController extends GetxController {
 
   Future<void> startScan() async {
     if (isScanning.value || !hasPermission.value) return;
+
+    final subscriptionController = Get.find<SubscriptionController>();
+    if (!subscriptionController.isPro &&
+        _todayScanCount() >= FeatureGate.freeScansPerDay) {
+      subscriptionController.checkAccessOrPrompt(
+          feature: 'Unlimited WiFi scans');
+      return;
+    }
+
     isScanning.value = true;
     scanError.value = '';
     evilTwinDismissed.value = false;
@@ -89,6 +105,9 @@ class WifiShieldController extends GetxController {
             ..clear()
             ..addAll(_runEvilTwinAnalysis(mapped));
           _applyFiltersAndSort();
+          if (!subscriptionController.isPro) {
+            _incrementTodayScanCount();
+          }
         }
       }
     } catch (e) {
@@ -96,6 +115,29 @@ class WifiShieldController extends GetxController {
     } finally {
       isScanning.value = false;
     }
+  }
+
+  // ─── Daily free-tier scan limit ──────────────────────────────────────────
+
+  String get _todayKey {
+    final now = DateTime.now();
+    return '${now.year}-${now.month}-${now.day}';
+  }
+
+  int _todayScanCount() {
+    final savedDate = _box.read<String>(_dailyScanDateKey);
+    if (savedDate != _todayKey) {
+      _box.write(_dailyScanDateKey, _todayKey);
+      _box.write(_dailyScanCountKey, 0);
+      return 0;
+    }
+    return _box.read<int>(_dailyScanCountKey) ?? 0;
+  }
+
+  void _incrementTodayScanCount() {
+    final count = _todayScanCount();
+    _box.write(_dailyScanDateKey, _todayKey);
+    _box.write(_dailyScanCountKey, count + 1);
   }
 
   // ─── Mapping ─────────────────────────────────────────────────────────────

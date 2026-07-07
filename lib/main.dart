@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'core/services/purchase_service.dart';
 import 'core/theme/app_theme.dart';
 import 'navigation/app_pages.dart';
 import 'navigation/app_routes.dart';
@@ -12,6 +13,9 @@ Future<void> main() async {
 
   // Persistent key-value storage (used by splash + onboarding)
   await GetStorage.init();
+
+  // Loads persisted entitlement and attaches the purchase update listener
+  await PurchaseService.instance.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
