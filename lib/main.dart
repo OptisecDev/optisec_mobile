@@ -7,6 +7,7 @@ import 'core/services/network_trust_service.dart';
 import 'core/services/purchase_service.dart';
 import 'core/services/threat_intel_service.dart';
 import 'core/theme/app_theme.dart';
+import 'l10n/app_localizations.dart';
 import 'navigation/app_pages.dart';
 import 'navigation/app_routes.dart';
 
@@ -62,6 +63,7 @@ class OptiSecApp extends StatelessWidget {
         Locale('ar'),
       ],
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

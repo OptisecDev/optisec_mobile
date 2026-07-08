@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import '../../../core/services/password_vault_service.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../features/home/controllers/home_controller.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../navigation/app_routes.dart';
 import '../../../shared/models/security_score_model.dart';
 import '../../../shared/widgets/score_ring.dart';
@@ -483,10 +485,29 @@ class _QuickActions extends StatelessWidget {
                 onTap: () => Get.find<HomeController>().navigateTo(3),
               ),
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: QuickActionButton(
+                icon: Icons.key_rounded,
+                label: AppLocalizations.of(context).vaultDashboardTileLabel,
+                color: AppColors.accent,
+                onTap: _openPasswordVault,
+              ),
+            ),
           ],
         ),
       ],
     );
+  }
+
+  Future<void> _openPasswordVault() async {
+    final initialized = await PasswordVaultService.instance.isVaultInitialized();
+    if (!initialized) {
+      Get.toNamed(AppRoutes.vaultSetup);
+      return;
+    }
+    final unlocked = await PasswordVaultService.instance.isUnlocked();
+    Get.toNamed(unlocked ? AppRoutes.vault : AppRoutes.vaultUnlock);
   }
 }
 

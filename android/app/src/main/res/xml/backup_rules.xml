@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Pre-Android-12 (API < 31) backup rules. allowBackup is true app-wide (for
+  ordinary settings/preferences), but the Password Vault's EncryptedSharedPreferences
+  file must never leave the device: its wrapping key lives only in this
+  device's Keystore, so a restored copy would be undecryptable garbage at
+  best, and excluding it outright avoids leaving stale encrypted vault data
+  behind after a reinstall/restore.
+-->
+<full-backup-content>
+    <exclude domain="sharedpref" path="password_vault_secure_prefs.xml"/>
+    <exclude domain="sharedpref" path="app_lock_secure_prefs.xml"/>
+</full-backup-content>

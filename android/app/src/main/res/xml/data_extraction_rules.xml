@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ (API >= 31) equivalent of backup_rules.xml — covers both cloud
+  backup and device-to-device transfer. Same exclusion, same reasoning: the
+  vault's EncryptedSharedPreferences file is bound to this device's Keystore
+  key and must never be copied off-device.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="password_vault_secure_prefs.xml"/>
+        <exclude domain="sharedpref" path="app_lock_secure_prefs.xml"/>
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="password_vault_secure_prefs.xml"/>
+        <exclude domain="sharedpref" path="app_lock_secure_prefs.xml"/>
+    </device-transfer>
+</data-extraction-rules>

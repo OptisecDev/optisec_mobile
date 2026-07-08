@@ -409,6 +409,450 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version'**
   String get version;
+
+  /// No description provided for @passwordVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Vault'**
+  String get passwordVault;
+
+  /// No description provided for @vaultDashboardTileLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password\nVault'**
+  String get vaultDashboardTileLabel;
+
+  /// No description provided for @vaultSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search entries'**
+  String get vaultSearchHint;
+
+  /// No description provided for @vaultEmptyState.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved passwords yet'**
+  String get vaultEmptyState;
+
+  /// No description provided for @vaultAddEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Entry'**
+  String get vaultAddEntry;
+
+  /// No description provided for @vaultLockVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock Vault'**
+  String get vaultLockVault;
+
+  /// No description provided for @vaultSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your Vault'**
+  String get vaultSetupTitle;
+
+  /// No description provided for @vaultSetupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a master password to secure your vault'**
+  String get vaultSetupSubtitle;
+
+  /// No description provided for @vaultMasterPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Password'**
+  String get vaultMasterPasswordLabel;
+
+  /// No description provided for @vaultConfirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get vaultConfirmPasswordLabel;
+
+  /// No description provided for @vaultAckText.
+  ///
+  /// In en, this message translates to:
+  /// **'If you forget this password, your saved entries cannot be recovered.'**
+  String get vaultAckText;
+
+  /// No description provided for @vaultAckCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand this password cannot be recovered'**
+  String get vaultAckCheckbox;
+
+  /// No description provided for @vaultCreateVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Vault'**
+  String get vaultCreateVault;
+
+  /// No description provided for @vaultUnlockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Vault'**
+  String get vaultUnlockTitle;
+
+  /// No description provided for @vaultUnlockSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your master password to continue'**
+  String get vaultUnlockSubtitle;
+
+  /// No description provided for @vaultUnlockButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get vaultUnlockButton;
+
+  /// No description provided for @vaultUseBiometric.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Biometric Unlock'**
+  String get vaultUseBiometric;
+
+  /// No description provided for @vaultEntryDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry Details'**
+  String get vaultEntryDetailTitle;
+
+  /// No description provided for @vaultEntryEditTitleNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New Entry'**
+  String get vaultEntryEditTitleNew;
+
+  /// No description provided for @vaultEntryEditTitleEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Entry'**
+  String get vaultEntryEditTitleEdit;
+
+  /// No description provided for @vaultFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get vaultFieldTitle;
+
+  /// No description provided for @vaultFieldUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get vaultFieldUsername;
+
+  /// No description provided for @vaultFieldPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get vaultFieldPassword;
+
+  /// No description provided for @vaultFieldUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get vaultFieldUrl;
+
+  /// No description provided for @vaultFieldNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get vaultFieldNotes;
+
+  /// No description provided for @vaultReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal'**
+  String get vaultReveal;
+
+  /// No description provided for @vaultHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get vaultHide;
+
+  /// No description provided for @vaultCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get vaultCopy;
+
+  /// No description provided for @vaultCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied — will clear automatically'**
+  String get vaultCopied;
+
+  /// No description provided for @vaultGeneratePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get vaultGeneratePassword;
+
+  /// No description provided for @vaultSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get vaultSave;
+
+  /// No description provided for @vaultDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get vaultDelete;
+
+  /// No description provided for @vaultDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this entry?'**
+  String get vaultDeleteConfirmTitle;
+
+  /// No description provided for @vaultDeleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This can\'t be undone.'**
+  String get vaultDeleteConfirmBody;
+
+  /// No description provided for @vaultCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get vaultCancel;
+
+  /// No description provided for @vaultExportVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Vault'**
+  String get vaultExportVault;
+
+  /// No description provided for @vaultImportVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Vault'**
+  String get vaultImportVault;
+
+  /// No description provided for @vaultExportPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Password'**
+  String get vaultExportPasswordLabel;
+
+  /// No description provided for @vaultExportPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Used only to protect the exported file'**
+  String get vaultExportPasswordHint;
+
+  /// No description provided for @vaultExportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get vaultExportButton;
+
+  /// No description provided for @vaultImportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get vaultImportButton;
+
+  /// No description provided for @vaultImportMergeOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge with existing entries'**
+  String get vaultImportMergeOption;
+
+  /// No description provided for @vaultImportReplaceOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace all existing entries'**
+  String get vaultImportReplaceOption;
+
+  /// No description provided for @vaultExportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vault exported successfully'**
+  String get vaultExportSuccess;
+
+  /// No description provided for @vaultExportWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Export password must be at least 10 characters and mix character types'**
+  String get vaultExportWeakPassword;
+
+  /// No description provided for @vaultExportReauthFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect master password'**
+  String get vaultExportReauthFailed;
+
+  /// No description provided for @vaultExportCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Export cancelled'**
+  String get vaultExportCancelled;
+
+  /// No description provided for @vaultExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed'**
+  String get vaultExportFailed;
+
+  /// No description provided for @vaultImportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vault imported successfully'**
+  String get vaultImportSuccess;
+
+  /// No description provided for @vaultImportBadPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect export password or corrupted file'**
+  String get vaultImportBadPassword;
+
+  /// No description provided for @vaultImportInvalidFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a valid vault export file'**
+  String get vaultImportInvalidFile;
+
+  /// No description provided for @vaultImportCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Import cancelled'**
+  String get vaultImportCancelled;
+
+  /// No description provided for @vaultImportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed'**
+  String get vaultImportFailed;
+
+  /// No description provided for @vaultImportNotUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock the vault before importing'**
+  String get vaultImportNotUnlocked;
+
+  /// No description provided for @vaultAutoLockLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Lock'**
+  String get vaultAutoLockLabel;
+
+  /// No description provided for @vaultAutoLockImmediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediately'**
+  String get vaultAutoLockImmediate;
+
+  /// No description provided for @vaultAutoLockOneMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'1 minute'**
+  String get vaultAutoLockOneMinute;
+
+  /// No description provided for @vaultAutoLockFiveMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'5 minutes'**
+  String get vaultAutoLockFiveMinutes;
+
+  /// No description provided for @vaultBiometricEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Biometric Unlock'**
+  String get vaultBiometricEnable;
+
+  /// No description provided for @vaultBiometricDisable.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable Biometric Unlock'**
+  String get vaultBiometricDisable;
+
+  /// No description provided for @vaultBiometricEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric unlock enabled'**
+  String get vaultBiometricEnabled;
+
+  /// No description provided for @vaultBiometricEnableFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t enable biometric unlock'**
+  String get vaultBiometricEnableFailed;
+
+  /// No description provided for @vaultErrorTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get vaultErrorTitleRequired;
+
+  /// No description provided for @vaultErrorPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get vaultErrorPasswordRequired;
+
+  /// No description provided for @vaultErrorSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save this entry. Try again.'**
+  String get vaultErrorSaveFailed;
+
+  /// No description provided for @vaultErrorPasswordsDontMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords don\'t match'**
+  String get vaultErrorPasswordsDontMatch;
+
+  /// No description provided for @vaultErrorPasswordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Master password must be at least 8 characters'**
+  String get vaultErrorPasswordTooShort;
+
+  /// No description provided for @vaultErrorAckRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm you understand this password can\'t be recovered'**
+  String get vaultErrorAckRequired;
+
+  /// No description provided for @vaultErrorCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the vault. Try again.'**
+  String get vaultErrorCreateFailed;
+
+  /// No description provided for @vaultErrorIncorrectMasterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect master password'**
+  String get vaultErrorIncorrectMasterPassword;
+
+  /// No description provided for @vaultErrorTooManyAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many failed attempts'**
+  String get vaultErrorTooManyAttempts;
+
+  /// No description provided for @vaultErrorBiometricChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric enrollment changed — use your master password'**
+  String get vaultErrorBiometricChanged;
+
+  /// No description provided for @vaultErrorBiometricFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication failed'**
+  String get vaultErrorBiometricFailed;
+
+  /// No description provided for @vaultProLimitBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan limit reached — upgrade to Pro for unlimited entries'**
+  String get vaultProLimitBanner;
 }
 
 class _AppLocalizationsDelegate

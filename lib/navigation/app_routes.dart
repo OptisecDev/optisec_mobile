@@ -12,4 +12,9 @@ abstract class AppRoutes {
   static const String threatIntel = '/threat-intel';
   static const String appLock = '/app-lock';
   static const String pinSetup = '/app-lock/pin-setup';
+  static const String vault = '/vault';
+  static const String vaultSetup = '/vault/setup';
+  static const String vaultUnlock = '/vault/unlock';
+  static const String vaultEntryDetail = '/vault/entry';
+  static const String vaultEntryEdit = '/vault/entry/edit';
 }

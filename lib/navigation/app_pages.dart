@@ -18,6 +18,15 @@ import '../features/app_lock/views/app_lock_settings_view.dart';
 import '../features/app_lock/views/pin_setup_view.dart';
 import '../features/app_lock/controllers/app_lock_controller.dart';
 import '../features/app_lock/controllers/pin_setup_controller.dart';
+import '../features/password_vault/controllers/vault_controller.dart';
+import '../features/password_vault/controllers/vault_entry_controller.dart';
+import '../features/password_vault/controllers/vault_setup_controller.dart';
+import '../features/password_vault/controllers/vault_unlock_controller.dart';
+import '../features/password_vault/views/vault_entry_detail_view.dart';
+import '../features/password_vault/views/vault_entry_edit_view.dart';
+import '../features/password_vault/views/vault_list_view.dart';
+import '../features/password_vault/views/vault_setup_view.dart';
+import '../features/password_vault/views/vault_unlock_view.dart';
 import '../shared/widgets/app_shell.dart';
 import 'app_routes.dart';
 
@@ -100,6 +109,47 @@ class AppPages {
       page: () => const PinSetupView(),
       binding: BindingsBuilder(
         () => Get.lazyPut(() => PinSetupController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: AppRoutes.vault,
+      page: () => const VaultListView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => VaultController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.vaultSetup,
+      page: () => const VaultSetupView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => VaultSetupController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.vaultUnlock,
+      page: () => const VaultUnlockView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => VaultUnlockController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.vaultEntryDetail,
+      page: () => const VaultEntryDetailView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => VaultEntryController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.vaultEntryEdit,
+      page: () => const VaultEntryEditView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => VaultEntryController()),
       ),
       transition: Transition.rightToLeft,
     ),

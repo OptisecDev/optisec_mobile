@@ -8,14 +8,26 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import android.view.WindowManager
 import com.optisec.optisec_mobile.applock.AppLockChannelHandler
-import io.flutter.embedding.android.FlutterActivity
+import com.optisec.optisec_mobile.vault.VaultChannelHandler
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.time.Instant
 
-class MainActivity : FlutterActivity() {
+/**
+ * Extends [FlutterFragmentActivity] rather than the lighter-weight
+ * `FlutterActivity` because the Password Vault's biometric unlock
+ * ([com.optisec.optisec_mobile.vault.VaultBiometricManager]) needs a
+ * `FragmentActivity` host for `BiometricPrompt` — the App Lock feature's own
+ * biometric prompt runs in a separate [com.optisec.optisec_mobile.applock.LockScreenActivity]
+ * that already extends `FragmentActivity` directly, so this only matters now
+ * that a Flutter screen itself triggers a biometric prompt.
+ */
+class MainActivity : FlutterFragmentActivity() {
     private val channelName = "com.optisec.mobile/permission_usage"
+    private val screenSecurityChannelName = "com.optisec.mobile/screen_security"
 
     // The permission ops we proxy usage for. Real per-op history
     // (AppOpsManager.getPackageOpsForOps) is a hidden @SystemApi guarded by
@@ -61,7 +73,76 @@ class MainActivity : FlutterActivity() {
                 }
             }
 
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, screenSecurityChannelName)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "enable" -> {
+                        runOnUiThread {
+                            window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                        }
+                        result.success(null)
+                    }
+                    "disable" -> {
+                        runOnUiThread {
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                        }
+                        result.success(null)
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+
         AppLockChannelHandler(this).register(flutterEngine.dartExecutor.binaryMessenger)
+        VaultChannelHandler(this).register(flutterEngine.dartExecutor.binaryMessenger)
+    }
+
+    // ── Password Vault: Storage Access Framework pickers ───────────────
+    // Classic startActivityForResult/onActivityResult rather than the
+    // androidx Activity Result API: FlutterFragmentActivity doesn't
+    // guarantee registerForActivityResult() can be called this late (it
+    // must happen before the activity reaches STARTED), and the rest of
+    // this file already uses the classic pattern for every other
+    // Settings-screen round trip.
+    private var pendingCreateDocumentCallback: ((Uri?) -> Unit)? = null
+    private var pendingOpenDocumentCallback: ((Uri?) -> Unit)? = null
+
+    fun launchCreateDocument(suggestedName: String, onResult: (Uri?) -> Unit) {
+        pendingCreateDocumentCallback = onResult
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/octet-stream"
+            putExtra(Intent.EXTRA_TITLE, suggestedName)
+        }
+        startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT)
+    }
+
+    fun launchOpenDocument(onResult: (Uri?) -> Unit) {
+        pendingOpenDocumentCallback = onResult
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+        }
+        startActivityForResult(intent, REQUEST_CODE_OPEN_DOCUMENT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val uri = if (resultCode == RESULT_OK) data?.data else null
+        when (requestCode) {
+            REQUEST_CODE_CREATE_DOCUMENT -> {
+                pendingCreateDocumentCallback?.invoke(uri)
+                pendingCreateDocumentCallback = null
+            }
+            REQUEST_CODE_OPEN_DOCUMENT -> {
+                pendingOpenDocumentCallback?.invoke(uri)
+                pendingOpenDocumentCallback = null
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_CREATE_DOCUMENT = 4301
+        private const val REQUEST_CODE_OPEN_DOCUMENT = 4302
     }
 
     private fun hasUsageAccess(): Boolean {
