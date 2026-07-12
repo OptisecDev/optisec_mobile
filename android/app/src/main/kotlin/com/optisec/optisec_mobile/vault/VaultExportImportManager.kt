@@ -35,6 +35,8 @@ class VaultExportImportManager(private val activity: MainActivity, private val s
         }
 
         val dek = store.unlockWithMasterPassword(masterPassword)
+        // store.unlockWithMasterPassword already zeroes masterPassword once
+        // it has derived the re-auth KEK from it; nothing further to do here.
         if (dek == null) {
             result.error("REAUTH_FAILED", "Incorrect master password", null)
             return
@@ -49,7 +51,9 @@ class VaultExportImportManager(private val activity: MainActivity, private val s
 
         val salt = VaultCryptoManager.generateSalt()
         val iterations = VaultCryptoManager.DEFAULT_ITERATIONS
-        val exportKek = VaultCryptoManager.deriveKek(exportPassword.toCharArray(), salt, iterations)
+        val exportPasswordChars = exportPassword.toCharArray()
+        val exportKek = VaultCryptoManager.deriveKek(exportPasswordChars, salt, iterations)
+        exportPasswordChars.fill('\u0000')
         val encryptedPayload = VaultCryptoManager.encrypt(
             payload.toString().toByteArray(Charsets.UTF_8),
             exportKek,
@@ -100,6 +104,11 @@ class VaultExportImportManager(private val activity: MainActivity, private val s
                 val salt = VaultCryptoManager.decodeBase64(container.getString("salt"))
                 val iterations = container.getInt("iterations")
                 val exportKek = VaultCryptoManager.deriveKek(exportPassword, salt, iterations)
+                // exportPassword (the CharArray param) is captured by this
+                // async SAF-picker callback and only usable up to this
+                // point -- zero it now that the KEK has been derived, not
+                // any earlier (it isn't read again below).
+                exportPassword.fill('\u0000')
                 val blob = VaultCryptoManager.EncryptedBlob(
                     container.getString("iv"),
                     container.getString("cipherText"),

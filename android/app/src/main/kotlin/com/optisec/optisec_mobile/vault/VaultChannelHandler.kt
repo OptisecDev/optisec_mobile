@@ -68,11 +68,15 @@ class VaultChannelHandler(private val activity: MainActivity) {
                             result.error("INVALID_ARGUMENT", "id is required", null)
                             return@withUnlockedDek
                         }
-                        val password = store.getEntryPassword(id, dek)
-                        if (password == null) {
+                        val passwordChars = store.getEntryPassword(id, dek)
+                        if (passwordChars == null) {
                             result.error("NOT_FOUND", "Entry not found", null)
                         } else {
-                            result.success(password)
+                            // The platform channel only carries Strings, so a
+                            // String has to be built for the response — but
+                            // we can zero our CharArray copy right after.
+                            result.success(String(passwordChars))
+                            passwordChars.fill('\u0000')
                         }
                     }
                     "upsertEntry" -> withUnlockedDek(result) { dek ->

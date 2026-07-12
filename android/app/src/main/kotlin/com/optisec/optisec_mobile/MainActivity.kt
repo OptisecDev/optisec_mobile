@@ -7,9 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.view.WindowManager
 import com.optisec.optisec_mobile.applock.AppLockChannelHandler
+import com.optisec.optisec_mobile.purchase.PurchaseChannelHandler
 import com.optisec.optisec_mobile.vault.VaultChannelHandler
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -43,6 +45,25 @@ class MainActivity : FlutterFragmentActivity() {
         android.Manifest.permission.ACCESS_COARSE_LOCATION to "LOCATION",
     )
 
+    // Maps Android runtime permissions to the Privacy Guard permission ids
+    // used in the Flutter UI (lib/features/privacy_guard). Separate from
+    // [trackedPermissions] above (which only covers the 3 categories the
+    // usage-timeline feature proxies via UsageStatsManager) since Privacy
+    // Guard also needs contacts/phone/storage, which have no foreground-use
+    // proxy but *do* have a real granted/not-granted signal via PackageManager.
+    private val privacyGuardPermissions = mapOf(
+        android.Manifest.permission.ACCESS_FINE_LOCATION to "location",
+        android.Manifest.permission.ACCESS_COARSE_LOCATION to "location",
+        android.Manifest.permission.CAMERA to "camera",
+        android.Manifest.permission.RECORD_AUDIO to "microphone",
+        android.Manifest.permission.READ_CONTACTS to "contacts",
+        android.Manifest.permission.READ_PHONE_STATE to "phone",
+        android.Manifest.permission.READ_EXTERNAL_STORAGE to "storage",
+        android.Manifest.permission.READ_MEDIA_IMAGES to "storage",
+        android.Manifest.permission.READ_MEDIA_VIDEO to "storage",
+        android.Manifest.permission.READ_MEDIA_AUDIO to "storage",
+    )
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
@@ -67,6 +88,13 @@ class MainActivity : FlutterFragmentActivity() {
                             result.success(getPermissionUsage())
                         } catch (e: Exception) {
                             result.error("USAGE_QUERY_FAILED", e.message, null)
+                        }
+                    }
+                    "getPermissionHolders" -> {
+                        try {
+                            result.success(getPermissionHolders())
+                        } catch (e: Exception) {
+                            result.error("PERMISSION_HOLDERS_QUERY_FAILED", e.message, null)
                         }
                     }
                     else -> result.notImplemented()
@@ -94,6 +122,7 @@ class MainActivity : FlutterFragmentActivity() {
 
         AppLockChannelHandler(this).register(flutterEngine.dartExecutor.binaryMessenger)
         VaultChannelHandler(this).register(flutterEngine.dartExecutor.binaryMessenger)
+        PurchaseChannelHandler().register(flutterEngine.dartExecutor.binaryMessenger)
     }
 
     // ── Password Vault: Storage Access Framework pickers ───────────────
@@ -248,6 +277,73 @@ class MainActivity : FlutterFragmentActivity() {
             val perm = requested[i]
             val granted = flags[i] and android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED != 0
             if (granted) trackedPermissions[perm]?.let { result.add(it) }
+        }
+        return result
+    }
+
+    // ── Privacy Guard: real per-app permission holders ─────────────────
+    // Returns, for each Privacy Guard permission id (location/camera/
+    // microphone/contacts/phone/storage), the list of other installed apps
+    // that actually hold that permission grant — via PackageManager, no
+    // fabricated data. Enumeration is scoped to apps with a launcher
+    // activity (the same <queries> intent-filter declared in the manifest
+    // for the App Lock picker in AppLockChannelHandler.getInstalledApps),
+    // so background-only apps without a launcher icon won't appear here;
+    // that's a real, disclosed scope limit, not an accuracy issue for the
+    // apps it does report.
+    private fun getPermissionHolders(): Map<String, List<Map<String, Any?>>> {
+        val pm = packageManager
+        val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        val resolved = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            pm.queryIntentActivities(launcherIntent, PackageManager.ResolveInfoFlags.of(0L))
+        } else {
+            @Suppress("DEPRECATION")
+            pm.queryIntentActivities(launcherIntent, 0)
+        }
+
+        val result = mutableMapOf<String, MutableList<Map<String, Any?>>>()
+        val seenPerCategory = mutableMapOf<String, MutableSet<String>>()
+
+        resolved
+            .mapNotNull { it.activityInfo?.packageName }
+            .distinct()
+            .filter { it != packageName }
+            .forEach { pkg ->
+                val categories = grantedPrivacyGuardCategories(pm, pkg)
+                if (categories.isEmpty()) return@forEach
+
+                val label = try {
+                    pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString()
+                } catch (_: PackageManager.NameNotFoundException) {
+                    pkg
+                }
+
+                for (category in categories) {
+                    val seen = seenPerCategory.getOrPut(category) { mutableSetOf() }
+                    if (seen.add(pkg)) {
+                        result.getOrPut(category) { mutableListOf() }.add(
+                            mapOf("packageName" to pkg, "appName" to label),
+                        )
+                    }
+                }
+            }
+        return result
+    }
+
+    private fun grantedPrivacyGuardCategories(pm: PackageManager, pkg: String): Set<String> {
+        val info = try {
+            pm.getPackageInfo(pkg, PackageManager.GET_PERMISSIONS)
+        } catch (_: PackageManager.NameNotFoundException) {
+            return emptySet()
+        }
+        val requested = info.requestedPermissions ?: return emptySet()
+        val flags = info.requestedPermissionsFlags ?: return emptySet()
+
+        val result = mutableSetOf<String>()
+        for (i in requested.indices) {
+            val perm = requested[i]
+            val granted = flags[i] and android.content.pm.PackageInfo.REQUESTED_PERMISSION_GRANTED != 0
+            if (granted) privacyGuardPermissions[perm]?.let { result.add(it) }
         }
         return result
     }

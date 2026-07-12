@@ -38,6 +38,11 @@ dependencies:
 
   # Subscriptions / IAP
   in_app_purchase: ^3.2.3
+  # Already resolved transitively by in_app_purchase's Android platform impl;
+  # promoted to a direct dependency because purchase_service.dart now
+  # imports GooglePlayPurchaseDetails directly for local signature
+  # verification (see Issue 2 remediation).
+  in_app_purchase_android: ^0.4.0
 
 dev_dependencies:
   flutter_test:

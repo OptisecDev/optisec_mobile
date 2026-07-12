@@ -59,6 +59,32 @@ class PermissionUsageService {
     }
   }
 
+  /// Real per-app permission holders, keyed by Privacy Guard permission id
+  /// (location/camera/microphone/contacts/phone/storage). Backed by a
+  /// PackageManager query on the native side — no Usage Access grant
+  /// required, unlike [getUsageRecords]. Returns an empty map on any
+  /// platform/query failure rather than throwing, since callers treat
+  /// "no data" the same as "nothing granted".
+  Future<Map<String, List<String>>> getPermissionHolders() async {
+    try {
+      final result = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'getPermissionHolders',
+      );
+      if (result == null) return const {};
+      return result.map((key, value) {
+        final apps = (value as List<dynamic>)
+            .map((e) =>
+                Map<String, dynamic>.from(e as Map)['appName'] as String)
+            .toList();
+        return MapEntry(key as String, apps);
+      });
+    } catch (_) {
+      // MissingPluginException (non-Android platform) or a malformed/failed
+      // native query — either way, fall back to "no known holders".
+      return const {};
+    }
+  }
+
   Future<bool> hasUsageAccess() async {
     try {
       return await _channel.invokeMethod<bool>('hasUsageAccess') ?? false;

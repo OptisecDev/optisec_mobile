@@ -119,6 +119,20 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
       statuses = List.filled(6, PermissionStatus.denied);
     }
 
+    // Real per-app permission holders via PackageManager (see
+    // PermissionUsageService.getPermissionHolders). Falls back to an empty
+    // map — never fabricated app names — if the platform query fails or is
+    // unavailable (e.g. non-Android).
+    Map<String, List<String>> holders;
+    try {
+      holders = await PermissionUsageService.instance
+          .getPermissionHolders()
+          .timeout(const Duration(seconds: 3));
+    } catch (_) {
+      holders = const {};
+    }
+    List<String> appsFor(String id) => holders[id] ?? const [];
+
     permissions.value = [
       PermissionInfo(
         id: 'location',
@@ -126,13 +140,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         nameAr: 'الموقع',
         icon: Icons.location_on_rounded,
         isGranted: statuses[0].isGranted,
-        appsCount: 3,
+        appsCount: appsFor('location').length,
         risk: statuses[0].isGranted ? 'medium' : 'low',
         descriptionEn:
             'Allows apps to access your precise GPS location. Commonly used by maps, weather, and delivery apps.',
         recommendationEn:
             'Change to "Only while using" and disable for apps that don\'t need navigation.',
-        appNames: ['Google Maps', 'Weather App', 'Food Delivery'],
+        appNames: appsFor('location'),
       ),
       PermissionInfo(
         id: 'camera',
@@ -140,13 +154,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         nameAr: 'الكاميرا',
         icon: Icons.camera_alt_rounded,
         isGranted: statuses[1].isGranted,
-        appsCount: 2,
+        appsCount: appsFor('camera').length,
         risk: statuses[1].isGranted ? 'medium' : 'low',
         descriptionEn:
             'Grants access to take photos and record video. Misused by spyware to capture images silently.',
         recommendationEn:
             'Only grant camera access to apps that genuinely need it like camera or video call apps.',
-        appNames: ['Instagram', 'Video Call App'],
+        appNames: appsFor('camera'),
       ),
       PermissionInfo(
         id: 'microphone',
@@ -154,13 +168,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         nameAr: 'الميكروفون',
         icon: Icons.mic_rounded,
         isGranted: statuses[2].isGranted,
-        appsCount: 4,
+        appsCount: appsFor('microphone').length,
         risk: statuses[2].isGranted ? 'high' : 'low',
         descriptionEn:
             'One of the highest-risk permissions. Apps with mic access can record conversations without obvious indication.',
         recommendationEn:
             'Revoke microphone from all apps except voice calls and voice assistants.',
-        appNames: ['Social Media App', 'Music App', 'Voice Recorder', 'Podcast App'],
+        appNames: appsFor('microphone'),
       ),
       PermissionInfo(
         id: 'contacts',
@@ -168,13 +182,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         nameAr: 'جهات الاتصال',
         icon: Icons.contacts_rounded,
         isGranted: statuses[3].isGranted,
-        appsCount: 5,
+        appsCount: appsFor('contacts').length,
         risk: statuses[3].isGranted ? 'high' : 'low',
         descriptionEn:
             'Exposes the full contact list including names, phone numbers, and email addresses of everyone you know.',
         recommendationEn:
             'Only messaging and dialer apps need contacts. Revoke from all social and utility apps.',
-        appNames: ['WhatsApp', 'Telegram', 'Email Client', 'Calendar App', 'Backup App'],
+        appNames: appsFor('contacts'),
       ),
       PermissionInfo(
         id: 'phone',
@@ -182,13 +196,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         nameAr: 'الهاتف',
         icon: Icons.phone_rounded,
         isGranted: statuses[4].isGranted,
-        appsCount: 1,
+        appsCount: appsFor('phone').length,
         risk: statuses[4].isGranted ? 'high' : 'low',
         descriptionEn:
             'Allows apps to read your phone number, IMEI, and call history. Can be used for device fingerprinting.',
         recommendationEn:
             'Only grant to your primary dialer app. Revoke from all other applications immediately.',
-        appNames: ['Phone App'],
+        appNames: appsFor('phone'),
       ),
       PermissionInfo(
         id: 'storage',
@@ -196,13 +210,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         nameAr: 'التخزين',
         icon: Icons.folder_rounded,
         isGranted: statuses[5].isGranted,
-        appsCount: 6,
+        appsCount: appsFor('storage').length,
         risk: statuses[5].isGranted ? 'medium' : 'low',
         descriptionEn:
             'Grants read/write access to your files, photos, and documents. Can expose sensitive files to third parties.',
         recommendationEn:
             'Use the file picker instead of granting broad storage access. Review which apps really need it.',
-        appNames: ['Gallery', 'File Manager', 'Photo Editor', 'Backup', 'Browser', 'PDF Reader'],
+        appNames: appsFor('storage'),
       ),
     ];
 

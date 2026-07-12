@@ -49,6 +49,9 @@ class VaultStore(context: Context) {
     fun setupVault(masterPassword: CharArray, iterations: Int = VaultCryptoManager.DEFAULT_ITERATIONS): SecretKey {
         val salt = VaultCryptoManager.generateSalt()
         val kek = VaultCryptoManager.deriveKek(masterPassword, salt, iterations)
+        // Zero the caller's CharArray now that the KEK has been derived
+        // from it -- it isn't read again below.
+        masterPassword.fill('\u0000')
         val dek = VaultCryptoManager.generateDek()
         val wrapped = VaultCryptoManager.wrapKey(dek, kek)
 
@@ -76,6 +79,9 @@ class VaultStore(context: Context) {
 
         val salt = VaultCryptoManager.decodeBase64(saltEncoded)
         val kek = VaultCryptoManager.deriveKek(masterPassword, salt, iterations)
+        // Zero the caller's CharArray now that the KEK has been derived
+        // from it -- it isn't read again below.
+        masterPassword.fill('\u0000')
 
         val dek = try {
             VaultCryptoManager.unwrapKey(VaultCryptoManager.EncryptedBlob.deserialize(wrappedEncoded), kek)
@@ -178,16 +184,36 @@ class VaultStore(context: Context) {
         entryIds().mapNotNull { id -> readMetadata(id, dek) }
             .sortedByDescending { it["updatedAt"] as? Long ?: 0L }
 
-    fun getEntryPassword(id: String, dek: SecretKey): String? {
+    /**
+     * Returns the decrypted password as a [CharArray] rather than a
+     * [String] so the caller can zero it (`Arrays.fill`) once it's been
+     * handed off — a plain [String] result can't be wiped, since JVM
+     * strings are immutable. The `org.json` parse below still produces one
+     * short-lived, unzeroable String internally (org.json's API only
+     * accepts/returns String); that's an inherent limitation of that
+     * library, not something this change can reach further into without
+     * replacing the JSON parser entirely.
+     */
+    fun getEntryPassword(id: String, dek: SecretKey): CharArray? {
         val encoded = prefs.getString(secretKeyFor(id), null) ?: return null
         val bytes = VaultCryptoManager.decrypt(VaultCryptoManager.EncryptedBlob.deserialize(encoded), dek)
-        return JSONObject(String(bytes, Charsets.UTF_8)).getString("password")
+        return JSONObject(String(bytes, Charsets.UTF_8)).getString("password").toCharArray()
     }
 
-    /** Full decrypted record including password — used only by the native export path. */
+    /**
+     * Full decrypted record including password — used only by the native
+     * export path ([VaultExportImportManager.exportVault]). The password
+     * has to be converted back to a String here (rather than staying a
+     * CharArray) because it's about to be embedded in an `org.json`
+     * `JSONObject`/`JSONArray`, which only knows how to serialize Strings —
+     * handing it a CharArray would silently serialize as Java's default
+     * `Object.toString()` (e.g. `[C@1a2b3c`) instead of the password text.
+     */
     fun getFullEntry(id: String, dek: SecretKey): Map<String, Any?>? {
         val meta = readMetadata(id, dek) ?: return null
-        val password = getEntryPassword(id, dek) ?: return null
+        val passwordChars = getEntryPassword(id, dek) ?: return null
+        val password = String(passwordChars)
+        passwordChars.fill('\u0000')
         return meta + mapOf("password" to password)
     }
 
