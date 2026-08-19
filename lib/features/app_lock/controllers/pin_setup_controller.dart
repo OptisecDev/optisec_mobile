@@ -55,8 +55,8 @@ class PinSetupController extends GetxController {
     if (success) {
       Get.back(result: true);
     } else {
-      errorMessage.value = 'Couldn\'t save PIN. Try again.';
       restart();
+      errorMessage.value = 'Couldn\'t save PIN. Try again.';
     }
   }
 
