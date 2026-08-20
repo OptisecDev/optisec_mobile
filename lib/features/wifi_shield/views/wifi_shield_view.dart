@@ -162,8 +162,13 @@ class _ShieldBody extends StatelessWidget {
             delegate: SliverChildListDelegate([
               // Evil Twin alert
               Obx(() {
-                if (!controller.hasEvilTwin ||
-                    controller.evilTwinDismissed.value) {
+                // evilTwinDismissed.value must be read unconditionally here:
+                // hasEvilTwin isn't reactive, so if it were first and false,
+                // `||` would short-circuit past the only Rx read in this
+                // callback, leaving this Obx subscribed to nothing on its
+                // first build and triggering GetX's "improper use" error.
+                if (controller.evilTwinDismissed.value ||
+                    !controller.hasEvilTwin) {
                   return const SizedBox();
                 }
                 return EvilTwinAlert(
