@@ -853,6 +853,1302 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Free plan limit reached — upgrade to Pro for unlimited entries'**
   String get vaultProLimitBanner;
+
+  /// No description provided for @wifiLocationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Permission Required'**
+  String get wifiLocationPermissionTitle;
+
+  /// No description provided for @wifiLocationPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Android requires location access to scan nearby WiFi networks. OptiSec never uploads your location.'**
+  String get wifiLocationPermissionBody;
+
+  /// No description provided for @wifiScanAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Again'**
+  String get wifiScanAgain;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Networks ({count})'**
+  String wifiNearbyNetworksCount(int count);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Safe Networks ({count})'**
+  String wifiSafeNetworksCount(int count);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Threats ({count})'**
+  String wifiThreatsCount(int count);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twins ({count})'**
+  String wifiEvilTwinsCount(int count);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Networks ({count})'**
+  String wifiNetworksCount(int count);
+
+  /// No description provided for @wifiUpdating.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating…'**
+  String get wifiUpdating;
+
+  /// No description provided for @wifiEmptyNoNetworks.
+  ///
+  /// In en, this message translates to:
+  /// **'No networks found.\nTap the radar icon to scan.'**
+  String get wifiEmptyNoNetworks;
+
+  /// No description provided for @wifiEmptyNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No networks match this filter.'**
+  String get wifiEmptyNoMatch;
+
+  /// No description provided for @wifiScanningForNetworks.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning for networks…'**
+  String get wifiScanningForNetworks;
+
+  /// No description provided for @wifiAnalyzingSignals.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing signals and detecting threats'**
+  String get wifiAnalyzingSignals;
+
+  /// No description provided for @wifiThreatsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Threats'**
+  String get wifiThreatsLabel;
+
+  /// No description provided for @wifiEvilTwinsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twins'**
+  String get wifiEvilTwinsLabel;
+
+  /// No description provided for @wifiTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get wifiTotalLabel;
+
+  /// No description provided for @wifiRiskyNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Risky Network'**
+  String get wifiRiskyNetwork;
+
+  /// No description provided for @wifiRiskLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'RISK'**
+  String get wifiRiskLabel;
+
+  /// No description provided for @wifiFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get wifiFilterAll;
+
+  /// No description provided for @wifiSortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort:'**
+  String get wifiSortLabel;
+
+  /// No description provided for @wifiSortSignal.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal'**
+  String get wifiSortSignal;
+
+  /// No description provided for @wifiSortRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk'**
+  String get wifiSortRisk;
+
+  /// No description provided for @wifiSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get wifiSortName;
+
+  /// No description provided for @wifiEvilTwinDetectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twin Attack Detected!'**
+  String get wifiEvilTwinDetectedTitle;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{count,plural, one{{count} rogue access point found impersonating {ssids}} other{{count} rogue access points found impersonating {ssids}}}'**
+  String wifiEvilTwinBody(int count, String ssids);
+
+  /// No description provided for @wifiEvilTwinPossibleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Possible Network Duplication — Review Details'**
+  String get wifiEvilTwinPossibleTitle;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{count,plural, one{{count} access point using a different hardware vendor was found broadcasting {ssids}. This can happen with legitimate mesh or range-extender setups — review before assuming an attack.} other{{count} access points using different hardware vendors were found broadcasting {ssids}. This can happen with legitimate mesh or range-extender setups — review before assuming an attack.}}'**
+  String wifiEvilTwinPossibleBody(int count, String ssids);
+
+  /// No description provided for @wifiEvilTwinConfidenceHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk'**
+  String get wifiEvilTwinConfidenceHigh;
+
+  /// No description provided for @wifiEvilTwinConfidenceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium risk'**
+  String get wifiEvilTwinConfidenceMedium;
+
+  /// No description provided for @wifiEvilTwinPossibleStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Possible Duplicate'**
+  String get wifiEvilTwinPossibleStrip;
+
+  /// No description provided for @wifiReasonVendorMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor Mismatch'**
+  String get wifiReasonVendorMismatch;
+
+  /// No description provided for @wifiReasonSecurityDowngrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Downgrade'**
+  String get wifiReasonSecurityDowngrade;
+
+  /// No description provided for @wifiReasonSignalAnomaly.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal Anomaly'**
+  String get wifiReasonSignalAnomaly;
+
+  /// No description provided for @wifiReasonOpenImpersonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Impersonation'**
+  String get wifiReasonOpenImpersonation;
+
+  /// No description provided for @wifiReasonBssidChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'BSSID Changed'**
+  String get wifiReasonBssidChanged;
+
+  /// No description provided for @wifiDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get wifiDismiss;
+
+  /// No description provided for @wifiViewThreats.
+  ///
+  /// In en, this message translates to:
+  /// **'View Threats'**
+  String get wifiViewThreats;
+
+  /// No description provided for @wifiEvilTwinChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twin'**
+  String get wifiEvilTwinChip;
+
+  /// No description provided for @wifiEvilTwinIndicatorsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twin Attack Indicators'**
+  String get wifiEvilTwinIndicatorsTitle;
+
+  /// No description provided for @wifiReasonDescDifferentOui.
+  ///
+  /// In en, this message translates to:
+  /// **'Different hardware vendor broadcasting same SSID — OUI mismatch detected'**
+  String get wifiReasonDescDifferentOui;
+
+  /// No description provided for @wifiReasonDescSecurityDowngrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Weaker encryption than other APs with the same name — downgrade attack suspected'**
+  String get wifiReasonDescSecurityDowngrade;
+
+  /// No description provided for @wifiReasonDescSignalAnomaly.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden network with abnormally strong signal suggests a rogue access point nearby'**
+  String get wifiReasonDescSignalAnomaly;
+
+  /// No description provided for @wifiReasonDescOpenImpersonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open network impersonating a secured SSID — honeypot or captive portal attack'**
+  String get wifiReasonDescOpenImpersonation;
+
+  /// No description provided for @wifiReasonDescHistoricalBssidChange.
+  ///
+  /// In en, this message translates to:
+  /// **'SSID previously seen with a different BSSID — possible access point spoofing'**
+  String get wifiReasonDescHistoricalBssidChange;
+
+  /// No description provided for @wifiDetailSignal.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal'**
+  String get wifiDetailSignal;
+
+  /// No description provided for @wifiDetailBand.
+  ///
+  /// In en, this message translates to:
+  /// **'Band'**
+  String get wifiDetailBand;
+
+  /// No description provided for @wifiDetailVendorOui.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor OUI'**
+  String get wifiDetailVendorOui;
+
+  /// No description provided for @wifiDetectedThreatsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Detected Threats'**
+  String get wifiDetectedThreatsTitle;
+
+  /// No description provided for @wifiRiskBreakdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk Breakdown'**
+  String get wifiRiskBreakdownTitle;
+
+  /// No description provided for @wifiRiskEncryption.
+  ///
+  /// In en, this message translates to:
+  /// **'Encryption'**
+  String get wifiRiskEncryption;
+
+  /// No description provided for @wifiRiskOpenNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Network'**
+  String get wifiRiskOpenNetwork;
+
+  /// No description provided for @wifiEvilTwinDetectedStrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twin Detected'**
+  String get wifiEvilTwinDetectedStrip;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Ch {channel}'**
+  String wifiChipChannel(int channel);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more — tap to view'**
+  String wifiMoreThreatsTapToView(int count);
+
+  /// No description provided for @wifiShortReasonOui.
+  ///
+  /// In en, this message translates to:
+  /// **'OUI Mismatch'**
+  String get wifiShortReasonOui;
+
+  /// No description provided for @wifiShortReasonDowngrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Downgrade'**
+  String get wifiShortReasonDowngrade;
+
+  /// No description provided for @wifiShortReasonSignal.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal'**
+  String get wifiShortReasonSignal;
+
+  /// No description provided for @wifiShortReasonHoneypot.
+  ///
+  /// In en, this message translates to:
+  /// **'Honeypot'**
+  String get wifiShortReasonHoneypot;
+
+  /// No description provided for @wifiRiskCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get wifiRiskCritical;
+
+  /// No description provided for @wifiRiskHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get wifiRiskHigh;
+
+  /// No description provided for @wifiRiskMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get wifiRiskMedium;
+
+  /// No description provided for @wifiRiskLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get wifiRiskLow;
+
+  /// No description provided for @wifiHiddenNetworkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'(Hidden Network)'**
+  String get wifiHiddenNetworkLabel;
+
+  /// No description provided for @wifiThreatOpenNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Open network — traffic is unencrypted'**
+  String get wifiThreatOpenNetwork;
+
+  /// No description provided for @wifiThreatWepBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'WEP encryption is cryptographically broken'**
+  String get wifiThreatWepBroken;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple vendors broadcasting \"{ssid}\" — possible Evil Twin'**
+  String wifiThreatMultipleVendors(String ssid);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Open clone of secured network \"{ssid}\" — honeypot suspected'**
+  String wifiThreatOpenClone(String ssid);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Weaker encryption than other \"{ssid}\" APs'**
+  String wifiThreatWeakerEncryption(String ssid);
+
+  /// No description provided for @wifiThreatHiddenStrongSignal.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden AP with very strong signal — possible rogue device'**
+  String get wifiThreatHiddenStrongSignal;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Access point hardware changed for \"{ssid}\" — possible historical Evil Twin'**
+  String wifiThreatHistoricalChange(String ssid);
+
+  /// No description provided for @wifiUnlimitedScansFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited WiFi scans'**
+  String get wifiUnlimitedScansFeature;
+
+  /// No description provided for @privacyScanningPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning permissions…'**
+  String get privacyScanningPermissions;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{highRisk} high-risk · {granted} granted'**
+  String privacyHighRiskGrantedSubtitle(int highRisk, int granted);
+
+  /// No description provided for @privacyScoreDescExcellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your privacy is well protected. Keep reviewing new app installs.'**
+  String get privacyScoreDescExcellent;
+
+  /// No description provided for @privacyScoreDescGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Some permissions need attention. Review the recommendations below.'**
+  String get privacyScoreDescGood;
+
+  /// No description provided for @privacyScoreDescPoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Several high-risk permissions are active. Take action now.'**
+  String get privacyScoreDescPoor;
+
+  /// No description provided for @privacyScoreDescCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical privacy exposure detected. Revoke sensitive permissions immediately.'**
+  String get privacyScoreDescCritical;
+
+  /// No description provided for @privacyBulletHighRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk'**
+  String get privacyBulletHighRisk;
+
+  /// No description provided for @privacyBulletMediumRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium risk'**
+  String get privacyBulletMediumRisk;
+
+  /// No description provided for @privacyBulletProtected.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected'**
+  String get privacyBulletProtected;
+
+  /// No description provided for @privacySummaryHighRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'High Risk'**
+  String get privacySummaryHighRisk;
+
+  /// No description provided for @privacySummaryMediumRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium Risk'**
+  String get privacySummaryMediumRisk;
+
+  /// No description provided for @privacyLowRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Low Risk'**
+  String get privacyLowRisk;
+
+  /// No description provided for @privacyRiskBreakdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Risk Breakdown'**
+  String get privacyRiskBreakdownTitle;
+
+  /// No description provided for @privacyNoPermissionData.
+  ///
+  /// In en, this message translates to:
+  /// **'No permission data yet.'**
+  String get privacyNoPermissionData;
+
+  /// No description provided for @privacyLegendHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get privacyLegendHigh;
+
+  /// No description provided for @privacyLegendMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get privacyLegendMedium;
+
+  /// No description provided for @privacyExposureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Exposure by Permission'**
+  String get privacyExposureTitle;
+
+  /// No description provided for @privacyAppsGrantedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'# apps granted'**
+  String get privacyAppsGrantedLabel;
+
+  /// No description provided for @privacyRecommendationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get privacyRecommendationsTitle;
+
+  /// No description provided for @privacyAppPermissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Permissions'**
+  String get privacyAppPermissionsTitle;
+
+  /// No description provided for @privacyNoPermissionsMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No permissions match this filter.'**
+  String get privacyNoPermissionsMatch;
+
+  /// No description provided for @privacyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get privacyFilterAll;
+
+  /// No description provided for @privacyFilterGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted'**
+  String get privacyFilterGranted;
+
+  /// No description provided for @privacyUsageTimelineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Usage Timeline'**
+  String get privacyUsageTimelineTitle;
+
+  /// No description provided for @privacyProBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'PRO'**
+  String get privacyProBadge;
+
+  /// No description provided for @privacyUsageTimelineDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'Which apps with camera, microphone, or location access were recently open.'**
+  String get privacyUsageTimelineDesc1;
+
+  /// No description provided for @privacyUsageTimelineDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on foreground app time, not confirmed sensor access.'**
+  String get privacyUsageTimelineDesc2;
+
+  /// No description provided for @privacyUsageTimelineEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No apps with camera, microphone, or location access were open in the last 7 days.'**
+  String get privacyUsageTimelineEmpty;
+
+  /// No description provided for @privacyOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get privacyOpenSettings;
+
+  /// No description provided for @privacyRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get privacyRetry;
+
+  /// No description provided for @privacyLoadUsageTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Load Usage Timeline'**
+  String get privacyLoadUsageTimeline;
+
+  /// No description provided for @privacyUsageAccessNotGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Access isn\'t granted yet. Enable it for OptiSec in system settings, then tap Retry.'**
+  String get privacyUsageAccessNotGranted;
+
+  /// No description provided for @privacyUsageAccessExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires \"Usage Access\" to be granted in system settings. This lets OptiSec see which apps were recently open — it does not grant access to any personal data.'**
+  String get privacyUsageAccessExplain;
+
+  /// No description provided for @privacyUsageLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the usage timeline.'**
+  String get privacyUsageLoadError;
+
+  /// No description provided for @privacyWhatPermissionDoes.
+  ///
+  /// In en, this message translates to:
+  /// **'What This Permission Does'**
+  String get privacyWhatPermissionDoes;
+
+  /// No description provided for @privacyRecommendationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendation'**
+  String get privacyRecommendationTitle;
+
+  /// No description provided for @privacyOpenSettingsToRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings to Revoke'**
+  String get privacyOpenSettingsToRevoke;
+
+  /// No description provided for @privacyPermissionDeniedProtected.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Denied — You\'re Protected'**
+  String get privacyPermissionDeniedProtected;
+
+  /// No description provided for @privacyStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get privacyStatusLabel;
+
+  /// No description provided for @privacyAppsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps'**
+  String get privacyAppsLabel;
+
+  /// No description provided for @privacyRiskLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk Level'**
+  String get privacyRiskLevelLabel;
+
+  /// No description provided for @privacyGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted'**
+  String get privacyGranted;
+
+  /// No description provided for @privacyDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get privacyDenied;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{count} apps'**
+  String privacyAppsCountChip(int count);
+
+  /// No description provided for @privacyRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get privacyRevoke;
+
+  /// No description provided for @privacyDeniedCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied ✓'**
+  String get privacyDeniedCheck;
+
+  /// No description provided for @privacyNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get privacyNever;
+
+  /// No description provided for @privacyJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get privacyJustNow;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m ago'**
+  String privacyMinutesAgo(int minutes);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h ago'**
+  String privacyHoursAgo(int hours);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d ago'**
+  String privacyDaysAgo(int days);
+
+  /// No description provided for @privacyOpenNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open now'**
+  String get privacyOpenNow;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{count}× / 7d'**
+  String privacyTimesPerWeek(int count);
+
+  /// No description provided for @privacyRecMicTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restrict Microphone Access'**
+  String get privacyRecMicTitle;
+
+  /// No description provided for @privacyRecMicBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have 4 apps with permanent microphone access. Only voice/call apps need it.'**
+  String get privacyRecMicBody;
+
+  /// No description provided for @privacyRecMicAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Mic Apps'**
+  String get privacyRecMicAction;
+
+  /// No description provided for @privacyRecLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use \"While Using\" for Location'**
+  String get privacyRecLocationTitle;
+
+  /// No description provided for @privacyRecLocationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch location permission from \"Always\" to \"Only while using the app.\"'**
+  String get privacyRecLocationBody;
+
+  /// No description provided for @privacyRecLocationAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Location'**
+  String get privacyRecLocationAction;
+
+  /// No description provided for @privacyRecContactsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit Contacts Access'**
+  String get privacyRecContactsTitle;
+
+  /// No description provided for @privacyRecContactsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'5 apps can read your full contact list. Restrict to messaging apps only.'**
+  String get privacyRecContactsBody;
+
+  /// No description provided for @privacyRecContactsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Contacts'**
+  String get privacyRecContactsAction;
+
+  /// No description provided for @privacyFix.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix'**
+  String get privacyFix;
+
+  /// No description provided for @privacyScanCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Scan Complete'**
+  String get privacyScanCompleteTitle;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Found {highRisk} high-risk and {mediumRisk} medium-risk permissions.'**
+  String privacyScanCompleteBody(int highRisk, int mediumRisk);
+
+  /// No description provided for @settingsSectionSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get settingsSectionSubscription;
+
+  /// No description provided for @settingsSectionAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsSectionAppearance;
+
+  /// No description provided for @settingsSectionScanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Scanning'**
+  String get settingsSectionScanning;
+
+  /// No description provided for @settingsSectionPrivacyLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Lock'**
+  String get settingsSectionPrivacyLock;
+
+  /// No description provided for @settingsSectionData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get settingsSectionData;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'v{version} (Build {build})'**
+  String settingsVersionBuild(String version, String build);
+
+  /// No description provided for @settingsAllSystemsProtected.
+  ///
+  /// In en, this message translates to:
+  /// **'All systems protected'**
+  String get settingsAllSystemsProtected;
+
+  /// No description provided for @settingsFreePlanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan — enter a license key to unlock Pro'**
+  String get settingsFreePlanSubtitle;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime license · {label}'**
+  String settingsLifetimeLicenseWithLabel(String label);
+
+  /// No description provided for @settingsLifetimeLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime license'**
+  String get settingsLifetimeLicense;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String settingsValidUntil(String date);
+
+  /// No description provided for @settingsProActive.
+  ///
+  /// In en, this message translates to:
+  /// **'OptiSec Pro — Active'**
+  String get settingsProActive;
+
+  /// No description provided for @settingsProInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'OptiSec Pro'**
+  String get settingsProInactive;
+
+  /// No description provided for @settingsProBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'PRO'**
+  String get settingsProBadge;
+
+  /// No description provided for @settingsFreeBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'FREE'**
+  String get settingsFreeBadge;
+
+  /// No description provided for @settingsLanguageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App display language'**
+  String get settingsLanguageSubtitle;
+
+  /// No description provided for @settingsThemeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsThemeTitle;
+
+  /// No description provided for @settingsThemeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display theme'**
+  String get settingsThemeSubtitle;
+
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
+
+  /// No description provided for @settingsSelectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get settingsSelectLanguage;
+
+  /// No description provided for @settingsAutoScanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Scan'**
+  String get settingsAutoScanTitle;
+
+  /// No description provided for @settingsAutoScanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Periodically scan for threats'**
+  String get settingsAutoScanSubtitle;
+
+  /// No description provided for @settingsScanIntervalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Interval'**
+  String get settingsScanIntervalTitle;
+
+  /// No description provided for @settingsScanIntervalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How often to run auto scans'**
+  String get settingsScanIntervalSubtitle;
+
+  /// No description provided for @settingsEvilTwinAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twin Alerts'**
+  String get settingsEvilTwinAlertsTitle;
+
+  /// No description provided for @settingsEvilTwinAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Warn when a rogue access point is detected'**
+  String get settingsEvilTwinAlertsSubtitle;
+
+  /// No description provided for @settingsVpnDetectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'VPN Detection'**
+  String get settingsVpnDetectionTitle;
+
+  /// No description provided for @settingsVpnDetectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect active VPN connections'**
+  String get settingsVpnDetectionSubtitle;
+
+  /// No description provided for @settingsScanIntervalPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'How often should OptiSec scan for threats?'**
+  String get settingsScanIntervalPrompt;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Every {minutes} minutes'**
+  String settingsEveryMinutes(int minutes);
+
+  /// No description provided for @settingsEveryHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Every hour'**
+  String get settingsEveryHour;
+
+  /// No description provided for @settingsFreqHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High frequency — more battery usage'**
+  String get settingsFreqHigh;
+
+  /// No description provided for @settingsFreqBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced — recommended'**
+  String get settingsFreqBalanced;
+
+  /// No description provided for @settingsFreqLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low frequency — minimal battery usage'**
+  String get settingsFreqLow;
+
+  /// No description provided for @settingsPushNotifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get settingsPushNotifTitle;
+
+  /// No description provided for @settingsPushNotifSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow OptiSec to send notifications'**
+  String get settingsPushNotifSubtitle;
+
+  /// No description provided for @settingsThreatAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Threat Alerts'**
+  String get settingsThreatAlertsTitle;
+
+  /// No description provided for @settingsThreatAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediate alerts for detected threats'**
+  String get settingsThreatAlertsSubtitle;
+
+  /// No description provided for @settingsWeeklyReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Security Report'**
+  String get settingsWeeklyReportTitle;
+
+  /// No description provided for @settingsWeeklyReportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary of threats and scans each week'**
+  String get settingsWeeklyReportSubtitle;
+
+  /// No description provided for @settingsExportReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Security Report'**
+  String get settingsExportReportTitle;
+
+  /// No description provided for @settingsExportReportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a PDF summary of your current security status'**
+  String get settingsExportReportSubtitle;
+
+  /// No description provided for @settingsExportReportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get settingsExportReportAction;
+
+  /// No description provided for @settingsExportReportExportingAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Exporting…'**
+  String get settingsExportReportExportingAction;
+
+  /// No description provided for @settingsExportReportFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Failed'**
+  String get settingsExportReportFailedTitle;
+
+  /// No description provided for @settingsExportReportFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not generate the PDF report. Please try again.'**
+  String get settingsExportReportFailedBody;
+
+  /// No description provided for @settingsBiometricLockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Lock'**
+  String get settingsBiometricLockTitle;
+
+  /// No description provided for @settingsBiometricLockSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Require fingerprint or Face ID to open app'**
+  String get settingsBiometricLockSubtitle;
+
+  /// No description provided for @settingsAppLockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Lock'**
+  String get settingsAppLockTitle;
+
+  /// No description provided for @settingsAppLockSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN or biometric protection for individual apps'**
+  String get settingsAppLockSubtitle;
+
+  /// No description provided for @settingsUsageAnalyticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Analytics'**
+  String get settingsUsageAnalyticsTitle;
+
+  /// No description provided for @settingsUsageAnalyticsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share anonymous usage data to improve the app'**
+  String get settingsUsageAnalyticsSubtitle;
+
+  /// No description provided for @settingsRateAppTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate OptiSec'**
+  String get settingsRateAppTitle;
+
+  /// No description provided for @settingsRateAppSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave a review on the App Store'**
+  String get settingsRateAppSubtitle;
+
+  /// No description provided for @settingsOpeningAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening App Store…'**
+  String get settingsOpeningAppStore;
+
+  /// No description provided for @settingsShareAppTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share App'**
+  String get settingsShareAppTitle;
+
+  /// No description provided for @settingsShareAppSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell your friends about OptiSec'**
+  String get settingsShareAppSubtitle;
+
+  /// No description provided for @settingsOpeningShareSheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening share sheet…'**
+  String get settingsOpeningShareSheet;
+
+  /// No description provided for @settingsPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get settingsPrivacyPolicy;
+
+  /// No description provided for @settingsOpeningPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Privacy Policy…'**
+  String get settingsOpeningPrivacyPolicy;
+
+  /// No description provided for @settingsTermsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get settingsTermsOfService;
+
+  /// No description provided for @settingsOpeningTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Terms of Service…'**
+  String get settingsOpeningTerms;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'v{version} ({build})'**
+  String settingsVersionShort(String version, String build);
+
+  /// No description provided for @settingsClearHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Scan History'**
+  String get settingsClearHistoryTitle;
+
+  /// No description provided for @settingsClearHistorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all saved scan results'**
+  String get settingsClearHistorySubtitle;
+
+  /// No description provided for @settingsClearAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get settingsClearAction;
+
+  /// No description provided for @settingsResetAllTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All Data'**
+  String get settingsResetAllTitle;
+
+  /// No description provided for @settingsResetAllSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Erase everything and restore defaults'**
+  String get settingsResetAllSubtitle;
+
+  /// No description provided for @settingsResettingAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Resetting…'**
+  String get settingsResettingAction;
+
+  /// No description provided for @settingsResetAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get settingsResetAction;
+
+  /// No description provided for @settingsClearHistoryConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Scan History?'**
+  String get settingsClearHistoryConfirmTitle;
+
+  /// No description provided for @settingsClearHistoryConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove all saved scan results. Your settings will not be affected.'**
+  String get settingsClearHistoryConfirmBody;
+
+  /// No description provided for @settingsResetAllConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All Data?'**
+  String get settingsResetAllConfirmTitle;
+
+  /// No description provided for @settingsResetAllConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will erase all scan history, threat records, and restore all settings to their defaults. This cannot be undone.'**
+  String get settingsResetAllConfirmBody;
+
+  /// No description provided for @settingsResetEverythingAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Everything'**
+  String get settingsResetEverythingAction;
+
+  /// No description provided for @settingsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get settingsCancel;
+
+  /// No description provided for @settingsHistoryClearedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'History Cleared'**
+  String get settingsHistoryClearedTitle;
+
+  /// No description provided for @settingsHistoryClearedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan history has been erased.'**
+  String get settingsHistoryClearedBody;
+
+  /// No description provided for @settingsDataResetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Reset'**
+  String get settingsDataResetTitle;
+
+  /// No description provided for @settingsDataResetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All settings and scan data have been cleared.'**
+  String get settingsDataResetBody;
 }
 
 class _AppLocalizationsDelegate

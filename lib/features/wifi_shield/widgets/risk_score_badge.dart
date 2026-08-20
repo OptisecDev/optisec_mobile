@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 class RiskScoreBadge extends StatelessWidget {
   final int score; // 0–100
@@ -14,11 +15,11 @@ class RiskScoreBadge extends StatelessWidget {
     return AppColors.safe;
   }
 
-  String get _label {
-    if (score >= 70) return 'Critical';
-    if (score >= 45) return 'High';
-    if (score >= 20) return 'Medium';
-    return 'Low';
+  String _label(AppLocalizations l10n) {
+    if (score >= 70) return l10n.wifiRiskCritical;
+    if (score >= 45) return l10n.wifiRiskHigh;
+    if (score >= 20) return l10n.wifiRiskMedium;
+    return l10n.wifiRiskLow;
   }
 
   @override
@@ -50,6 +51,7 @@ class RiskScoreBadge extends StatelessWidget {
   }
 
   Widget _buildFull(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -70,7 +72,7 @@ class RiskScoreBadge extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            _label,
+            _label(l10n),
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w600,

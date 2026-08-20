@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/wifi_network_model.dart';
 import 'network_detail_sheet.dart';
 import 'risk_score_badge.dart';
@@ -12,8 +13,18 @@ class NetworkTile extends StatelessWidget {
 
   const NetworkTile({super.key, required this.network, required this.index});
 
+  /// A network is only ever marked [WifiNetworkModel.isEvilTwin] alongside
+  /// [ThreatLevel.danger] (high-confidence signal) or [ThreatLevel.warning]
+  /// (medium-confidence OUI mismatch alone) — see wifi_shield_controller's
+  /// `_evaluate`/`_ouiMismatchConfidence`. Use that to pick strong vs. softer
+  /// evil-twin styling without touching the detection logic itself.
+  bool get _isHighConfidenceEvilTwin => network.threatLevel == ThreatLevel.danger;
+
+  Color get _evilTwinColor =>
+      _isHighConfidenceEvilTwin ? AppColors.danger : AppColors.warning;
+
   Color get _borderColor {
-    if (network.isEvilTwin) return AppColors.danger.withOpacity(0.5);
+    if (network.isEvilTwin) return _evilTwinColor.withOpacity(0.5);
     if (network.isConnected) return AppColors.primary.withOpacity(0.4);
     if (network.threatLevel == ThreatLevel.warning) {
       return AppColors.warning.withOpacity(0.3);
@@ -22,7 +33,7 @@ class NetworkTile extends StatelessWidget {
   }
 
   Color get _bgColor {
-    if (network.isEvilTwin) return AppColors.danger.withOpacity(0.05);
+    if (network.isEvilTwin) return _evilTwinColor.withOpacity(0.05);
     if (network.isConnected) return AppColors.primary.withOpacity(0.06);
     return AppColors.card;
   }
@@ -30,6 +41,7 @@ class NetworkTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () => NetworkDetailSheet.show(context, network),
       child: Container(
@@ -48,31 +60,52 @@ class NetworkTile extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                 decoration: BoxDecoration(
-                  color: AppColors.danger.withOpacity(0.12),
+                  color: _evilTwinColor.withOpacity(0.12),
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(13)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.gpp_bad_rounded,
-                        color: AppColors.danger, size: 12),
+                    Icon(Icons.gpp_bad_rounded,
+                        color: _evilTwinColor, size: 12),
                     const SizedBox(width: 6),
                     Text(
-                      'Evil Twin Detected',
+                      _isHighConfidenceEvilTwin
+                          ? l10n.wifiEvilTwinDetectedStrip
+                          : l10n.wifiEvilTwinPossibleStrip,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: AppColors.danger,
+                        color: _evilTwinColor,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.3,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: _evilTwinColor.withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        _isHighConfidenceEvilTwin
+                            ? l10n.wifiEvilTwinConfidenceHigh
+                            : l10n.wifiEvilTwinConfidenceMedium,
+                        style: TextStyle(
+                          fontSize: 8,
+                          fontWeight: FontWeight.w700,
+                          color: _evilTwinColor,
+                        ),
                       ),
                     ),
                     const Spacer(),
                     Text(
                       network.evilTwinReasons
-                          .map(_shortReason)
+                          .map((r) => _shortReason(l10n, r))
                           .join(' • '),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 9,
-                        color: AppColors.danger,
+                        color: _evilTwinColor,
                       ),
                     ),
                   ],
@@ -97,10 +130,12 @@ class NetworkTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              network.ssid,
+                              network.ssid == '(Hidden Network)'
+                                  ? l10n.wifiHiddenNetworkLabel
+                                  : network.ssid,
                               style: theme.textTheme.titleSmall?.copyWith(
                                 color: network.isEvilTwin
-                                    ? AppColors.danger
+                                    ? _evilTwinColor
                                     : network.isConnected
                                         ? AppColors.primary
                                         : AppColors.textPrimary,
@@ -149,12 +184,13 @@ class NetworkTile extends StatelessWidget {
                             '${network.signalPercent}%',
                             AppColors.textDisabled),
                         const SizedBox(width: 6),
-                        _chip(Icons.tune_rounded, 'Ch ${network.channel}',
+                        _chip(Icons.tune_rounded,
+                            l10n.wifiChipChannel(network.channel),
                             AppColors.textDisabled),
                         if (network.isConnected) ...[
                           const SizedBox(width: 6),
                           _chip(Icons.check_circle_outline_rounded,
-                              'Connected', AppColors.primary),
+                              l10n.connected, AppColors.primary),
                         ],
                       ],
                     ),
@@ -170,11 +206,11 @@ class NetworkTile extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Icon(
-                                  network.isEvilTwin
+                                  network.isEvilTwin && _isHighConfidenceEvilTwin
                                       ? Icons.dangerous_rounded
                                       : Icons.warning_amber_rounded,
                                   color: network.isEvilTwin
-                                      ? AppColors.danger
+                                      ? _evilTwinColor
                                       : AppColors.warning,
                                   size: 12,
                                 ),
@@ -185,8 +221,7 @@ class NetworkTile extends StatelessWidget {
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       fontSize: 11,
                                       color: network.isEvilTwin
-                                          ? AppColors.danger
-                                              .withOpacity(0.9)
+                                          ? _evilTwinColor.withOpacity(0.9)
                                           : AppColors.warning,
                                     ),
                                     maxLines: 1,
@@ -199,7 +234,7 @@ class NetworkTile extends StatelessWidget {
                         ),
                     if (network.threats.length > 2)
                       Text(
-                        '+${network.threats.length - 2} more — tap to view',
+                        l10n.wifiMoreThreatsTapToView(network.threats.length - 2),
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: AppColors.primary,
                           fontSize: 10,
@@ -272,18 +307,18 @@ class NetworkTile extends StatelessWidget {
     }
   }
 
-  String _shortReason(EvilTwinReason r) {
+  String _shortReason(AppLocalizations l10n, EvilTwinReason r) {
     switch (r) {
       case EvilTwinReason.differentOui:
-        return 'OUI Mismatch';
+        return l10n.wifiShortReasonOui;
       case EvilTwinReason.securityDowngrade:
-        return 'Downgrade';
+        return l10n.wifiShortReasonDowngrade;
       case EvilTwinReason.signalAnomaly:
-        return 'Signal';
+        return l10n.wifiShortReasonSignal;
       case EvilTwinReason.openImpersonation:
-        return 'Honeypot';
+        return l10n.wifiShortReasonHoneypot;
       case EvilTwinReason.historicalBssidChange:
-        return 'BSSID Changed';
+        return l10n.wifiReasonBssidChanged;
     }
   }
 }

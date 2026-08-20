@@ -39,37 +39,50 @@ class NetworkTrustService {
   }
 
   NetworkTrustRecord recordSighting(String ssid, String bssid) {
+    final changed = recordSightingBatch(ssid, {bssid});
+    return _records[ssid.toLowerCase()]!.copyWith(
+      bssidChanged: changed[bssid] ?? false,
+    );
+  }
+
+  /// Records every BSSID seen for [ssid] in a single scan pass, compared as
+  /// one batch against what was known *before* this scan. Returns, per
+  /// BSSID, whether it is genuinely new relative to that prior state.
+  ///
+  /// A network broadcasting multiple BSSIDs at once (dual-band router, mesh
+  /// system) must not have its later BSSIDs flagged as a historical change
+  /// just because they're processed after the first one within the same
+  /// scan -- that previously misclassified ordinary multi-AP networks as
+  /// evil twins on their very first scan.
+  Map<String, bool> recordSightingBatch(String ssid, Set<String> bssids) {
     final key = ssid.toLowerCase();
     final now = DateTime.now();
     final existing = _records[key];
+    final previouslyKnown = existing?.knownBssids ?? const <String>{};
 
-    NetworkTrustRecord updated;
-    if (existing == null) {
-      updated = NetworkTrustRecord(
-        ssid: ssid,
-        knownBssids: {bssid},
-        firstSeenAt: now,
-        lastSeenAt: now,
-        timesSeen: 1,
-      );
-    } else if (existing.knownBssids.contains(bssid)) {
-      updated = existing.copyWith(
-        lastSeenAt: now,
-        timesSeen: existing.timesSeen + 1,
-        bssidChanged: false,
-      );
-    } else {
-      updated = existing.copyWith(
-        knownBssids: {...existing.knownBssids, bssid},
-        lastSeenAt: now,
-        timesSeen: existing.timesSeen + 1,
-        bssidChanged: true,
-      );
-    }
+    final changed = <String, bool>{
+      for (final bssid in bssids)
+        bssid: existing != null && !previouslyKnown.contains(bssid),
+    };
+
+    final updated = existing == null
+        ? NetworkTrustRecord(
+            ssid: ssid,
+            knownBssids: bssids,
+            firstSeenAt: now,
+            lastSeenAt: now,
+            timesSeen: 1,
+          )
+        : existing.copyWith(
+            knownBssids: {...previouslyKnown, ...bssids},
+            lastSeenAt: now,
+            timesSeen: existing.timesSeen + 1,
+            bssidChanged: changed.values.any((v) => v),
+          );
 
     _records[key] = updated;
     _persist();
-    return updated;
+    return changed;
   }
 
   NetworkTrustRecord? getRecord(String ssid) => _records[ssid.toLowerCase()];

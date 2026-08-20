@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/wifi_network_model.dart';
 import '../controllers/wifi_shield_controller.dart';
 import '../widgets/evil_twin_alert.dart';
@@ -37,10 +38,11 @@ class _PermissionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('WiFi Shield'),
+        title: Text(l10n.wifiShield),
         automaticallyImplyLeading: false,
       ),
       body: Center(
@@ -68,14 +70,14 @@ class _PermissionView extends StatelessWidget {
                       curve: Curves.easeOutBack)
                   .fadeIn(duration: 400.ms),
               const SizedBox(height: 28),
-              Text('Location Permission Required',
+              Text(l10n.wifiLocationPermissionTitle,
                       style: theme.textTheme.headlineSmall,
                       textAlign: TextAlign.center)
                   .animate()
                   .fadeIn(duration: 400.ms, delay: 100.ms),
               const SizedBox(height: 12),
               Text(
-                'Android requires location access to scan nearby WiFi networks. OptiSec never uploads your location.',
+                l10n.wifiLocationPermissionBody,
                 style: theme.textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
@@ -83,7 +85,7 @@ class _PermissionView extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onGrant,
                 icon: const Icon(Icons.shield_rounded, size: 18),
-                label: const Text('Grant Permission'),
+                label: Text(l10n.grantPermission),
               ).animate().fadeIn(duration: 400.ms, delay: 300.ms),
             ],
           ),
@@ -117,6 +119,7 @@ class _ShieldBody extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AppBar(
       backgroundColor: AppColors.background,
       automaticallyImplyLeading: false,
@@ -125,7 +128,7 @@ class _ShieldBody extends StatelessWidget {
           const Icon(Icons.wifi_find_rounded,
               color: AppColors.primary, size: 20),
           const SizedBox(width: 8),
-          const Text('WiFi Shield'),
+          Text(l10n.wifiShield),
         ],
       ),
       actions: [
@@ -142,7 +145,7 @@ class _ShieldBody extends StatelessWidget {
             : IconButton(
                 icon: const Icon(Icons.radar_rounded),
                 color: AppColors.primary,
-                tooltip: 'Scan Again',
+                tooltip: l10n.wifiScanAgain,
                 onPressed: controller.startScan,
               )),
       ],
@@ -150,6 +153,7 @@ class _ShieldBody extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return CustomScrollView(
       slivers: [
         SliverPadding(
@@ -190,16 +194,17 @@ class _ShieldBody extends StatelessWidget {
                     children: [
                       Text(
                         controller.filterMode.value == FilterMode.all
-                            ? 'Nearby Networks (${controller.networks.length})'
-                            : _filterLabel(controller.filterMode.value,
+                            ? l10n.wifiNearbyNetworksCount(
+                                controller.networks.length)
+                            : _filterLabel(l10n, controller.filterMode.value,
                                 controller.networks.length),
                         style: theme.textTheme.titleMedium,
                       ),
                       const Spacer(),
                       if (controller.isScanning.value)
-                        const Text(
-                          'Updating…',
-                          style: TextStyle(
+                        Text(
+                          l10n.wifiUpdating,
+                          style: const TextStyle(
                               fontSize: 11, color: AppColors.textDisabled),
                         ),
                     ],
@@ -220,8 +225,8 @@ class _ShieldBody extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       controller.filterMode.value == FilterMode.all
-                          ? 'No networks found.\nTap the radar icon to scan.'
-                          : 'No networks match this filter.',
+                          ? l10n.wifiEmptyNoNetworks
+                          : l10n.wifiEmptyNoMatch,
                       style: theme.textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -245,16 +250,16 @@ class _ShieldBody extends StatelessWidget {
     );
   }
 
-  String _filterLabel(FilterMode mode, int count) {
+  String _filterLabel(AppLocalizations l10n, FilterMode mode, int count) {
     switch (mode) {
       case FilterMode.safe:
-        return 'Safe Networks ($count)';
+        return l10n.wifiSafeNetworksCount(count);
       case FilterMode.threats:
-        return 'Threats ($count)';
+        return l10n.wifiThreatsCount(count);
       case FilterMode.evilTwin:
-        return 'Evil Twins ($count)';
+        return l10n.wifiEvilTwinsCount(count);
       default:
-        return 'Networks ($count)';
+        return l10n.wifiNetworksCount(count);
     }
   }
 }
@@ -269,19 +274,20 @@ class _ScanningView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const ScanRadar(size: 200),
           const SizedBox(height: 32),
-          Text('Scanning for networks…',
+          Text(l10n.wifiScanningForNetworks,
               style: theme.textTheme.titleMedium?.copyWith(
                 color: AppColors.primary,
               )),
           const SizedBox(height: 8),
           Text(
-            'Analyzing signals and detecting threats',
+            l10n.wifiAnalyzingSignals,
             style: theme.textTheme.bodySmall,
           ),
         ],
@@ -300,11 +306,12 @@ class _SummaryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Obx(() => Row(
           children: [
             Expanded(
               child: _SummaryCard(
-                label: 'Safe',
+                label: l10n.safe,
                 value: '${controller.safeCount}',
                 icon: Icons.verified_rounded,
                 color: AppColors.safe,
@@ -314,7 +321,7 @@ class _SummaryRow extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: _SummaryCard(
-                label: 'Threats',
+                label: l10n.wifiThreatsLabel,
                 value: '${controller.threatCount}',
                 icon: Icons.warning_amber_rounded,
                 color: controller.threatCount > 0
@@ -326,7 +333,7 @@ class _SummaryRow extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: _SummaryCard(
-                label: 'Evil Twins',
+                label: l10n.wifiEvilTwinsLabel,
                 value: '${controller.evilTwinCount}',
                 icon: Icons.gpp_bad_rounded,
                 color: controller.evilTwinCount > 0
@@ -339,7 +346,7 @@ class _SummaryRow extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: _SummaryCard(
-                label: 'Total',
+                label: l10n.wifiTotalLabel,
                 value:
                     '${controller.networks.isEmpty ? 0 : controller.networks.length}',
                 icon: Icons.wifi_tethering_rounded,
@@ -422,6 +429,7 @@ class _ConnectedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       final ssid = controller.connectedSsid.value;
       final ip = controller.connectedIp.value;
@@ -468,7 +476,7 @@ class _ConnectedCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text('Connected',
+                      Text(l10n.connected,
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: primaryC,
                             fontWeight: FontWeight.w700,
@@ -478,7 +486,7 @@ class _ConnectedCard extends StatelessWidget {
                         const Icon(Icons.warning_amber_rounded,
                             color: AppColors.warning, size: 12),
                         const SizedBox(width: 3),
-                        Text('Risky Network',
+                        Text(l10n.wifiRiskyNetwork,
                             style: TextStyle(
                                 fontSize: 10,
                                 color: AppColors.warning,
@@ -527,7 +535,7 @@ class _ConnectedCard extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Text('RISK',
+                    Text(l10n.wifiRiskLabel,
                         style: TextStyle(
                             fontSize: 9,
                             color: primaryC.withOpacity(0.7),
@@ -559,6 +567,7 @@ class _FilterSortBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -567,15 +576,15 @@ class _FilterSortBar extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _filterChip('All', FilterMode.all, Icons.apps_rounded),
+                  _filterChip(l10n.wifiFilterAll, FilterMode.all, Icons.apps_rounded),
                   const SizedBox(width: 8),
-                  _filterChip('Safe', FilterMode.safe,
+                  _filterChip(l10n.safe, FilterMode.safe,
                       Icons.verified_rounded),
                   const SizedBox(width: 8),
                   _filterChip(
-                      'Threats', FilterMode.threats, Icons.warning_rounded),
+                      l10n.wifiThreatsLabel, FilterMode.threats, Icons.warning_rounded),
                   const SizedBox(width: 8),
-                  _filterChip('Evil Twins', FilterMode.evilTwin,
+                  _filterChip(l10n.wifiEvilTwinsLabel, FilterMode.evilTwin,
                       Icons.gpp_bad_rounded,
                       dangerColor: controller.evilTwinCount > 0),
                 ],
@@ -585,15 +594,15 @@ class _FilterSortBar extends StatelessWidget {
             // Sort row
             Row(
               children: [
-                Text('Sort:',
+                Text(l10n.wifiSortLabel,
                     style: theme.textTheme.labelSmall
                         ?.copyWith(color: AppColors.textDisabled)),
                 const SizedBox(width: 8),
-                _sortChip('Signal', SortMode.signal),
+                _sortChip(l10n.wifiSortSignal, SortMode.signal),
                 const SizedBox(width: 6),
-                _sortChip('Risk', SortMode.risk),
+                _sortChip(l10n.wifiSortRisk, SortMode.risk),
                 const SizedBox(width: 6),
-                _sortChip('Name', SortMode.name),
+                _sortChip(l10n.wifiSortName, SortMode.name),
               ],
             ),
           ],

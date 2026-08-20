@@ -52,7 +52,6 @@
   "notifications": "Notifications",
   "about": "About",
   "version": "Version",
-
   "passwordVault": "Password Vault",
   "vaultDashboardTileLabel": "Password\nVault",
   "vaultSearchHint": "Search entries",
@@ -126,5 +125,439 @@
   "vaultErrorTooManyAttempts": "Too many failed attempts",
   "vaultErrorBiometricChanged": "Biometric enrollment changed — use your master password",
   "vaultErrorBiometricFailed": "Biometric authentication failed",
-  "vaultProLimitBanner": "Free plan limit reached — upgrade to Pro for unlimited entries"
+  "vaultProLimitBanner": "Free plan limit reached — upgrade to Pro for unlimited entries",
+  "wifiLocationPermissionTitle": "Location Permission Required",
+  "wifiLocationPermissionBody": "Android requires location access to scan nearby WiFi networks. OptiSec never uploads your location.",
+  "wifiScanAgain": "Scan Again",
+  "wifiNearbyNetworksCount": "Nearby Networks ({count})",
+  "@wifiNearbyNetworksCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiSafeNetworksCount": "Safe Networks ({count})",
+  "@wifiSafeNetworksCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiThreatsCount": "Threats ({count})",
+  "@wifiThreatsCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiEvilTwinsCount": "Evil Twins ({count})",
+  "@wifiEvilTwinsCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiNetworksCount": "Networks ({count})",
+  "@wifiNetworksCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiUpdating": "Updating…",
+  "wifiEmptyNoNetworks": "No networks found.\nTap the radar icon to scan.",
+  "wifiEmptyNoMatch": "No networks match this filter.",
+  "wifiScanningForNetworks": "Scanning for networks…",
+  "wifiAnalyzingSignals": "Analyzing signals and detecting threats",
+  "wifiThreatsLabel": "Threats",
+  "wifiEvilTwinsLabel": "Evil Twins",
+  "wifiTotalLabel": "Total",
+  "wifiRiskyNetwork": "Risky Network",
+  "wifiRiskLabel": "RISK",
+  "wifiFilterAll": "All",
+  "wifiSortLabel": "Sort:",
+  "wifiSortSignal": "Signal",
+  "wifiSortRisk": "Risk",
+  "wifiSortName": "Name",
+  "wifiEvilTwinDetectedTitle": "Evil Twin Attack Detected!",
+  "wifiEvilTwinBody": "{count,plural, one{{count} rogue access point found impersonating {ssids}} other{{count} rogue access points found impersonating {ssids}}}",
+  "@wifiEvilTwinBody": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ssids": {
+        "type": "String"
+      }
+    }
+  },
+  "wifiEvilTwinPossibleTitle": "Possible Network Duplication — Review Details",
+  "wifiEvilTwinPossibleBody": "{count,plural, one{{count} access point using a different hardware vendor was found broadcasting {ssids}. This can happen with legitimate mesh or range-extender setups — review before assuming an attack.} other{{count} access points using different hardware vendors were found broadcasting {ssids}. This can happen with legitimate mesh or range-extender setups — review before assuming an attack.}}",
+  "@wifiEvilTwinPossibleBody": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "ssids": {
+        "type": "String"
+      }
+    }
+  },
+  "wifiEvilTwinConfidenceHigh": "High risk",
+  "wifiEvilTwinConfidenceMedium": "Medium risk",
+  "wifiEvilTwinPossibleStrip": "Possible Duplicate",
+  "wifiReasonVendorMismatch": "Vendor Mismatch",
+  "wifiReasonSecurityDowngrade": "Security Downgrade",
+  "wifiReasonSignalAnomaly": "Signal Anomaly",
+  "wifiReasonOpenImpersonation": "Open Impersonation",
+  "wifiReasonBssidChanged": "BSSID Changed",
+  "wifiDismiss": "Dismiss",
+  "wifiViewThreats": "View Threats",
+  "wifiEvilTwinChip": "Evil Twin",
+  "wifiEvilTwinIndicatorsTitle": "Evil Twin Attack Indicators",
+  "wifiReasonDescDifferentOui": "Different hardware vendor broadcasting same SSID — OUI mismatch detected",
+  "wifiReasonDescSecurityDowngrade": "Weaker encryption than other APs with the same name — downgrade attack suspected",
+  "wifiReasonDescSignalAnomaly": "Hidden network with abnormally strong signal suggests a rogue access point nearby",
+  "wifiReasonDescOpenImpersonation": "Open network impersonating a secured SSID — honeypot or captive portal attack",
+  "wifiReasonDescHistoricalBssidChange": "SSID previously seen with a different BSSID — possible access point spoofing",
+  "wifiDetailSignal": "Signal",
+  "wifiDetailBand": "Band",
+  "wifiDetailVendorOui": "Vendor OUI",
+  "wifiDetectedThreatsTitle": "Detected Threats",
+  "wifiRiskBreakdownTitle": "Risk Breakdown",
+  "wifiRiskEncryption": "Encryption",
+  "wifiRiskOpenNetwork": "Open Network",
+  "wifiEvilTwinDetectedStrip": "Evil Twin Detected",
+  "wifiChipChannel": "Ch {channel}",
+  "@wifiChipChannel": {
+    "description": "",
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiMoreThreatsTapToView": "+{count} more — tap to view",
+  "@wifiMoreThreatsTapToView": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wifiShortReasonOui": "OUI Mismatch",
+  "wifiShortReasonDowngrade": "Downgrade",
+  "wifiShortReasonSignal": "Signal",
+  "wifiShortReasonHoneypot": "Honeypot",
+  "wifiRiskCritical": "Critical",
+  "wifiRiskHigh": "High",
+  "wifiRiskMedium": "Medium",
+  "wifiRiskLow": "Low",
+  "wifiHiddenNetworkLabel": "(Hidden Network)",
+  "wifiThreatOpenNetwork": "Open network — traffic is unencrypted",
+  "wifiThreatWepBroken": "WEP encryption is cryptographically broken",
+  "wifiThreatMultipleVendors": "Multiple vendors broadcasting \"{ssid}\" — possible Evil Twin",
+  "@wifiThreatMultipleVendors": {
+    "description": "",
+    "placeholders": {
+      "ssid": {
+        "type": "String"
+      }
+    }
+  },
+  "wifiThreatOpenClone": "Open clone of secured network \"{ssid}\" — honeypot suspected",
+  "@wifiThreatOpenClone": {
+    "description": "",
+    "placeholders": {
+      "ssid": {
+        "type": "String"
+      }
+    }
+  },
+  "wifiThreatWeakerEncryption": "Weaker encryption than other \"{ssid}\" APs",
+  "@wifiThreatWeakerEncryption": {
+    "description": "",
+    "placeholders": {
+      "ssid": {
+        "type": "String"
+      }
+    }
+  },
+  "wifiThreatHiddenStrongSignal": "Hidden AP with very strong signal — possible rogue device",
+  "wifiThreatHistoricalChange": "Access point hardware changed for \"{ssid}\" — possible historical Evil Twin",
+  "@wifiThreatHistoricalChange": {
+    "description": "",
+    "placeholders": {
+      "ssid": {
+        "type": "String"
+      }
+    }
+  },
+  "wifiUnlimitedScansFeature": "Unlimited WiFi scans",
+  "privacyScanningPermissions": "Scanning permissions…",
+  "privacyHighRiskGrantedSubtitle": "{highRisk} high-risk · {granted} granted",
+  "@privacyHighRiskGrantedSubtitle": {
+    "description": "",
+    "placeholders": {
+      "highRisk": {
+        "type": "int"
+      },
+      "granted": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyScoreDescExcellent": "Your privacy is well protected. Keep reviewing new app installs.",
+  "privacyScoreDescGood": "Some permissions need attention. Review the recommendations below.",
+  "privacyScoreDescPoor": "Several high-risk permissions are active. Take action now.",
+  "privacyScoreDescCritical": "Critical privacy exposure detected. Revoke sensitive permissions immediately.",
+  "privacyBulletHighRisk": "High risk",
+  "privacyBulletMediumRisk": "Medium risk",
+  "privacyBulletProtected": "Protected",
+  "privacySummaryHighRisk": "High Risk",
+  "privacySummaryMediumRisk": "Medium Risk",
+  "privacyLowRisk": "Low Risk",
+  "privacyRiskBreakdownTitle": "Permission Risk Breakdown",
+  "privacyNoPermissionData": "No permission data yet.",
+  "privacyLegendHigh": "High",
+  "privacyLegendMedium": "Medium",
+  "privacyExposureTitle": "Data Exposure by Permission",
+  "privacyAppsGrantedLabel": "# apps granted",
+  "privacyRecommendationsTitle": "Recommendations",
+  "privacyAppPermissionsTitle": "App Permissions",
+  "privacyNoPermissionsMatch": "No permissions match this filter.",
+  "privacyFilterAll": "All",
+  "privacyFilterGranted": "Granted",
+  "privacyUsageTimelineTitle": "Permission Usage Timeline",
+  "privacyProBadge": "PRO",
+  "privacyUsageTimelineDesc1": "Which apps with camera, microphone, or location access were recently open.",
+  "privacyUsageTimelineDesc2": "Based on foreground app time, not confirmed sensor access.",
+  "privacyUsageTimelineEmpty": "No apps with camera, microphone, or location access were open in the last 7 days.",
+  "privacyOpenSettings": "Open Settings",
+  "privacyRetry": "Retry",
+  "privacyLoadUsageTimeline": "Load Usage Timeline",
+  "privacyUsageAccessNotGranted": "Usage Access isn't granted yet. Enable it for OptiSec in system settings, then tap Retry.",
+  "privacyUsageAccessExplain": "Requires \"Usage Access\" to be granted in system settings. This lets OptiSec see which apps were recently open — it does not grant access to any personal data.",
+  "privacyUsageLoadError": "Couldn't load the usage timeline.",
+  "privacyWhatPermissionDoes": "What This Permission Does",
+  "privacyRecommendationTitle": "Recommendation",
+  "privacyOpenSettingsToRevoke": "Open Settings to Revoke",
+  "privacyPermissionDeniedProtected": "Permission Denied — You're Protected",
+  "privacyStatusLabel": "Status",
+  "privacyAppsLabel": "Apps",
+  "privacyRiskLevelLabel": "Risk Level",
+  "privacyGranted": "Granted",
+  "privacyDenied": "Denied",
+  "privacyAppsCountChip": "{count} apps",
+  "@privacyAppsCountChip": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyRevoke": "Revoke",
+  "privacyDeniedCheck": "Denied ✓",
+  "privacyNever": "Never",
+  "privacyJustNow": "Just now",
+  "privacyMinutesAgo": "{minutes}m ago",
+  "@privacyMinutesAgo": {
+    "description": "",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyHoursAgo": "{hours}h ago",
+  "@privacyHoursAgo": {
+    "description": "",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyDaysAgo": "{days}d ago",
+  "@privacyDaysAgo": {
+    "description": "",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyOpenNow": "Open now",
+  "privacyTimesPerWeek": "{count}× / 7d",
+  "@privacyTimesPerWeek": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyRecMicTitle": "Restrict Microphone Access",
+  "privacyRecMicBody": "You have 4 apps with permanent microphone access. Only voice/call apps need it.",
+  "privacyRecMicAction": "Review Mic Apps",
+  "privacyRecLocationTitle": "Use \"While Using\" for Location",
+  "privacyRecLocationBody": "Switch location permission from \"Always\" to \"Only while using the app.\"",
+  "privacyRecLocationAction": "Update Location",
+  "privacyRecContactsTitle": "Limit Contacts Access",
+  "privacyRecContactsBody": "5 apps can read your full contact list. Restrict to messaging apps only.",
+  "privacyRecContactsAction": "Review Contacts",
+  "privacyFix": "Fix",
+  "privacyScanCompleteTitle": "Privacy Scan Complete",
+  "privacyScanCompleteBody": "Found {highRisk} high-risk and {mediumRisk} medium-risk permissions.",
+  "@privacyScanCompleteBody": {
+    "description": "",
+    "placeholders": {
+      "highRisk": {
+        "type": "int"
+      },
+      "mediumRisk": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsSectionSubscription": "Subscription",
+  "settingsSectionAppearance": "Appearance",
+  "settingsSectionScanning": "Security Scanning",
+  "settingsSectionPrivacyLock": "Privacy & Lock",
+  "settingsSectionData": "Data",
+  "settingsVersionBuild": "v{version} (Build {build})",
+  "@settingsVersionBuild": {
+    "description": "",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsAllSystemsProtected": "All systems protected",
+  "settingsFreePlanSubtitle": "Free plan — enter a license key to unlock Pro",
+  "settingsLifetimeLicenseWithLabel": "Lifetime license · {label}",
+  "@settingsLifetimeLicenseWithLabel": {
+    "description": "",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLifetimeLicense": "Lifetime license",
+  "settingsValidUntil": "Valid until {date}",
+  "@settingsValidUntil": {
+    "description": "",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsProActive": "OptiSec Pro — Active",
+  "settingsProInactive": "OptiSec Pro",
+  "settingsProBadge": "PRO",
+  "settingsFreeBadge": "FREE",
+  "settingsLanguageSubtitle": "App display language",
+  "settingsThemeTitle": "Theme",
+  "settingsThemeSubtitle": "Display theme",
+  "settingsThemeDark": "Dark",
+  "settingsSelectLanguage": "Select Language",
+  "settingsAutoScanTitle": "Auto Scan",
+  "settingsAutoScanSubtitle": "Periodically scan for threats",
+  "settingsScanIntervalTitle": "Scan Interval",
+  "settingsScanIntervalSubtitle": "How often to run auto scans",
+  "settingsEvilTwinAlertsTitle": "Evil Twin Alerts",
+  "settingsEvilTwinAlertsSubtitle": "Warn when a rogue access point is detected",
+  "settingsVpnDetectionTitle": "VPN Detection",
+  "settingsVpnDetectionSubtitle": "Detect active VPN connections",
+  "settingsScanIntervalPrompt": "How often should OptiSec scan for threats?",
+  "settingsEveryMinutes": "Every {minutes} minutes",
+  "@settingsEveryMinutes": {
+    "description": "",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsEveryHour": "Every hour",
+  "settingsFreqHigh": "High frequency — more battery usage",
+  "settingsFreqBalanced": "Balanced — recommended",
+  "settingsFreqLow": "Low frequency — minimal battery usage",
+  "settingsPushNotifTitle": "Push Notifications",
+  "settingsPushNotifSubtitle": "Allow OptiSec to send notifications",
+  "settingsThreatAlertsTitle": "Threat Alerts",
+  "settingsThreatAlertsSubtitle": "Immediate alerts for detected threats",
+  "settingsWeeklyReportTitle": "Weekly Security Report",
+  "settingsWeeklyReportSubtitle": "Summary of threats and scans each week",
+  "settingsExportReportTitle": "Export Security Report",
+  "settingsExportReportSubtitle": "Share a PDF summary of your current security status",
+  "settingsExportReportAction": "Export",
+  "settingsExportReportExportingAction": "Exporting…",
+  "settingsExportReportFailedTitle": "Export Failed",
+  "settingsExportReportFailedBody": "Could not generate the PDF report. Please try again.",
+  "settingsBiometricLockTitle": "Biometric Lock",
+  "settingsBiometricLockSubtitle": "Require fingerprint or Face ID to open app",
+  "settingsAppLockTitle": "App Lock",
+  "settingsAppLockSubtitle": "PIN or biometric protection for individual apps",
+  "settingsUsageAnalyticsTitle": "Usage Analytics",
+  "settingsUsageAnalyticsSubtitle": "Share anonymous usage data to improve the app",
+  "settingsRateAppTitle": "Rate OptiSec",
+  "settingsRateAppSubtitle": "Leave a review on the App Store",
+  "settingsOpeningAppStore": "Opening App Store…",
+  "settingsShareAppTitle": "Share App",
+  "settingsShareAppSubtitle": "Tell your friends about OptiSec",
+  "settingsOpeningShareSheet": "Opening share sheet…",
+  "settingsPrivacyPolicy": "Privacy Policy",
+  "settingsOpeningPrivacyPolicy": "Opening Privacy Policy…",
+  "settingsTermsOfService": "Terms of Service",
+  "settingsOpeningTerms": "Opening Terms of Service…",
+  "settingsVersionShort": "v{version} ({build})",
+  "@settingsVersionShort": {
+    "description": "",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsClearHistoryTitle": "Clear Scan History",
+  "settingsClearHistorySubtitle": "Remove all saved scan results",
+  "settingsClearAction": "Clear",
+  "settingsResetAllTitle": "Reset All Data",
+  "settingsResetAllSubtitle": "Erase everything and restore defaults",
+  "settingsResettingAction": "Resetting…",
+  "settingsResetAction": "Reset",
+  "settingsClearHistoryConfirmTitle": "Clear Scan History?",
+  "settingsClearHistoryConfirmBody": "This will remove all saved scan results. Your settings will not be affected.",
+  "settingsResetAllConfirmTitle": "Reset All Data?",
+  "settingsResetAllConfirmBody": "This will erase all scan history, threat records, and restore all settings to their defaults. This cannot be undone.",
+  "settingsResetEverythingAction": "Reset Everything",
+  "settingsCancel": "Cancel",
+  "settingsHistoryClearedTitle": "History Cleared",
+  "settingsHistoryClearedBody": "Scan history has been erased.",
+  "settingsDataResetTitle": "Data Reset",
+  "settingsDataResetBody": "All settings and scan data have been cleared."
 }

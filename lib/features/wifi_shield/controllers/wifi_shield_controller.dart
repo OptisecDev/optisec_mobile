@@ -4,6 +4,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import '../../../core/services/network_trust_service.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/subscription_model.dart';
 import '../../../shared/models/wifi_network_model.dart';
 import '../../subscription/controllers/subscription_controller.dart';
@@ -11,6 +12,13 @@ import '../../subscription/controllers/subscription_controller.dart';
 enum SortMode { signal, risk, name }
 
 enum FilterMode { all, safe, threats, evilTwin }
+
+/// How confidently a same-SSID vendor-prefix mismatch indicates a real
+/// attack rather than a legitimate dual-band router or mesh deployment.
+/// Kept private/internal for now: it drives risk score and threat-level
+/// severity below, but there is no dedicated UI copy for it yet (that's a
+/// separate follow-up outside this fix's scope).
+enum _OuiMismatchConfidence { low, medium, high }
 
 class WifiShieldController extends GetxController {
   final _allNetworks = <WifiNetworkModel>[];
@@ -83,7 +91,7 @@ class WifiShieldController extends GetxController {
     if (!subscriptionController.isPro &&
         _todayScanCount() >= FeatureGate.freeScansPerDay) {
       subscriptionController.checkAccessOrPrompt(
-          feature: 'Unlimited WiFi scans');
+          feature: AppLocalizations.of(Get.context!).wifiUnlimitedScansFeature);
       return;
     }
 
@@ -103,17 +111,29 @@ class WifiShieldController extends GetxController {
           final results = await WiFiScan.instance.getScannedResults();
           final mapped = results.map(_mapResult).toList();
 
-          // Historical evil-twin signal: has this SSID's BSSID changed
-          // since we last saw it? Recorded before the real-time analysis
-          // below so it can't influence (or be influenced by) that pass.
+          // Historical evil-twin signal: has this SSID gained a BSSID that
+          // wasn't known before this scan? Grouped by SSID and recorded in
+          // one batch per SSID so a network broadcasting several BSSIDs at
+          // once (dual-band router, mesh system) isn't flagged just because
+          // its other BSSIDs happen to be processed after the first.
+          // Recorded before the real-time analysis below and fed into it as
+          // one of the confidence signals for vendor-prefix mismatches -- a
+          // brand-new BSSID from an unfamiliar vendor appearing after the
+          // network was already stable is a much stronger attack signal
+          // than several vendors being present together from the very first
+          // scan (the normal dual-band/mesh pattern).
           final historicalChange = <String, bool>{}; // bssid -> bssidChanged
+          final bssidsBySsid = <String, Set<String>>{};
           for (final n in mapped) {
-            final record =
-                NetworkTrustService.instance.recordSighting(n.ssid, n.bssid);
-            historicalChange[n.bssid] = record.bssidChanged;
+            bssidsBySsid.putIfAbsent(n.ssid, () => {}).add(n.bssid);
           }
+          bssidsBySsid.forEach((ssid, bssids) {
+            historicalChange.addAll(
+                NetworkTrustService.instance.recordSightingBatch(ssid, bssids));
+          });
 
-          final evaluated = _runEvilTwinAnalysis(mapped);
+          final evaluated = _runEvilTwinAnalysis(mapped, historicalChange);
+          final l10n = AppLocalizations.of(Get.context!);
           _allNetworks
             ..clear()
             ..addAll(evaluated.map((n) {
@@ -126,7 +146,7 @@ class WifiShieldController extends GetxController {
                 ],
                 threats: [
                   ...n.threats,
-                  'Access point hardware changed for "${n.ssid}" — possible historical Evil Twin',
+                  l10n.wifiThreatHistoricalChange(n.ssid),
                 ],
                 riskScore: (n.riskScore + 40).clamp(0, 100),
                 threatLevel: ThreatLevel.danger,
@@ -195,19 +215,21 @@ class WifiShieldController extends GetxController {
   }
 
   List<String> _baseThreats(WiFiAccessPoint ap, WifiSecurity sec) {
+    final l10n = AppLocalizations.of(Get.context!);
     final t = <String>[];
     if (sec == WifiSecurity.open) {
-      t.add('Open network — traffic is unencrypted');
+      t.add(l10n.wifiThreatOpenNetwork);
     }
     if (sec == WifiSecurity.wep) {
-      t.add('WEP encryption is cryptographically broken');
+      t.add(l10n.wifiThreatWepBroken);
     }
     return t;
   }
 
   // ─── Evil Twin Analysis ──────────────────────────────────────────────────
 
-  List<WifiNetworkModel> _runEvilTwinAnalysis(List<WifiNetworkModel> raw) {
+  List<WifiNetworkModel> _runEvilTwinAnalysis(
+      List<WifiNetworkModel> raw, Map<String, bool> historicalChange) {
     // Group by SSID (case-insensitive, skip hidden)
     final Map<String, List<WifiNetworkModel>> bySsid = {};
     for (final n in raw) {
@@ -217,28 +239,52 @@ class WifiShieldController extends GetxController {
 
     final updated = <WifiNetworkModel>[];
     for (final n in raw) {
-      updated.add(_evaluate(n, bySsid[n.ssid.toLowerCase()] ?? [n]));
+      updated.add(_evaluate(
+        n,
+        bySsid[n.ssid.toLowerCase()] ?? [n],
+        historicalChange[n.bssid] ?? false,
+      ));
     }
     return updated;
   }
 
   WifiNetworkModel _evaluate(
-      WifiNetworkModel n, List<WifiNetworkModel> peers) {
+      WifiNetworkModel n, List<WifiNetworkModel> peers, bool isHistoricallyNew) {
+    final l10n = AppLocalizations.of(Get.context!);
     final reasons = <EvilTwinReason>[];
     final threats = List<String>.from(n.threats);
     int risk = _baseRiskScore(n);
 
+    // Unlike the other signals below, an OUI mismatch alone is graduated by
+    // confidence instead of always forcing ThreatLevel.danger -- range
+    // extenders and mesh nodes legitimately broadcast the same SSID from a
+    // different manufacturer's hardware than the primary router.
+    var forceDanger = false;
+    var forceWarning = false;
+
     if (peers.length > 1) {
       final others = peers.where((p) => p.bssid != n.bssid).toList();
+      final mismatched = others.where((o) => o.oui != n.oui).toList();
 
-      for (final other in others) {
-        // Different OUI (vendor prefix) for same SSID
-        if (n.oui != other.oui) {
-          reasons.add(EvilTwinReason.differentOui);
-          threats.add(
-              'Multiple vendors broadcasting "${n.ssid}" — possible Evil Twin');
-          risk += 50;
-          break;
+      if (mismatched.isNotEmpty) {
+        switch (_ouiMismatchConfidence(n, mismatched, isHistoricallyNew)) {
+          case _OuiMismatchConfidence.high:
+            reasons.add(EvilTwinReason.differentOui);
+            threats.add(l10n.wifiThreatMultipleVendors(n.ssid));
+            risk += 50;
+            forceDanger = true;
+            break;
+          case _OuiMismatchConfidence.medium:
+            reasons.add(EvilTwinReason.differentOui);
+            threats.add(l10n.wifiThreatMultipleVendors(n.ssid));
+            risk += 25;
+            forceWarning = true;
+            break;
+          case _OuiMismatchConfidence.low:
+            // Matches the normal dual-band/mesh pattern closely enough that
+            // it isn't worth flagging as an evil twin off OUI alone.
+            risk += 5;
+            break;
         }
       }
 
@@ -247,33 +293,35 @@ class WifiShieldController extends GetxController {
       final hasOpen = peers.any((p) => p.security == WifiSecurity.open);
       if (hasSecured && hasOpen && n.security == WifiSecurity.open) {
         reasons.add(EvilTwinReason.openImpersonation);
-        threats.add(
-            'Open clone of secured network "${n.ssid}" — honeypot suspected');
+        threats.add(l10n.wifiThreatOpenClone(n.ssid));
         risk += 60;
+        forceDanger = true;
       }
 
       // Security downgrade: WPA2 elsewhere, WEP/WPA here
       final maxSec = peers.map((p) => _securityRank(p.security)).reduce((a, b) => a > b ? a : b);
       if (_securityRank(n.security) < maxSec - 1) {
         reasons.add(EvilTwinReason.securityDowngrade);
-        threats.add('Weaker encryption than other "${n.ssid}" APs');
+        threats.add(l10n.wifiThreatWeakerEncryption(n.ssid));
         risk += 30;
+        forceDanger = true;
       }
     }
 
     // Hidden network with unusually strong signal
     if (n.ssid == '(Hidden Network)' && n.level > -50) {
       reasons.add(EvilTwinReason.signalAnomaly);
-      threats.add('Hidden AP with very strong signal — possible rogue device');
+      threats.add(l10n.wifiThreatHiddenStrongSignal);
       risk += 25;
+      forceDanger = true;
     }
 
     risk = risk.clamp(0, 100);
 
     final isEvilTwin = reasons.isNotEmpty;
-    final threatLevel = isEvilTwin
+    final threatLevel = forceDanger
         ? ThreatLevel.danger
-        : risk >= 40
+        : forceWarning || risk >= 40
             ? ThreatLevel.warning
             : ThreatLevel.safe;
 
@@ -284,6 +332,62 @@ class WifiShieldController extends GetxController {
       evilTwinReasons: reasons,
       threatLevel: threatLevel,
     );
+  }
+
+  /// Scores how likely a same-SSID vendor-prefix mismatch is a genuine
+  /// attack rather than a legitimate dual-band router or mesh deployment,
+  /// using the corroborating signals a range extender/mesh node produces
+  /// naturally but a co-located rogue AP can't easily fake:
+  ///
+  /// - Band/channel separation: real dual-band APs broadcast the same SSID
+  ///   on clearly different frequencies (2.4GHz + 5GHz) at once; several
+  ///   different-vendor BSSIDs sharing the *exact* same channel is a much
+  ///   stronger red flag.
+  /// - Relative signal strength: mesh nodes are physically separated, so
+  ///   their signal strengths naturally diverge; two different-vendor BSSIDs
+  ///   reporting near-identical strength at the same moment looks more like
+  ///   a nearby impersonating device.
+  /// - Timing: a different-vendor BSSID that just appeared after this SSID
+  ///   was already established with other hardware ([isHistoricallyNew],
+  ///   from [NetworkTrustService.recordSightingBatch]) is far more
+  ///   suspicious than several vendors being present together from the very
+  ///   first scan.
+  _OuiMismatchConfidence _ouiMismatchConfidence(
+    WifiNetworkModel n,
+    List<WifiNetworkModel> mismatchedPeers,
+    bool isHistoricallyNew,
+  ) {
+    var points = 2; // baseline: an unexplained vendor mismatch is ambiguous
+
+    var sawDifferentBand = false;
+    var sawSameChannel = false;
+    var sawCloseSignal = false;
+    var sawSeparatedSignal = false;
+
+    for (final other in mismatchedPeers) {
+      if (n.band != other.band) {
+        sawDifferentBand = true;
+      } else if (n.channel == other.channel) {
+        sawSameChannel = true;
+      }
+
+      final signalGap = (n.level - other.level).abs();
+      if (signalGap <= 5) {
+        sawCloseSignal = true;
+      } else if (signalGap > 15) {
+        sawSeparatedSignal = true;
+      }
+    }
+
+    if (sawDifferentBand) points -= 2;
+    if (sawSameChannel) points += 2;
+    if (sawSeparatedSignal) points -= 1;
+    if (sawCloseSignal) points += 1;
+    if (isHistoricallyNew) points += 3;
+
+    if (points >= 4) return _OuiMismatchConfidence.high;
+    if (points >= 1) return _OuiMismatchConfidence.medium;
+    return _OuiMismatchConfidence.low;
   }
 
   int _baseRiskScore(WifiNetworkModel n) {
@@ -374,7 +478,9 @@ class WifiShieldController extends GetxController {
 
   int get overallRisk {
     if (_allNetworks.isEmpty) return 0;
-    if (evilTwinCount > 0) return 85;
+    // Evil-twin networks already carry a higher riskScore (see _evaluate),
+    // so the graduated max below reflects their severity without a
+    // hardcoded floor that ignored how many/how severe the flags were.
     if (threatCount > 0) {
       final maxRisk =
           _allNetworks.map((n) => n.riskScore).reduce((a, b) => a > b ? a : b);

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../features/subscription/controllers/subscription_controller.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/wifi_network_model.dart';
 import '../../../shared/widgets/threat_badge.dart';
 import 'risk_score_badge.dart';
@@ -22,6 +25,7 @@ class NetworkDetailSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
       maxChildSize: 0.92,
@@ -51,17 +55,17 @@ class NetworkDetailSheet extends StatelessWidget {
                   controller: scrollCtrl,
                   padding: const EdgeInsets.all(20),
                   children: [
-                    _buildHeader(theme),
+                    _buildHeader(theme, l10n),
                     const SizedBox(height: 20),
                     if (network.isEvilTwin) ...[
-                      _buildEvilTwinSection(theme),
+                      _buildEvilTwinSection(theme, l10n),
                       const SizedBox(height: 20),
                     ],
-                    _buildDetailsGrid(theme),
+                    _buildDetailsGrid(theme, l10n),
                     const SizedBox(height: 20),
-                    if (network.threats.isNotEmpty) _buildThreatsSection(theme),
+                    if (network.threats.isNotEmpty) _buildThreatsSection(theme, l10n),
                     const SizedBox(height: 20),
-                    _buildRiskSection(theme),
+                    _buildRiskSection(theme, l10n),
                     const SizedBox(height: 32),
                   ],
                 ),
@@ -73,7 +77,7 @@ class NetworkDetailSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(ThemeData theme) {
+  Widget _buildHeader(ThemeData theme, AppLocalizations l10n) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -96,7 +100,9 @@ class NetworkDetailSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                network.ssid,
+                network.ssid == '(Hidden Network)'
+                    ? l10n.wifiHiddenNetworkLabel
+                    : network.ssid,
                 style: theme.textTheme.titleLarge,
               ),
               const SizedBox(height: 4),
@@ -111,10 +117,10 @@ class NetworkDetailSheet extends StatelessWidget {
                   ThreatBadge(level: network.threatLevel),
                   const SizedBox(width: 8),
                   if (network.isEvilTwin)
-                    _dangerChip('Evil Twin'),
+                    _dangerChip(l10n.wifiEvilTwinChip),
                   if (network.isConnected) ...[
                     const SizedBox(width: 8),
-                    _connectedChip(),
+                    _connectedChip(l10n),
                   ],
                 ],
               ),
@@ -126,7 +132,7 @@ class NetworkDetailSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildEvilTwinSection(ThemeData theme) {
+  Widget _buildEvilTwinSection(ThemeData theme, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -143,37 +149,64 @@ class NetworkDetailSheet extends StatelessWidget {
                   color: AppColors.danger, size: 16),
               const SizedBox(width: 8),
               Text(
-                'Evil Twin Attack Indicators',
+                l10n.wifiEvilTwinIndicatorsTitle,
                 style: theme.textTheme.titleSmall
                     ?.copyWith(color: AppColors.danger),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          ...network.evilTwinReasons.map((r) => Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.arrow_right_rounded,
-                        color: AppColors.danger, size: 16),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        _reasonDescription(r),
-                        style: theme.textTheme.bodySmall
-                            ?.copyWith(color: AppColors.textPrimary),
+          if (Get.find<SubscriptionController>().isPro)
+            ...network.evilTwinReasons.map((r) => Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.arrow_right_rounded,
+                          color: AppColors.danger, size: 16),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          _reasonDescription(l10n, r),
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: AppColors.textPrimary),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )),
+                    ],
+                  ),
+                ))
+          else
+            _buildEvilTwinUpsell(theme),
         ],
       ),
     );
   }
 
-  Widget _buildDetailsGrid(ThemeData theme) {
+  Widget _buildEvilTwinUpsell(ThemeData theme) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
+      onTap: () => Get.find<SubscriptionController>()
+          .checkAccessOrPrompt(feature: 'Evil Twin deep analysis'),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.lock_rounded, color: AppColors.danger, size: 16),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              'Unlock OptiSec Pro to see exactly why this network was flagged.',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailsGrid(ThemeData theme, AppLocalizations l10n) {
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
@@ -182,16 +215,16 @@ class NetworkDetailSheet extends StatelessWidget {
       crossAxisSpacing: 10,
       childAspectRatio: 2.4,
       children: [
-        _detailCell(theme, 'Security', network.securityLabel,
+        _detailCell(theme, l10n.security, network.securityLabel,
             Icons.lock_rounded),
-        _detailCell(theme, 'Signal', '${network.level} dBm',
+        _detailCell(theme, l10n.wifiDetailSignal, '${network.level} dBm',
             Icons.signal_wifi_4_bar_rounded),
-        _detailCell(theme, 'Band', network.band, Icons.radio_rounded),
-        _detailCell(theme, 'Channel', '${network.channel}',
+        _detailCell(theme, l10n.wifiDetailBand, network.band, Icons.radio_rounded),
+        _detailCell(theme, l10n.channel, '${network.channel}',
             Icons.tune_rounded),
-        _detailCell(theme, 'Frequency', '${network.frequency} MHz',
+        _detailCell(theme, l10n.frequency, '${network.frequency} MHz',
             Icons.waves_rounded),
-        _detailCell(theme, 'Vendor OUI', network.oui,
+        _detailCell(theme, l10n.wifiDetailVendorOui, network.oui,
             Icons.device_hub_rounded),
       ],
     );
@@ -229,11 +262,11 @@ class NetworkDetailSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildThreatsSection(ThemeData theme) {
+  Widget _buildThreatsSection(ThemeData theme, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Detected Threats', style: theme.textTheme.titleSmall),
+        Text(l10n.wifiDetectedThreatsTitle, style: theme.textTheme.titleSmall),
         const SizedBox(height: 10),
         ...network.threats.map(
           (t) => Container(
@@ -263,11 +296,11 @@ class NetworkDetailSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildRiskSection(ThemeData theme) {
+  Widget _buildRiskSection(ThemeData theme, AppLocalizations l10n) {
     final segments = [
-      ('Encryption', _encryptionRisk(), AppColors.warning),
-      ('Evil Twin', network.isEvilTwin ? 60 : 0, AppColors.danger),
-      ('Open Network', network.security == WifiSecurity.open ? 40 : 0,
+      (l10n.wifiRiskEncryption, _encryptionRisk(), AppColors.warning),
+      (l10n.wifiEvilTwinChip, network.isEvilTwin ? 60 : 0, AppColors.danger),
+      (l10n.wifiRiskOpenNetwork, network.security == WifiSecurity.open ? 40 : 0,
           AppColors.danger),
     ];
 
@@ -276,7 +309,7 @@ class NetworkDetailSheet extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Risk Breakdown', style: theme.textTheme.titleSmall),
+            Text(l10n.wifiRiskBreakdownTitle, style: theme.textTheme.titleSmall),
             const Spacer(),
             RiskScoreBadge(score: network.riskScore),
           ],
@@ -330,18 +363,18 @@ class NetworkDetailSheet extends StatelessWidget {
     }
   }
 
-  String _reasonDescription(EvilTwinReason r) {
+  String _reasonDescription(AppLocalizations l10n, EvilTwinReason r) {
     switch (r) {
       case EvilTwinReason.differentOui:
-        return 'Different hardware vendor broadcasting same SSID — OUI mismatch detected';
+        return l10n.wifiReasonDescDifferentOui;
       case EvilTwinReason.securityDowngrade:
-        return 'Weaker encryption than other APs with the same name — downgrade attack suspected';
+        return l10n.wifiReasonDescSecurityDowngrade;
       case EvilTwinReason.signalAnomaly:
-        return 'Hidden network with abnormally strong signal suggests a rogue access point nearby';
+        return l10n.wifiReasonDescSignalAnomaly;
       case EvilTwinReason.openImpersonation:
-        return 'Open network impersonating a secured SSID — honeypot or captive portal attack';
+        return l10n.wifiReasonDescOpenImpersonation;
       case EvilTwinReason.historicalBssidChange:
-        return 'SSID previously seen with a different BSSID — possible access point spoofing';
+        return l10n.wifiReasonDescHistoricalBssidChange;
     }
   }
 
@@ -369,16 +402,16 @@ class NetworkDetailSheet extends StatelessWidget {
     );
   }
 
-  Widget _connectedChip() {
+  Widget _connectedChip(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
         color: AppColors.primary.withOpacity(0.12),
         borderRadius: BorderRadius.circular(6),
       ),
-      child: const Text(
-        'Connected',
-        style: TextStyle(
+      child: Text(
+        l10n.connected,
+        style: const TextStyle(
             fontSize: 10,
             color: AppColors.primary,
             fontWeight: FontWeight.w700),
