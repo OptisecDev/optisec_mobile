@@ -920,6 +920,36 @@ abstract class AppLocalizations {
   /// **'No networks match this filter.'**
   String get wifiEmptyNoMatch;
 
+  /// No description provided for @wifiScanErrorPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission was denied. Grant location access in Settings to scan for WiFi networks.'**
+  String get wifiScanErrorPermissionDenied;
+
+  /// No description provided for @wifiScanErrorLocationServiceDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services (GPS) are turned off. Enable them in your device settings to scan for WiFi networks.'**
+  String get wifiScanErrorLocationServiceDisabled;
+
+  /// No description provided for @wifiScanErrorLocationAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Precise location is required to scan for WiFi networks. Switch to Precise Location in Settings.'**
+  String get wifiScanErrorLocationAccuracy;
+
+  /// No description provided for @wifiScanErrorNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'WiFi scanning is not supported on this device.'**
+  String get wifiScanErrorNotSupported;
+
+  /// No description provided for @wifiScanErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan failed. Please try again.'**
+  String get wifiScanErrorGeneric;
+
   /// No description provided for @wifiScanningForNetworks.
   ///
   /// In en, this message translates to:

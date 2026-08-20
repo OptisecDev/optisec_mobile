@@ -178,12 +178,58 @@ class WifiShieldController extends GetxController with WidgetsBindingObserver {
           if (!subscriptionController.isPro) {
             _incrementTodayScanCount();
           }
+        } else {
+          scanError.value =
+              _canGetResultsError(AppLocalizations.of(Get.context!), canGet);
         }
+      } else {
+        scanError.value =
+            _canStartScanError(AppLocalizations.of(Get.context!), canScan);
       }
     } catch (e) {
-      scanError.value = e.toString();
+      debugPrint('WiFi scan failed: $e');
+      scanError.value = AppLocalizations.of(Get.context!).wifiScanErrorGeneric;
     } finally {
       isScanning.value = false;
+    }
+  }
+
+  /// Maps a non-[CanStartScan.yes] result to a message that tells the user
+  /// exactly what to fix, instead of leaving [scanError] empty and letting
+  /// the scan silently no-op.
+  String _canStartScanError(AppLocalizations l10n, CanStartScan reason) {
+    switch (reason) {
+      case CanStartScan.noLocationPermissionDenied:
+      case CanStartScan.noLocationPermissionRequired:
+        return l10n.wifiScanErrorPermissionDenied;
+      case CanStartScan.noLocationServiceDisabled:
+        return l10n.wifiScanErrorLocationServiceDisabled;
+      case CanStartScan.noLocationPermissionUpgradeAccuracy:
+        return l10n.wifiScanErrorLocationAccuracy;
+      case CanStartScan.notSupported:
+        return l10n.wifiScanErrorNotSupported;
+      case CanStartScan.failed:
+      case CanStartScan.yes:
+        return l10n.wifiScanErrorGeneric;
+    }
+  }
+
+  /// Same as [_canStartScanError] but for the [CanGetScannedResults] result
+  /// returned after the scan itself started successfully.
+  String _canGetResultsError(
+      AppLocalizations l10n, CanGetScannedResults reason) {
+    switch (reason) {
+      case CanGetScannedResults.noLocationPermissionDenied:
+      case CanGetScannedResults.noLocationPermissionRequired:
+        return l10n.wifiScanErrorPermissionDenied;
+      case CanGetScannedResults.noLocationServiceDisabled:
+        return l10n.wifiScanErrorLocationServiceDisabled;
+      case CanGetScannedResults.noLocationPermissionUpgradeAccuracy:
+        return l10n.wifiScanErrorLocationAccuracy;
+      case CanGetScannedResults.notSupported:
+        return l10n.wifiScanErrorNotSupported;
+      case CanGetScannedResults.yes:
+        return l10n.wifiScanErrorGeneric;
     }
   }
 

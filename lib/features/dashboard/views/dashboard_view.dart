@@ -343,7 +343,10 @@ class _StatsGrid extends StatelessWidget {
           _StatTile(
             theme: theme,
             icon: Icons.wifi_tethering_rounded,
-            label: 'Networks Scanned',
+            label: 'Networks (Last Scan)',
+            tooltip:
+                'Networks found in your most recent WiFi scan. This resets on '
+                'every new scan and is not a cumulative total.',
             value: '${s.networksScanned}',
             color: AppColors.info,
             index: 1,
@@ -380,6 +383,7 @@ class _StatTile extends StatelessWidget {
   final Color color;
   final int index;
   final VoidCallback? onTap;
+  final String? tooltip;
 
   const _StatTile({
     required this.theme,
@@ -389,11 +393,12 @@ class _StatTile extends StatelessWidget {
     required this.color,
     required this.index,
     this.onTap,
+    this.tooltip,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    Widget content = GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(14),
@@ -439,6 +444,11 @@ class _StatTile extends StatelessWidget {
             begin: const Offset(0.92, 0.92),
             duration: 350.ms,
             curve: Curves.easeOutBack);
+
+    if (tooltip != null) {
+      content = Tooltip(message: tooltip!, child: content);
+    }
+    return content;
   }
 }
 

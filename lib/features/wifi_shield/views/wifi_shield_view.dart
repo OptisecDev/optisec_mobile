@@ -217,19 +217,41 @@ class _ShieldBody extends StatelessWidget {
         // Network tiles
         Obx(() {
           if (controller.networks.isEmpty) {
+            final error = controller.scanError.value;
             return SliverPadding(
               padding: const EdgeInsets.all(20),
               sliver: SliverToBoxAdapter(
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Text(
-                      controller.filterMode.value == FilterMode.all
-                          ? l10n.wifiEmptyNoNetworks
-                          : l10n.wifiEmptyNoMatch,
-                      style: theme.textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
+                    child: error.isNotEmpty
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.error_outline_rounded,
+                                  color: AppColors.danger, size: 32),
+                              const SizedBox(height: 12),
+                              Text(
+                                error,
+                                style: theme.textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              OutlinedButton.icon(
+                                onPressed: controller.startScan,
+                                icon: const Icon(Icons.refresh_rounded,
+                                    size: 16),
+                                label: Text(l10n.wifiScanAgain),
+                              ),
+                            ],
+                          )
+                        : Text(
+                            controller.filterMode.value == FilterMode.all
+                                ? l10n.wifiEmptyNoNetworks
+                                : l10n.wifiEmptyNoMatch,
+                            style: theme.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
                   ),
                 ),
               ),

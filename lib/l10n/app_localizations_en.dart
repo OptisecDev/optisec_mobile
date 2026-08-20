@@ -443,6 +443,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wifiEmptyNoMatch => 'No networks match this filter.';
 
   @override
+  String get wifiScanErrorPermissionDenied =>
+      'Location permission was denied. Grant location access in Settings to scan for WiFi networks.';
+
+  @override
+  String get wifiScanErrorLocationServiceDisabled =>
+      'Location services (GPS) are turned off. Enable them in your device settings to scan for WiFi networks.';
+
+  @override
+  String get wifiScanErrorLocationAccuracy =>
+      'Precise location is required to scan for WiFi networks. Switch to Precise Location in Settings.';
+
+  @override
+  String get wifiScanErrorNotSupported =>
+      'WiFi scanning is not supported on this device.';
+
+  @override
+  String get wifiScanErrorGeneric => 'Scan failed. Please try again.';
+
+  @override
   String get wifiScanningForNetworks => 'Scanning for networks…';
 
   @override

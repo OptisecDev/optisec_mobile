@@ -441,6 +441,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wifiEmptyNoMatch => 'لا توجد شبكات تطابق هذا الفلتر.';
 
   @override
+  String get wifiScanErrorPermissionDenied =>
+      'تم رفض إذن الموقع. امنح إذن الوصول للموقع من الإعدادات لفحص شبكات WiFi.';
+
+  @override
+  String get wifiScanErrorLocationServiceDisabled =>
+      'خدمة الموقع (GPS) مُطفأة. فعّلها من إعدادات جهازك لفحص شبكات WiFi.';
+
+  @override
+  String get wifiScanErrorLocationAccuracy =>
+      'يتطلب فحص شبكات WiFi تفعيل الموقع الدقيق. بدّل إلى الموقع الدقيق من الإعدادات.';
+
+  @override
+  String get wifiScanErrorNotSupported =>
+      'فحص شبكات WiFi غير مدعوم على هذا الجهاز.';
+
+  @override
+  String get wifiScanErrorGeneric => 'فشل الفحص. حاول مرة أخرى.';
+
+  @override
   String get wifiScanningForNetworks => 'جارٍ البحث عن الشبكات…';
 
   @override
