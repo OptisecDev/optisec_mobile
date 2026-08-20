@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:network_info_plus/network_info_plus.dart';
@@ -20,7 +21,7 @@ enum FilterMode { all, safe, threats, evilTwin }
 /// separate follow-up outside this fix's scope).
 enum _OuiMismatchConfidence { low, medium, high }
 
-class WifiShieldController extends GetxController {
+class WifiShieldController extends GetxController with WidgetsBindingObserver {
   final _allNetworks = <WifiNetworkModel>[];
 
   final networks = <WifiNetworkModel>[].obs;
@@ -44,16 +45,37 @@ class WifiShieldController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     _checkPermissionAndInit();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // The permission may have been changed from system Settings while the
+    // app was backgrounded (granted, to unlock scanning; or revoked, which
+    // must immediately re-lock the UI behind the permission gate) -- without
+    // this, hasPermission stays stale until a full app restart.
+    if (state == AppLifecycleState.resumed) {
+      _checkPermissionAndInit();
+    }
   }
 
   Future<void> _checkPermissionAndInit() async {
     try {
       final status = await Permission.locationWhenInUse.status;
       if (status.isGranted) {
+        final wasAlreadyGranted = hasPermission.value;
         hasPermission.value = true;
         await _loadConnectedInfo();
-        await startScan();
+        if (!wasAlreadyGranted) {
+          await startScan();
+        }
       } else {
         hasPermission.value = false;
       }
