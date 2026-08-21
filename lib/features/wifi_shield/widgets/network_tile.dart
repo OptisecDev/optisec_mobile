@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/wifi_network_model.dart';
+import '../../../shared/widgets/signal_bar.dart';
 import 'network_detail_sheet.dart';
 import 'risk_score_badge.dart';
 import 'wifi_signal_bars.dart';
@@ -157,7 +158,10 @@ class NetworkTile extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       RiskScoreBadge(
-                          score: network.riskScore, compact: true),
+                        score: network.riskScore,
+                        level: network.threatLevel,
+                        compact: true,
+                      ),
                     ],
                   ),
 
@@ -328,11 +332,7 @@ class _SignalProgressBar extends StatelessWidget {
 
   const _SignalProgressBar({required this.percent});
 
-  Color get _color {
-    if (percent >= 70) return AppColors.safe;
-    if (percent >= 40) return AppColors.warning;
-    return AppColors.danger;
-  }
+  Color get _color => signalColorFor(percent);
 
   @override
   Widget build(BuildContext context) {

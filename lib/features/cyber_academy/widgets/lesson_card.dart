@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/lesson_model.dart';
 
 class LessonCard extends StatelessWidget {
@@ -44,6 +45,7 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final isCompleted = lesson.status == LessonStatus.completed;
     final isInProgress = lesson.status == LessonStatus.inProgress;
 
@@ -164,23 +166,25 @@ class LessonCard extends StatelessWidget {
                         children: [
                           _MetaChip(
                             icon: _difficultyIcon(lesson.difficulty),
-                            label: _difficultyLabel(lesson.difficulty),
+                            label: _difficultyLabel(l10n, lesson.difficulty),
                             color: _difficultyColor(lesson.difficulty),
                           ),
                           _MetaChip(
                             icon: Icons.star_rounded,
-                            label: '${lesson.xpPoints} XP',
+                            label: l10n.cyberAcademyXpPoints(lesson.xpPoints),
                             color: const Color(0xFFFFD700),
                           ),
                           _MetaChip(
                             icon: Icons.schedule_rounded,
-                            label: '${lesson.durationMinutes} min',
+                            label: l10n.cyberAcademyDurationMinutes(
+                                lesson.durationMinutes),
                             color: AppColors.textDisabled,
                           ),
                           if (lesson.steps.isNotEmpty)
                             _MetaChip(
                               icon: Icons.layers_rounded,
-                              label: '${lesson.steps.length} steps',
+                              label: l10n
+                                  .cyberAcademyStepsCount(lesson.steps.length),
                               color: AppColors.textDisabled,
                             ),
                         ],
@@ -240,14 +244,14 @@ class LessonCard extends StatelessWidget {
     }
   }
 
-  String _difficultyLabel(Difficulty d) {
+  String _difficultyLabel(AppLocalizations l10n, Difficulty d) {
     switch (d) {
       case Difficulty.beginner:
-        return 'Beginner';
+        return l10n.cyberAcademyDifficultyBeginner;
       case Difficulty.intermediate:
-        return 'Intermediate';
+        return l10n.cyberAcademyDifficultyIntermediate;
       case Difficulty.advanced:
-        return 'Advanced';
+        return l10n.cyberAcademyDifficultyAdvanced;
     }
   }
 
@@ -270,11 +274,12 @@ class _StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final label = status == LessonStatus.completed
-        ? '✓ Done'
+        ? l10n.cyberAcademyStatusDone
         : status == LessonStatus.inProgress
-            ? 'Continue'
-            : 'Start';
+            ? l10n.paywallContinueButton
+            : l10n.cyberAcademyStatusStart;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(

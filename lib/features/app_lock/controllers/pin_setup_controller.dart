@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../core/services/app_lock_service.dart';
+import '../../../l10n/app_localizations.dart';
 
 enum PinSetupStep { enter, confirm }
 
@@ -43,7 +44,7 @@ class PinSetupController extends GetxController {
     }
 
     if (pin != _firstPin) {
-      errorMessage.value = 'PINs don\'t match. Try again.';
+      errorMessage.value = AppLocalizations.of(Get.context!).pinSetupMismatchError;
       enteredDigits.clear();
       return;
     }
@@ -56,7 +57,7 @@ class PinSetupController extends GetxController {
       Get.back(result: true);
     } else {
       restart();
-      errorMessage.value = 'Couldn\'t save PIN. Try again.';
+      errorMessage.value = AppLocalizations.of(Get.context!).pinSetupSaveError;
     }
   }
 

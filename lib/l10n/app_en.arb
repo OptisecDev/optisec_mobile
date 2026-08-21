@@ -416,15 +416,15 @@
       }
     }
   },
-  "privacyRecMicTitle": "Restrict Microphone Access",
-  "privacyRecMicBody": "You have 4 apps with permanent microphone access. Only voice/call apps need it.",
-  "privacyRecMicAction": "Review Mic Apps",
-  "privacyRecLocationTitle": "Use \"While Using\" for Location",
-  "privacyRecLocationBody": "Switch location permission from \"Always\" to \"Only while using the app.\"",
-  "privacyRecLocationAction": "Update Location",
-  "privacyRecContactsTitle": "Limit Contacts Access",
-  "privacyRecContactsBody": "5 apps can read your full contact list. Restrict to messaging apps only.",
-  "privacyRecContactsAction": "Review Contacts",
+  "privacyRecGrantedTitle": "{name} Access Granted",
+  "@privacyRecGrantedTitle": {
+    "description": "",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "privacyFix": "Fix",
   "privacyScanCompleteTitle": "Privacy Scan Complete",
   "privacyScanCompleteBody": "Found {highRisk} high-risk and {mediumRisk} medium-risk permissions.",
@@ -564,5 +564,265 @@
   "settingsHistoryClearedTitle": "History Cleared",
   "settingsHistoryClearedBody": "Scan history has been erased.",
   "settingsDataResetTitle": "Data Reset",
-  "settingsDataResetBody": "All settings and scan data have been cleared."
+  "settingsDataResetBody": "All settings and scan data have been cleared.",
+
+  "threatIntelTitle": "Threat Intel",
+  "threatIntelEmpty": "No threat intel available",
+  "threatIntelFeedUpdated": "Feed updated {time}",
+  "@threatIntelFeedUpdated": {
+    "description": "",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "threatIntelFeedNotLoaded": "Feed not yet loaded",
+  "threatIntelJustNow": "Just now",
+  "threatIntelMinutesAgo": "{minutes}m ago",
+  "@threatIntelMinutesAgo": {
+    "description": "",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "threatIntelHoursAgo": "{hours}h ago",
+  "@threatIntelHoursAgo": {
+    "description": "",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "threatIntelDaysAgo": "{days}d ago",
+  "@threatIntelDaysAgo": {
+    "description": "",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "threatIntelSeverityCritical": "CRITICAL",
+  "threatIntelSeverityHigh": "HIGH",
+  "threatIntelSeverityMedium": "MEDIUM",
+  "threatIntelSeverityLow": "LOW",
+
+  "licenseKeyScreenTitle": "Enter License Key",
+  "licenseKeyIntro": "Enter the license key you received by email after your OptiSec Pro purchase.",
+  "licenseKeyActivatedTitle": "License Activated",
+  "licenseKeyActivatedBody": "OptiSec Pro is now unlocked on this device.",
+  "licenseKeyFieldLabel": "License Key",
+  "licenseKeyPasteTooltip": "Paste",
+  "licenseKeyActivateButton": "Activate",
+  "licenseKeyErrorInvalidFormat": "That doesn't look like a valid license key.",
+  "licenseKeyErrorInvalidSignature": "This key is invalid or has been tampered with.",
+  "licenseKeyErrorMalformed": "This key is corrupted.",
+  "licenseKeyErrorExpired": "This license has expired.",
+  "licenseKeyErrorExpiredOn": "This license expired on {date}.",
+  "@licenseKeyErrorExpiredOn": {
+    "description": "",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "licenseKeyErrorUnknown": "Unknown error.",
+  "paywallHaveLicenseKey": "Have a License Key?",
+
+  "navPrivacy": "Privacy",
+  "navAcademy": "Academy",
+
+  "paywallUnlockFeature": "Unlock \"{feature}\" with OptiSec Pro",
+  "@paywallUnlockFeature": {
+    "description": "",
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "paywallBenefitEvilTwin": "Full Evil Twin analysis",
+  "paywallBenefitPdfReports": "Weekly PDF reports",
+  "paywallBenefitAcademyLessons": "All Cyber Academy lessons",
+  "paywallBenefitPriorityAlerts": "Priority alerts",
+  "paywallRestorePurchases": "Restore Purchases",
+  "paywallBestValueBadge": "BEST VALUE",
+  "paywallContinueButton": "Continue",
+
+  "appLockBatteryWarningTitle": "Battery optimization may stop App Lock",
+  "appLockBatteryWarningBody": "Allow unrestricted background activity so locked apps stay protected.",
+  "appLockSetPinLabel": "Set PIN",
+  "pinSetupChooseTitle": "Choose a 4-digit PIN",
+  "pinSetupConfirmTitle": "Confirm your PIN",
+  "pinSetupMismatchError": "PINs don't match. Try again.",
+  "pinSetupSaveError": "Couldn't save PIN. Try again.",
+  "appLockSearchHint": "Search apps",
+  "appLockNoAppsFound": "No apps found",
+  "appLockPinPromptTitle": "Set a PIN to start locking apps",
+  "appLockOverlayPermissionPrompt": "Allow \"Display over other apps\" so the lock screen can appear",
+  "appLockAllowButton": "Allow",
+
+  "cyberAcademyBadgesCount": "{count} badges",
+  "@cyberAcademyBadgesCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademySearchHint": "Search lessons, topics, tags…",
+  "cyberAcademyFeaturedTitle": "Featured",
+  "cyberAcademyContinueWhereLeftOff": "CONTINUE WHERE YOU LEFT OFF",
+  "cyberAcademyCategoryAll": "All",
+  "cyberAcademyCategoryPhishing": "Phishing",
+  "cyberAcademyCategoryPassword": "Passwords",
+  "cyberAcademyCategoryNetwork": "Network",
+  "cyberAcademySectionAllLessons": "All Lessons",
+  "cyberAcademySectionSearchResults": "Search Results",
+  "cyberAcademySectionPhishingLessons": "Phishing Lessons",
+  "cyberAcademySectionPasswordLessons": "Password Lessons",
+  "cyberAcademySectionNetworkLessons": "Network Lessons",
+  "cyberAcademySectionPrivacyLessons": "Privacy Lessons",
+  "cyberAcademyNoLessonsFound": "No lessons found",
+  "cyberAcademySearchResultsFor": "for \"{query}\"",
+  "@cyberAcademySearchResultsFor": {
+    "description": "",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "cyberAcademyBadgeContinue": "CONTINUE",
+  "cyberAcademyBadgeFeatured": "FEATURED",
+  "cyberAcademyPercentComplete": "{percent}% complete",
+  "@cyberAcademyPercentComplete": {
+    "description": "",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyXpPoints": "{xp} XP",
+  "@cyberAcademyXpPoints": {
+    "description": "",
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyDurationMinutes": "{minutes} min",
+  "@cyberAcademyDurationMinutes": {
+    "description": "",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyDifficultyBeginner": "Beginner",
+  "cyberAcademyDifficultyIntermediate": "Intermediate",
+  "cyberAcademyDifficultyAdvanced": "Advanced",
+  "cyberAcademyContinueButton": "Continue →",
+  "cyberAcademyStartLessonButton": "Start Lesson →",
+  "cyberAcademyStepsCount": "{count} steps",
+  "@cyberAcademyStepsCount": {
+    "description": "",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyStatusDone": "✓ Done",
+  "cyberAcademyStatusStart": "Start",
+  "cyberAcademyLevelTitle": "Level {level} — Security Analyst",
+  "@cyberAcademyLevelTitle": {
+    "description": "",
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyXpTotal": "{xp} XP total",
+  "@cyberAcademyXpTotal": {
+    "description": "",
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyProgressToLevel": "Progress to Level {level}",
+  "@cyberAcademyProgressToLevel": {
+    "description": "",
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyCompletedLabel": "Completed",
+  "cyberAcademyBadgesLabel": "Badges",
+  "cyberAcademyStreakLabel": "Streak",
+  "cyberAcademyStreakDays": "{days}d",
+  "@cyberAcademyStreakDays": {
+    "description": "",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyStepCounter": "Step {step} of {total}",
+  "@cyberAcademyStepCounter": {
+    "description": "",
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "cyberAcademyKnowledgeCheck": "KNOWLEDGE CHECK",
+  "cyberAcademyCorrectFeedback": "Correct! Well done.",
+  "cyberAcademyIncorrectFeedback": "Not quite — the correct answer is highlighted above.",
+  "cyberAcademyCompleteLessonButton": "Complete Lesson",
+  "cyberAcademyNextStepButton": "Next Step",
+  "cyberAcademyContentComingSoon": "Content coming soon",
+  "cyberAcademyCloseButton": "Close",
+
+  "splashTagline": "Advanced Security Suite",
+  "splashStatusInit": "Initializing security engine…",
+  "splashStatusThreatDb": "Loading threat database…",
+  "splashStatusNetwork": "Checking network interfaces…",
+  "splashStatusPrivacy": "Calibrating privacy scanner…",
+  "splashStatusReady": "All systems ready",
+
+  "onboardingSkipButton": "Skip",
+  "onboardingNextButton": "Next",
+  "onboardingGetStartedButton": "Get Started",
+  "onboardingFeatureRealtimeThreatDetection": "Real-time threat detection",
+  "onboardingFeatureNetworkPrivacyProtection": "Network & privacy protection",
+  "onboardingFeatureCybersecurityEducation": "Cybersecurity education",
+  "onboardingFeatureEvilTwinDetection": "Evil Twin detection",
+  "onboardingFeatureSignalRiskAnalysis": "Signal & risk analysis",
+  "onboardingFeatureConnectedDeviceAudit": "Connected device audit",
+  "onboardingFeaturePermissionAuditing": "Permission auditing",
+  "onboardingFeatureRiskScoringPerApp": "Risk scoring per app",
+  "onboardingFeatureOneTapPermissionRevoke": "One-tap permission revoke",
+  "onboardingFeatureHandsOnLessons": "8+ hands-on lessons",
+  "onboardingFeatureKnowledgeQuizzes": "Knowledge quizzes",
+  "onboardingFeatureXpLevelsBadges": "XP, levels & badges"
 }

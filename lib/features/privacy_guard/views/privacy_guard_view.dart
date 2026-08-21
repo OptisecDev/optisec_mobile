@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../shared/models/security_score_model.dart';
 import '../../../shared/widgets/score_ring.dart';
 import '../controllers/privacy_guard_controller.dart';
 import '../widgets/exposure_chart.dart';
@@ -32,17 +34,18 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('Privacy Guard'), automaticallyImplyLeading: false),
-      body: const Center(
+      appBar: AppBar(title: Text(l10n.privacyGuard), automaticallyImplyLeading: false),
+      body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(color: AppColors.primary),
-            SizedBox(height: 16),
-            Text('Scanning permissions…',
-                style: TextStyle(color: AppColors.textSecondary)),
+            const CircularProgressIndicator(color: AppColors.primary),
+            const SizedBox(height: 16),
+            Text(l10n.privacyScanningPermissions,
+                style: const TextStyle(color: AppColors.textSecondary)),
           ],
         ),
       ),
@@ -89,6 +92,7 @@ class _ContentBody extends StatelessWidget {
 
   SliverAppBar _buildAppBar(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return SliverAppBar(
       floating: true,
       snap: true,
@@ -98,10 +102,10 @@ class _ContentBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Privacy Guard'),
+          Text(l10n.privacyGuard),
           Obx(() => Text(
-                '${controller.highRiskCount} high-risk · '
-                '${controller.grantedCount} granted',
+                l10n.privacyHighRiskGrantedSubtitle(
+                    controller.highRiskCount, controller.grantedCount),
                 style: theme.textTheme.labelSmall?.copyWith(fontSize: 10),
               )),
         ],
@@ -137,15 +141,10 @@ class _ScoreHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       final score = controller.privacyScore.value;
-      final Color accentColor = score >= 80
-          ? AppColors.safe
-          : score >= 60
-              ? AppColors.primary
-              : score >= 40
-                  ? AppColors.warning
-                  : AppColors.danger;
+      final Color accentColor = scoreColorFor(score);
 
       return Container(
         padding: const EdgeInsets.all(20),
@@ -171,21 +170,21 @@ class _ScoreHero extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Privacy Score',
+                  Text(l10n.privacyScore,
                       style: theme.textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
-                    _scoreDesc(score),
+                    _scoreDesc(l10n, score),
                     style: theme.textTheme.bodySmall
                         ?.copyWith(height: 1.5),
                   ),
                   const SizedBox(height: 12),
                   // Mini breakdown bullets
-                  _bullet(theme, 'High risk',
+                  _bullet(theme, l10n.privacyBulletHighRisk,
                       controller.highRiskCount, AppColors.danger),
-                  _bullet(theme, 'Medium risk',
+                  _bullet(theme, l10n.privacyBulletMediumRisk,
                       controller.mediumRiskCount, AppColors.warning),
-                  _bullet(theme, 'Protected',
+                  _bullet(theme, l10n.privacyBulletProtected,
                       controller.deniedCount, AppColors.safe),
                 ],
               ),
@@ -196,11 +195,17 @@ class _ScoreHero extends StatelessWidget {
     });
   }
 
-  String _scoreDesc(int score) {
-    if (score >= 80) return 'Your privacy is well protected. Keep reviewing new app installs.';
-    if (score >= 60) return 'Some permissions need attention. Review the recommendations below.';
-    if (score >= 40) return 'Several high-risk permissions are active. Take action now.';
-    return 'Critical privacy exposure detected. Revoke sensitive permissions immediately.';
+  String _scoreDesc(AppLocalizations l10n, int score) {
+    switch (scoreTierFor(score)) {
+      case ScoreTier.safe:
+        return l10n.privacyScoreDescExcellent;
+      case ScoreTier.good:
+        return l10n.privacyScoreDescGood;
+      case ScoreTier.warning:
+        return l10n.privacyScoreDescPoor;
+      case ScoreTier.critical:
+        return l10n.privacyScoreDescCritical;
+    }
   }
 
   Widget _bullet(ThemeData theme, String label, int count, Color color) {
@@ -235,13 +240,14 @@ class _RiskSummaryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Obx(() => Row(
           children: [
             Expanded(
               child: _SummaryCard(
                 theme: theme,
                 icon: Icons.dangerous_rounded,
-                label: 'High Risk',
+                label: l10n.privacySummaryHighRisk,
                 value: '${controller.highRiskCount}',
                 color: AppColors.danger,
                 index: 0,
@@ -253,7 +259,7 @@ class _RiskSummaryRow extends StatelessWidget {
               child: _SummaryCard(
                 theme: theme,
                 icon: Icons.warning_amber_rounded,
-                label: 'Medium Risk',
+                label: l10n.privacySummaryMediumRisk,
                 value: '${controller.mediumRiskCount}',
                 color: AppColors.warning,
                 index: 1,
@@ -265,7 +271,7 @@ class _RiskSummaryRow extends StatelessWidget {
               child: _SummaryCard(
                 theme: theme,
                 icon: Icons.verified_rounded,
-                label: 'Protected',
+                label: l10n.privacyBulletProtected,
                 value: '${controller.deniedCount}',
                 color: AppColors.safe,
                 index: 2,
@@ -349,6 +355,7 @@ class _DonutCardState extends State<_DonutCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -359,7 +366,7 @@ class _DonutCardState extends State<_DonutCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Permission Risk Breakdown',
+          Text(l10n.privacyRiskBreakdownTitle,
               style: theme.textTheme.titleMedium),
           const SizedBox(height: 16),
           Obx(() {
@@ -367,16 +374,16 @@ class _DonutCardState extends State<_DonutCard> {
             final medium = widget.controller.mediumRiskCount;
             final denied = widget.controller.deniedCount;
             final sections = <(double, Color, String)>[
-              if (high > 0) (high.toDouble(), AppColors.danger, 'High'),
-              if (medium > 0) (medium.toDouble(), AppColors.warning, 'Medium'),
-              if (denied > 0) (denied.toDouble(), AppColors.safe, 'Safe'),
+              if (high > 0) (high.toDouble(), AppColors.danger, l10n.privacyLegendHigh),
+              if (medium > 0) (medium.toDouble(), AppColors.warning, l10n.privacyLegendMedium),
+              if (denied > 0) (denied.toDouble(), AppColors.safe, l10n.safe),
             ];
             if (sections.isEmpty) {
-              return const Center(
+              return Center(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text('No permission data yet.',
-                      style: TextStyle(color: AppColors.textDisabled)),
+                  padding: const EdgeInsets.all(24),
+                  child: Text(l10n.privacyNoPermissionData,
+                      style: const TextStyle(color: AppColors.textDisabled)),
                 ),
               );
             }
@@ -472,6 +479,7 @@ class _ExposureSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -484,10 +492,10 @@ class _ExposureSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Data Exposure by Permission',
+              Text(l10n.privacyExposureTitle,
                   style: theme.textTheme.titleMedium),
               const Spacer(),
-              Text('# apps granted',
+              Text(l10n.privacyAppsGrantedLabel,
                   style: theme.textTheme.labelSmall
                       ?.copyWith(color: AppColors.textDisabled, fontSize: 9)),
             ],
@@ -510,10 +518,17 @@ class _RecommendationsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       if (controller.highRiskCount == 0 && controller.mediumRiskCount == 0) {
         return const SizedBox();
       }
+      // Only granted, risky permissions -- and each "Fix" opens the real
+      // system permission settings for that permission, not a re-scan.
+      final recommended = controller.permissions
+          .where((p) => p.isGranted && (p.risk == 'high' || p.risk == 'medium'))
+          .toList()
+        ..sort((a, b) => a.risk == 'high' ? -1 : (b.risk == 'high' ? 1 : 0));
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -522,15 +537,15 @@ class _RecommendationsSection extends StatelessWidget {
               const Icon(Icons.recommend_rounded,
                   color: AppColors.warning, size: 17),
               const SizedBox(width: 7),
-              Text('Recommendations', style: theme.textTheme.titleMedium),
+              Text(l10n.privacyRecommendationsTitle, style: theme.textTheme.titleMedium),
             ],
           ),
           const SizedBox(height: 12),
-          ...kPrivacyRecommendations.asMap().entries.map(
+          ...recommended.asMap().entries.map(
                 (e) => PrivacyRecommendationCard(
-                  rec: e.value,
+                  permission: e.value,
                   index: e.key,
-                  onAction: controller.runScan,
+                  onAction: () => controller.revokePermission(e.value),
                 ),
               ),
         ],
@@ -549,13 +564,14 @@ class _PermissionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       final list = controller.filteredPermissions;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header + filter chips
-          Text('App Permissions', style: theme.textTheme.titleMedium),
+          Text(l10n.privacyAppPermissionsTitle, style: theme.textTheme.titleMedium),
           const SizedBox(height: 10),
           _FilterBar(controller: controller),
           const SizedBox(height: 14),
@@ -573,7 +589,7 @@ class _PermissionsSection extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
-                child: Text('No permissions match this filter.',
+                child: Text(l10n.privacyNoPermissionsMatch,
                     style: theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center),
               ),
@@ -591,20 +607,21 @@ class _FilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Obx(() => SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              _chip('All', PrivacyFilterMode.all,
+              _chip(l10n.privacyFilterAll, PrivacyFilterMode.all,
                   controller.filterMode.value),
               const SizedBox(width: 7),
-              _chip('Granted', PrivacyFilterMode.granted,
+              _chip(l10n.privacyFilterGranted, PrivacyFilterMode.granted,
                   controller.filterMode.value),
               const SizedBox(width: 7),
-              _chip('High Risk', PrivacyFilterMode.high,
+              _chip(l10n.privacySummaryHighRisk, PrivacyFilterMode.high,
                   controller.filterMode.value),
               const SizedBox(width: 7),
-              _chip('Medium', PrivacyFilterMode.medium,
+              _chip(l10n.privacyLegendMedium, PrivacyFilterMode.medium,
                   controller.filterMode.value),
             ],
           ),
@@ -654,6 +671,7 @@ class _UsageTimelineSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -666,7 +684,7 @@ class _UsageTimelineSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Permission Usage Timeline',
+              Text(l10n.privacyUsageTimelineTitle,
                   style: theme.textTheme.titleMedium),
               const Spacer(),
               Container(
@@ -676,9 +694,9 @@ class _UsageTimelineSection extends StatelessWidget {
                   color: AppColors.primary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Text(
-                  'PRO',
-                  style: TextStyle(
+                child: Text(
+                  l10n.privacyProBadge,
+                  style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
                     color: AppColors.primary,
@@ -690,13 +708,13 @@ class _UsageTimelineSection extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Which apps with camera, microphone, or location access were recently open.',
+            l10n.privacyUsageTimelineDesc1,
             style: theme.textTheme.bodySmall
                 ?.copyWith(color: AppColors.textDisabled),
           ),
           const SizedBox(height: 3),
           Text(
-            'Based on foreground app time, not confirmed sensor access.',
+            l10n.privacyUsageTimelineDesc2,
             style: theme.textTheme.labelSmall?.copyWith(
                 color: AppColors.textDisabled,
                 fontSize: 10,
@@ -726,7 +744,7 @@ class _UsageTimelineSection extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  'No apps with camera, microphone, or location access were open in the last 7 days.',
+                  l10n.privacyUsageTimelineEmpty,
                   style: theme.textTheme.bodySmall,
                 ),
               );
@@ -756,6 +774,7 @@ class _UsageAccessPrompt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final alreadyChecked = controller.hasCheckedUsageAccess.value;
 
     return Column(
@@ -767,14 +786,14 @@ class _UsageAccessPrompt extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: controller.requestUsageAccess,
-                  child: const Text('Open Settings'),
+                  child: Text(l10n.privacyOpenSettings),
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
                   onPressed: controller.loadPermissionUsage,
-                  child: const Text('Retry'),
+                  child: Text(l10n.privacyRetry),
                 ),
               ),
             ],
@@ -782,16 +801,13 @@ class _UsageAccessPrompt extends StatelessWidget {
         else
           ElevatedButton(
             onPressed: controller.loadPermissionUsage,
-            child: const Text('Load Usage Timeline'),
+            child: Text(l10n.privacyLoadUsageTimeline),
           ),
         const SizedBox(height: 10),
         Text(
           alreadyChecked
-              ? 'Usage Access isn\'t granted yet. Enable it for OptiSec in '
-                  'system settings, then tap Retry.'
-              : 'Requires "Usage Access" to be granted in system settings. '
-                  'This lets OptiSec see which apps were recently open — it '
-                  'does not grant access to any personal data.',
+              ? l10n.privacyUsageAccessNotGranted
+              : l10n.privacyUsageAccessExplain,
           style: theme.textTheme.bodySmall
               ?.copyWith(color: AppColors.textDisabled),
         ),
@@ -808,6 +824,7 @@ class _UsageErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -818,7 +835,7 @@ class _UsageErrorState extends StatelessWidget {
             const SizedBox(width: 7),
             Expanded(
               child: Text(
-                'Couldn\'t load the usage timeline.',
+                l10n.privacyUsageLoadError,
                 style: theme.textTheme.bodyMedium
                     ?.copyWith(color: AppColors.danger),
               ),
@@ -828,7 +845,7 @@ class _UsageErrorState extends StatelessWidget {
         const SizedBox(height: 10),
         ElevatedButton(
           onPressed: controller.loadPermissionUsage,
-          child: const Text('Retry'),
+          child: Text(l10n.privacyRetry),
         ),
       ],
     );

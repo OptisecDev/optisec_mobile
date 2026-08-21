@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/lesson_model.dart';
 import '../controllers/cyber_academy_controller.dart';
 
@@ -9,7 +10,7 @@ class LessonStepSheet extends StatefulWidget {
   const LessonStepSheet({super.key, required this.lesson});
 
   static void show(BuildContext context, LessonModel lesson) {
-    Get.find<CyberAcademyController>().startLesson(lesson);
+    if (!Get.find<CyberAcademyController>().startLesson(lesson)) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -142,6 +143,7 @@ class _SheetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
         Center(
@@ -172,7 +174,7 @@ class _SheetHeader extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Step ${stepIndex + 1} of $totalSteps',
+                      l10n.cyberAcademyStepCounter(stepIndex + 1, totalSteps),
                       style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -294,6 +296,7 @@ class _QuizStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -303,14 +306,14 @@ class _QuizStep extends StatelessWidget {
             color: AppColors.accent.withOpacity(0.15),
             borderRadius: BorderRadius.circular(6),
           ),
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.quiz_rounded, size: 13, color: AppColors.accent),
-              SizedBox(width: 5),
+              const Icon(Icons.quiz_rounded, size: 13, color: AppColors.accent),
+              const SizedBox(width: 5),
               Text(
-                'KNOWLEDGE CHECK',
-                style: TextStyle(
+                l10n.cyberAcademyKnowledgeCheck,
+                style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.6,
@@ -455,8 +458,8 @@ class _QuizStep extends StatelessWidget {
                   Expanded(
                     child: Text(
                       correct
-                          ? 'Correct! Well done.'
-                          : 'Not quite — the correct answer is highlighted above.',
+                          ? l10n.cyberAcademyCorrectFeedback
+                          : l10n.cyberAcademyIncorrectFeedback,
                       style: TextStyle(
                         fontSize: 13,
                         color: correct ? AppColors.safe : AppColors.warning,
@@ -490,6 +493,7 @@ class _StepFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.fromLTRB(
           20, 12, 20, MediaQuery.of(context).padding.bottom + 12),
@@ -522,7 +526,9 @@ class _StepFooter extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                isLast ? 'Complete Lesson' : 'Next Step',
+                isLast
+                    ? l10n.cyberAcademyCompleteLessonButton
+                    : l10n.cyberAcademyNextStepButton,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -545,6 +551,7 @@ class _NoStepsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -552,9 +559,9 @@ class _NoStepsBody extends StatelessWidget {
           const Icon(Icons.construction_rounded,
               color: AppColors.textDisabled, size: 48),
           const SizedBox(height: 16),
-          const Text(
-            'Content coming soon',
-            style: TextStyle(
+          Text(
+            l10n.cyberAcademyContentComingSoon,
+            style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary),
@@ -566,7 +573,7 @@ class _NoStepsBody extends StatelessWidget {
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: onClose,
-            child: const Text('Close'),
+            child: Text(l10n.cyberAcademyCloseButton),
           ),
         ],
       ),

@@ -19,6 +19,12 @@ import '../widgets/security_tip_card.dart';
 import '../widgets/threat_item_card.dart';
 import '../widgets/threat_timeline_chart.dart';
 
+// Stable across DashboardView rebuilds (module-level, not an instance
+// field) so the AppBar's notification bell can always find the live
+// _ThreatsSection in the tree to scroll to, however many times the
+// StatelessWidget above it gets rebuilt.
+final _threatsSectionKey = GlobalKey();
+
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});
 
@@ -45,7 +51,7 @@ class DashboardView extends GetView<DashboardController> {
                 const SizedBox(height: 20),
                 _ChartsSection(controller: controller),
                 const SizedBox(height: 20),
-                _ThreatsSection(controller: controller),
+                _ThreatsSection(key: _threatsSectionKey, controller: controller),
                 const SizedBox(height: 20),
                 SecurityTipCard(controller: controller),
               ]),
@@ -103,7 +109,16 @@ class DashboardView extends GetView<DashboardController> {
               IconButton(
                 icon: const Icon(Icons.notifications_outlined),
                 color: AppColors.textSecondary,
-                onPressed: () {},
+                onPressed: () {
+                  final threatsContext = _threatsSectionKey.currentContext;
+                  if (threatsContext != null) {
+                    Scrollable.ensureVisible(
+                      threatsContext,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                },
               ),
               if (count > 0)
                 Positioned(
@@ -736,7 +751,7 @@ class _ChartTab extends StatelessWidget {
 class _ThreatsSection extends StatelessWidget {
   final DashboardController controller;
 
-  const _ThreatsSection({required this.controller});
+  const _ThreatsSection({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

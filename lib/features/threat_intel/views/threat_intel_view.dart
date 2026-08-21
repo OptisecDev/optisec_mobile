@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/threat_intel_controller.dart';
 import '../widgets/threat_alert_card.dart';
 
@@ -11,11 +12,12 @@ class ThreatIntelView extends GetView<ThreatIntelController> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text('Threat Intel'),
+        title: Text(l10n.threatIntelTitle),
         actions: [
           Obx(() => IconButton(
                 icon: controller.isLoading.value
@@ -42,12 +44,12 @@ class ThreatIntelView extends GetView<ThreatIntelController> {
 
           if (alerts.isEmpty) {
             return ListView(
-              children: const [
-                SizedBox(height: 120),
+              children: [
+                const SizedBox(height: 120),
                 Center(
                   child: Text(
-                    'No threat intel available',
-                    style: TextStyle(color: AppColors.textDisabled),
+                    l10n.threatIntelEmpty,
+                    style: const TextStyle(color: AppColors.textDisabled),
                   ),
                 ),
               ],
@@ -63,8 +65,9 @@ class ThreatIntelView extends GetView<ThreatIntelController> {
                   padding: const EdgeInsets.only(bottom: 14),
                   child: Obx(() => Text(
                         controller.lastUpdated.value != null
-                            ? 'Feed updated ${_timeAgo(controller.lastUpdated.value!)}'
-                            : 'Feed not yet loaded',
+                            ? l10n.threatIntelFeedUpdated(
+                                _timeAgo(l10n, controller.lastUpdated.value!))
+                            : l10n.threatIntelFeedNotLoaded,
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: AppColors.textDisabled,
                         ),
@@ -80,11 +83,11 @@ class ThreatIntelView extends GetView<ThreatIntelController> {
     );
   }
 
-  String _timeAgo(DateTime dt) {
+  String _timeAgo(AppLocalizations l10n, DateTime dt) {
     final diff = DateTime.now().difference(dt);
-    if (diff.inMinutes < 1) return 'just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return l10n.threatIntelJustNow;
+    if (diff.inHours < 1) return l10n.threatIntelMinutesAgo(diff.inMinutes);
+    if (diff.inDays < 1) return l10n.threatIntelHoursAgo(diff.inHours);
+    return l10n.threatIntelDaysAgo(diff.inDays);
   }
 }

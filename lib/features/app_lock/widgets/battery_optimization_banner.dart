@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Warns that OS battery optimization can kill the foreground monitor
 /// service, silently disabling App Lock. Shown only while at least one app
@@ -12,6 +13,7 @@ class BatteryOptimizationBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       padding: const EdgeInsets.all(14),
@@ -29,18 +31,18 @@ class BatteryOptimizationBanner extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Battery optimization may stop App Lock',
-                  style: TextStyle(
+                Text(
+                  l10n.appLockBatteryWarningTitle,
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
-                  'Allow unrestricted background activity so locked apps stay protected.',
-                  style: TextStyle(
+                Text(
+                  l10n.appLockBatteryWarningBody,
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.textSecondary,
                     height: 1.4,
@@ -53,7 +55,7 @@ class BatteryOptimizationBanner extends StatelessWidget {
           TextButton(
             onPressed: onFix,
             style: TextButton.styleFrom(foregroundColor: AppColors.warning),
-            child: const Text('Fix'),
+            child: Text(l10n.privacyFix),
           ),
         ],
       ),

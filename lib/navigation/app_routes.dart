@@ -9,6 +9,7 @@ abstract class AppRoutes {
   static const String lessonDetail = '/cyber-academy/lesson';
   static const String settings = '/settings';
   static const String paywall = '/paywall';
+  static const String licenseKeyEntry = '/license-key';
   static const String threatIntel = '/threat-intel';
   static const String appLock = '/app-lock';
   static const String pinSetup = '/app-lock/pin-setup';

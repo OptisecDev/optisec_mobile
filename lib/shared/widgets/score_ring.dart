@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../models/security_score_model.dart';
 
 /// Animated arc ring that sweeps from 0 → [score] and counts the number up.
 class AnimatedScoreRing extends StatelessWidget {
@@ -17,24 +18,10 @@ class AnimatedScoreRing extends StatelessWidget {
     this.duration = const Duration(milliseconds: 1400),
   });
 
-  Color _colorFor(int s) {
-    if (s >= 80) return AppColors.safe;
-    if (s >= 60) return AppColors.primary;
-    if (s >= 40) return AppColors.warning;
-    return AppColors.danger;
-  }
-
-  String _statusFor(int s) {
-    if (s >= 80) return 'Excellent';
-    if (s >= 60) return 'Good';
-    if (s >= 40) return 'Fair';
-    return 'Critical';
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = _colorFor(score);
+    final color = scoreColorFor(score);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: score.toDouble()),
@@ -90,7 +77,7 @@ class AnimatedScoreRing extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _statusFor(displayScore),
+                      scoreStatusLabelFor(displayScore),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,

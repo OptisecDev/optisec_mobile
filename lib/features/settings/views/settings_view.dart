@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../navigation/app_routes.dart';
+import '../../subscription/controllers/subscription_controller.dart';
 import '../controllers/settings_controller.dart';
 
 class SettingsView extends GetView<SettingsController> {
@@ -10,6 +12,7 @@ class SettingsView extends GetView<SettingsController> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -18,11 +21,21 @@ class SettingsView extends GetView<SettingsController> {
           SliverToBoxAdapter(child: _AppHeaderCard()),
           SliverToBoxAdapter(child: const SizedBox(height: 8)),
 
+          // Subscription
+          SliverToBoxAdapter(
+            child: _SectionHeader(
+              icon: Icons.workspace_premium_rounded,
+              title: l10n.settingsSectionSubscription,
+              delay: 0,
+            ),
+          ),
+          SliverToBoxAdapter(child: _SubscriptionSection()),
+
           // Appearance
           SliverToBoxAdapter(
             child: _SectionHeader(
               icon: Icons.palette_outlined,
-              title: 'Appearance',
+              title: l10n.settingsSectionAppearance,
               delay: 0,
             ),
           ),
@@ -32,7 +45,7 @@ class SettingsView extends GetView<SettingsController> {
           SliverToBoxAdapter(
             child: _SectionHeader(
               icon: Icons.radar_rounded,
-              title: 'Security Scanning',
+              title: l10n.settingsSectionScanning,
               delay: 50,
             ),
           ),
@@ -42,7 +55,7 @@ class SettingsView extends GetView<SettingsController> {
           SliverToBoxAdapter(
             child: _SectionHeader(
               icon: Icons.notifications_outlined,
-              title: 'Notifications',
+              title: l10n.notifications,
               delay: 100,
             ),
           ),
@@ -52,7 +65,7 @@ class SettingsView extends GetView<SettingsController> {
           SliverToBoxAdapter(
             child: _SectionHeader(
               icon: Icons.lock_outline_rounded,
-              title: 'Privacy & Lock',
+              title: l10n.settingsSectionPrivacyLock,
               delay: 150,
             ),
           ),
@@ -62,7 +75,7 @@ class SettingsView extends GetView<SettingsController> {
           SliverToBoxAdapter(
             child: _SectionHeader(
               icon: Icons.info_outline_rounded,
-              title: 'About',
+              title: l10n.about,
               delay: 200,
             ),
           ),
@@ -72,7 +85,7 @@ class SettingsView extends GetView<SettingsController> {
           SliverToBoxAdapter(
             child: _SectionHeader(
               icon: Icons.warning_amber_rounded,
-              title: 'Data',
+              title: l10n.settingsSectionData,
               titleColor: AppColors.danger,
               delay: 250,
             ),
@@ -90,14 +103,15 @@ class SettingsView extends GetView<SettingsController> {
 class _SettingsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SliverAppBar(
       pinned: true,
       backgroundColor: AppColors.background,
       surfaceTintColor: Colors.transparent,
       automaticallyImplyLeading: false,
-      title: const Text(
-        'Settings',
-        style: TextStyle(
+      title: Text(
+        l10n.settings,
+        style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w800,
           color: AppColors.textPrimary,
@@ -112,6 +126,7 @@ class _AppHeaderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 8, 20, 4),
       padding: const EdgeInsets.all(20),
@@ -162,13 +177,13 @@ class _AppHeaderCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  'v${c.appVersion} (Build ${c.buildNumber})',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textDisabled,
-                  ),
-                ),
+                Obx(() => Text(
+                      l10n.settingsVersionBuild(c.appVersion.value, c.buildNumber.value),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textDisabled,
+                      ),
+                    )),
                 const SizedBox(height: 6),
                 Container(
                   padding:
@@ -177,9 +192,9 @@ class _AppHeaderCard extends StatelessWidget {
                     color: AppColors.safe.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text(
-                    'All systems protected',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.settingsAllSystemsProtected,
+                    style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: AppColors.safe,
@@ -235,19 +250,60 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
+// ── Subscription ─────────────────────────────────────────────────
+class _SubscriptionSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final c = Get.find<SubscriptionController>();
+    final l10n = AppLocalizations.of(context);
+    return Obx(() {
+      final subscription = c.subscription.value;
+      final isPro = subscription.isPro;
+
+      final String subtitle;
+      if (!isPro) {
+        subtitle = l10n.settingsFreePlanSubtitle;
+      } else if (subscription.expiryDate == null) {
+        subtitle = subscription.licenseeLabel != null
+            ? l10n.settingsLifetimeLicenseWithLabel(subscription.licenseeLabel!)
+            : l10n.settingsLifetimeLicense;
+      } else {
+        final expiry = subscription.expiryDate!.toLocal();
+        subtitle = l10n.settingsValidUntil(
+            '${expiry.year}-${expiry.month.toString().padLeft(2, '0')}-${expiry.day.toString().padLeft(2, '0')}');
+      }
+
+      return _SettingsGroup(
+        delay: 0,
+        children: [
+          _ArrowTile(
+            icon: Icons.workspace_premium_rounded,
+            iconColor: isPro ? AppColors.primary : AppColors.textSecondary,
+            title: isPro ? l10n.settingsProActive : l10n.settingsProInactive,
+            subtitle: subtitle,
+            value: isPro ? l10n.settingsProBadge : l10n.settingsFreeBadge,
+            onTap: () => Get.toNamed(AppRoutes.licenseKeyEntry),
+          ),
+        ],
+      );
+    });
+  }
+}
+
 // ── Appearance ───────────────────────────────────────────────────
 class _AppearanceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 50,
       children: [
         Obx(() => _ArrowTile(
               icon: Icons.language_rounded,
               iconColor: AppColors.info,
-              title: 'Language',
-              subtitle: 'App display language',
+              title: l10n.language,
+              subtitle: l10n.settingsLanguageSubtitle,
               value: c.language.value == 'ar' ? 'العربية' : 'English',
               onTap: () => _showLanguageSheet(context, c),
             )),
@@ -255,9 +311,9 @@ class _AppearanceSection extends StatelessWidget {
         _StaticTile(
           icon: Icons.dark_mode_rounded,
           iconColor: const Color(0xFF8B5CF6),
-          title: 'Theme',
-          subtitle: 'Display theme',
-          value: 'Dark',
+          title: l10n.settingsThemeTitle,
+          subtitle: l10n.settingsThemeSubtitle,
+          value: l10n.settingsThemeDark,
         ),
       ],
     );
@@ -277,14 +333,15 @@ class _ScanningSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 100,
       children: [
         Obx(() => _SwitchTile(
               icon: Icons.radar_rounded,
               iconColor: AppColors.primary,
-              title: 'Auto Scan',
-              subtitle: 'Periodically scan for threats',
+              title: l10n.settingsAutoScanTitle,
+              subtitle: l10n.settingsAutoScanSubtitle,
               value: c.autoScan.value,
               onChanged: (v) => c.autoScan.value = v,
             )),
@@ -292,8 +349,8 @@ class _ScanningSection extends StatelessWidget {
         Obx(() => _ArrowTile(
               icon: Icons.timer_outlined,
               iconColor: AppColors.warning,
-              title: 'Scan Interval',
-              subtitle: 'How often to run auto scans',
+              title: l10n.settingsScanIntervalTitle,
+              subtitle: l10n.settingsScanIntervalSubtitle,
               value: c.scanIntervalLabel,
               onTap: c.autoScan.value
                   ? () => _showIntervalSheet(context, c)
@@ -304,8 +361,8 @@ class _ScanningSection extends StatelessWidget {
         Obx(() => _SwitchTile(
               icon: Icons.wifi_tethering_error_rounded,
               iconColor: AppColors.danger,
-              title: 'Evil Twin Alerts',
-              subtitle: 'Warn when a rogue access point is detected',
+              title: l10n.settingsEvilTwinAlertsTitle,
+              subtitle: l10n.settingsEvilTwinAlertsSubtitle,
               value: c.evilTwinAlerts.value,
               onChanged: (v) => c.evilTwinAlerts.value = v,
             )),
@@ -313,8 +370,8 @@ class _ScanningSection extends StatelessWidget {
         Obx(() => _SwitchTile(
               icon: Icons.vpn_lock_rounded,
               iconColor: AppColors.info,
-              title: 'VPN Detection',
-              subtitle: 'Detect active VPN connections',
+              title: l10n.settingsVpnDetectionTitle,
+              subtitle: l10n.settingsVpnDetectionSubtitle,
               value: c.vpnDetection.value,
               onChanged: (v) => c.vpnDetection.value = v,
             )),
@@ -336,14 +393,15 @@ class _NotificationsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 150,
       children: [
         Obx(() => _SwitchTile(
               icon: Icons.notifications_rounded,
               iconColor: AppColors.primary,
-              title: 'Push Notifications',
-              subtitle: 'Allow OptiSec to send notifications',
+              title: l10n.settingsPushNotifTitle,
+              subtitle: l10n.settingsPushNotifSubtitle,
               value: c.pushNotifications.value,
               onChanged: (v) => c.pushNotifications.value = v,
             )),
@@ -351,8 +409,8 @@ class _NotificationsSection extends StatelessWidget {
         Obx(() => _SwitchTile(
               icon: Icons.warning_rounded,
               iconColor: AppColors.danger,
-              title: 'Threat Alerts',
-              subtitle: 'Immediate alerts for detected threats',
+              title: l10n.settingsThreatAlertsTitle,
+              subtitle: l10n.settingsThreatAlertsSubtitle,
               value: c.threatAlerts.value,
               onChanged: c.pushNotifications.value
                   ? (v) => c.threatAlerts.value = v
@@ -363,13 +421,28 @@ class _NotificationsSection extends StatelessWidget {
         Obx(() => _SwitchTile(
               icon: Icons.bar_chart_rounded,
               iconColor: AppColors.warning,
-              title: 'Weekly Security Report',
-              subtitle: 'Summary of threats and scans each week',
+              title: l10n.settingsWeeklyReportTitle,
+              subtitle: l10n.settingsWeeklyReportSubtitle,
               value: c.weeklyReport.value,
               onChanged: c.pushNotifications.value
-                  ? (v) => c.weeklyReport.value = v
+                  ? (v) => c.setWeeklyReport(v)
                   : null,
               dimmed: !c.pushNotifications.value,
+            )),
+        _Divider(),
+        Obx(() => _ActionTile(
+              icon: Icons.picture_as_pdf_rounded,
+              iconColor: AppColors.primary,
+              title: l10n.settingsExportReportTitle,
+              subtitle: l10n.settingsExportReportSubtitle,
+              actionLabel: c.isExportingReport.value
+                  ? l10n.settingsExportReportExportingAction
+                  : l10n.settingsExportReportAction,
+              actionColor: AppColors.primary,
+              onTap: c.isExportingReport.value
+                  ? null
+                  : () => c.exportSecurityReport(),
+              loading: c.isExportingReport.value,
             )),
       ],
     );
@@ -381,14 +454,15 @@ class _PrivacySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 200,
       children: [
         Obx(() => _SwitchTile(
               icon: Icons.fingerprint_rounded,
               iconColor: AppColors.primary,
-              title: 'Biometric Lock',
-              subtitle: 'Require fingerprint or Face ID to open app',
+              title: l10n.settingsBiometricLockTitle,
+              subtitle: l10n.settingsBiometricLockSubtitle,
               value: c.biometricLock.value,
               onChanged: (v) => c.biometricLock.value = v,
             )),
@@ -396,16 +470,16 @@ class _PrivacySection extends StatelessWidget {
         _ArrowTile(
           icon: Icons.lock_person_rounded,
           iconColor: AppColors.primary,
-          title: 'App Lock',
-          subtitle: 'PIN or biometric protection for individual apps',
+          title: l10n.settingsAppLockTitle,
+          subtitle: l10n.settingsAppLockSubtitle,
           onTap: () => Get.toNamed(AppRoutes.appLock),
         ),
         _Divider(),
         Obx(() => _SwitchTile(
               icon: Icons.analytics_outlined,
               iconColor: AppColors.textSecondary,
-              title: 'Usage Analytics',
-              subtitle: 'Share anonymous usage data to improve the app',
+              title: l10n.settingsUsageAnalyticsTitle,
+              subtitle: l10n.settingsUsageAnalyticsSubtitle,
               value: c.analyticsEnabled.value,
               onChanged: (v) => c.analyticsEnabled.value = v,
             )),
@@ -419,45 +493,46 @@ class _AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 250,
       children: [
         _ArrowTile(
           icon: Icons.star_rate_rounded,
           iconColor: const Color(0xFFFFD700),
-          title: 'Rate OptiSec',
-          subtitle: 'Leave a review on the App Store',
-          onTap: () => _snack('Opening App Store…'),
+          title: l10n.settingsRateAppTitle,
+          subtitle: l10n.settingsRateAppSubtitle,
+          onTap: () => _snack(l10n.settingsOpeningAppStore),
         ),
         _Divider(),
         _ArrowTile(
           icon: Icons.share_rounded,
           iconColor: AppColors.info,
-          title: 'Share App',
-          subtitle: 'Tell your friends about OptiSec',
-          onTap: () => _snack('Opening share sheet…'),
+          title: l10n.settingsShareAppTitle,
+          subtitle: l10n.settingsShareAppSubtitle,
+          onTap: () => _snack(l10n.settingsOpeningShareSheet),
         ),
         _Divider(),
         _ArrowTile(
           icon: Icons.privacy_tip_outlined,
           iconColor: AppColors.textSecondary,
-          title: 'Privacy Policy',
-          onTap: () => _snack('Opening Privacy Policy…'),
+          title: l10n.settingsPrivacyPolicy,
+          onTap: () => _snack(l10n.settingsOpeningPrivacyPolicy),
         ),
         _Divider(),
         _ArrowTile(
           icon: Icons.description_outlined,
           iconColor: AppColors.textSecondary,
-          title: 'Terms of Service',
-          onTap: () => _snack('Opening Terms of Service…'),
+          title: l10n.settingsTermsOfService,
+          onTap: () => _snack(l10n.settingsOpeningTerms),
         ),
         _Divider(),
-        _StaticTile(
-          icon: Icons.build_circle_outlined,
-          iconColor: AppColors.textDisabled,
-          title: 'Version',
-          value: 'v${c.appVersion} (${c.buildNumber})',
-        ),
+        Obx(() => _StaticTile(
+              icon: Icons.build_circle_outlined,
+              iconColor: AppColors.textDisabled,
+              title: l10n.version,
+              value: l10n.settingsVersionShort(c.appVersion.value, c.buildNumber.value),
+            )),
       ],
     );
   }
@@ -481,6 +556,7 @@ class _DangerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SettingsController>();
+    final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 300,
       borderColor: AppColors.danger.withOpacity(0.25),
@@ -488,49 +564,53 @@ class _DangerSection extends StatelessWidget {
         _ActionTile(
           icon: Icons.history_rounded,
           iconColor: AppColors.warning,
-          title: 'Clear Scan History',
-          subtitle: 'Remove all saved scan results',
-          actionLabel: 'Clear',
+          title: l10n.settingsClearHistoryTitle,
+          subtitle: l10n.settingsClearHistorySubtitle,
+          actionLabel: l10n.settingsClearAction,
           actionColor: AppColors.warning,
-          onTap: () => _confirmClear(context, c),
+          onTap: () => _confirmClear(context, c, l10n),
         ),
         _Divider(),
         Obx(() => _ActionTile(
               icon: Icons.delete_forever_rounded,
               iconColor: AppColors.danger,
-              title: 'Reset All Data',
-              subtitle: 'Erase everything and restore defaults',
-              actionLabel:
-                  c.isResetting.value ? 'Resetting…' : 'Reset',
+              title: l10n.settingsResetAllTitle,
+              subtitle: l10n.settingsResetAllSubtitle,
+              actionLabel: c.isResetting.value
+                  ? l10n.settingsResettingAction
+                  : l10n.settingsResetAction,
               actionColor: AppColors.danger,
               onTap: c.isResetting.value
                   ? null
-                  : () => _confirmReset(context, c),
+                  : () => _confirmReset(context, c, l10n),
               loading: c.isResetting.value,
             )),
       ],
     );
   }
 
-  void _confirmClear(BuildContext context, SettingsController c) {
+  void _confirmClear(
+      BuildContext context, SettingsController c, AppLocalizations l10n) {
     _showConfirmDialog(
       context: context,
-      title: 'Clear Scan History?',
-      body: 'This will remove all saved scan results. Your settings will not be affected.',
-      confirmLabel: 'Clear',
+      title: l10n.settingsClearHistoryConfirmTitle,
+      body: l10n.settingsClearHistoryConfirmBody,
+      confirmLabel: l10n.settingsClearAction,
       confirmColor: AppColors.warning,
+      cancelLabel: l10n.settingsCancel,
       onConfirm: c.clearScanHistory,
     );
   }
 
-  void _confirmReset(BuildContext context, SettingsController c) {
+  void _confirmReset(
+      BuildContext context, SettingsController c, AppLocalizations l10n) {
     _showConfirmDialog(
       context: context,
-      title: 'Reset All Data?',
-      body:
-          'This will erase all scan history, threat records, and restore all settings to their defaults. This cannot be undone.',
-      confirmLabel: 'Reset Everything',
+      title: l10n.settingsResetAllConfirmTitle,
+      body: l10n.settingsResetAllConfirmBody,
+      confirmLabel: l10n.settingsResetEverythingAction,
       confirmColor: AppColors.danger,
+      cancelLabel: l10n.settingsCancel,
       onConfirm: c.resetAllData,
     );
   }
@@ -541,6 +621,7 @@ class _DangerSection extends StatelessWidget {
     required String body,
     required String confirmLabel,
     required Color confirmColor,
+    required String cancelLabel,
     required VoidCallback onConfirm,
   }) {
     showDialog(
@@ -567,8 +648,8 @@ class _DangerSection extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel',
-                style: TextStyle(color: Color(0xFF8DA3BC))),
+            child: Text(cancelLabel,
+                style: const TextStyle(color: Color(0xFF8DA3BC))),
           ),
           TextButton(
             onPressed: () {
@@ -964,6 +1045,7 @@ class _LanguageSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.surface,
@@ -986,9 +1068,9 @@ class _LanguageSheet extends StatelessWidget {
               ),
             ),
           ),
-          const Text(
-            'Select Language',
-            style: TextStyle(
+          Text(
+            l10n.settingsSelectLanguage,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w800,
               color: AppColors.textPrimary,
@@ -1101,6 +1183,7 @@ class _IntervalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.surface,
@@ -1122,18 +1205,18 @@ class _IntervalSheet extends StatelessWidget {
               ),
             ),
           ),
-          const Text(
-            'Scan Interval',
-            style: TextStyle(
+          Text(
+            l10n.settingsScanIntervalTitle,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w800,
               color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'How often should OptiSec scan for threats?',
-            style: TextStyle(
+          Text(
+            l10n.settingsScanIntervalPrompt,
+            style: const TextStyle(
               fontSize: 12,
               color: AppColors.textDisabled,
             ),
@@ -1141,13 +1224,13 @@ class _IntervalSheet extends StatelessWidget {
           const SizedBox(height: 20),
           ...SettingsController.scanIntervals.map((minutes) {
             final label = minutes < 60
-                ? 'Every $minutes minutes'
-                : 'Every hour';
+                ? l10n.settingsEveryMinutes(minutes)
+                : l10n.settingsEveryHour;
             final sublabel = minutes <= 10
-                ? 'High frequency — more battery usage'
+                ? l10n.settingsFreqHigh
                 : minutes <= 20
-                    ? 'Balanced — recommended'
-                    : 'Low frequency — minimal battery usage';
+                    ? l10n.settingsFreqBalanced
+                    : l10n.settingsFreqLow;
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Obx(() {

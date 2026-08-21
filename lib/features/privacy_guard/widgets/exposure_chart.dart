@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/privacy_guard_controller.dart';
 
 /// Horizontal per-permission exposure bars.
@@ -48,6 +49,7 @@ class _ExposureRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -71,14 +73,14 @@ class _ExposureRow extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(perm.nameEn,
+                    Text(perm.name(context),
                         style: theme.textTheme.bodySmall
                             ?.copyWith(fontSize: 11)),
                     const Spacer(),
                     Text(
                       perm.isGranted
-                          ? '${perm.appsCount} apps'
-                          : 'Denied',
+                          ? l10n.privacyAppsCountChip(perm.appsCount)
+                          : l10n.privacyDenied,
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,

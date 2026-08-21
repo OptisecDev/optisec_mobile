@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -35,8 +36,11 @@ class PurchaseService {
 
   StreamSubscription<List<PurchaseDetails>>? _subscription;
 
-  final ValueNotifier<SubscriptionModel> currentSubscription =
-      ValueNotifier<SubscriptionModel>(SubscriptionModel.free());
+  // A GetX Rx (not a plain ValueNotifier) so SubscriptionController can
+  // expose this exact object to its views directly, instead of keeping a
+  // second Rx manually synced to it via a listener.
+  final Rx<SubscriptionModel> currentSubscription =
+      Rx<SubscriptionModel>(SubscriptionModel.free());
 
   bool _initialized = false;
 
@@ -81,6 +85,15 @@ class PurchaseService {
 
   Future<void> restorePurchases() async {
     await _iap.restorePurchases();
+  }
+
+  /// Lets other entitlement sources (e.g. `LicenseKeyService`) publish
+  /// through the same notifier + persisted storage this service already
+  /// owns, so `SubscriptionController` has one source of truth regardless
+  /// of whether Pro was granted via IAP or a license key. Last write wins.
+  void applyExternalEntitlement(SubscriptionModel model) {
+    currentSubscription.value = model;
+    _box.write(_storageKey, model.toJson());
   }
 
   Future<void> _handlePurchaseUpdates(
@@ -149,7 +162,6 @@ class PurchaseService {
     if (product == null) return;
 
     final subscription = SubscriptionModel.pro(
-      product: product,
       expiryDate: product == SubscriptionProduct.proLifetime
           ? null
           : DateTime.now().add(
@@ -157,6 +169,7 @@ class PurchaseService {
                   ? const Duration(days: 365)
                   : const Duration(days: 30),
             ),
+      source: EntitlementSource.iap,
     );
 
     currentSubscription.value = subscription;

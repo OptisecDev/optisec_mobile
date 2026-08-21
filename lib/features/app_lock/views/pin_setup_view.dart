@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/pin_setup_controller.dart';
 
 class PinSetupView extends GetView<PinSetupController> {
@@ -9,11 +10,12 @@ class PinSetupView extends GetView<PinSetupController> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text('Set PIN'),
+        title: Text(l10n.appLockSetPinLabel),
       ),
       body: SafeArea(
         child: Column(
@@ -21,8 +23,8 @@ class PinSetupView extends GetView<PinSetupController> {
             const SizedBox(height: 24),
             Obx(() => Text(
                   controller.step.value == PinSetupStep.enter
-                      ? 'Choose a 4-digit PIN'
-                      : 'Confirm your PIN',
+                      ? l10n.pinSetupChooseTitle
+                      : l10n.pinSetupConfirmTitle,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

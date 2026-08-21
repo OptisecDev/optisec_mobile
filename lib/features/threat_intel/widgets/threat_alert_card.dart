@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/threat_alert_model.dart';
 
 class ThreatAlertCard extends StatefulWidget {
@@ -34,30 +35,31 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
     }
   }
 
-  String get _severityLabel {
+  String _severityLabel(AppLocalizations l10n) {
     switch (widget.alert.severity) {
       case AlertSeverity.critical:
-        return 'CRITICAL';
+        return l10n.threatIntelSeverityCritical;
       case AlertSeverity.high:
-        return 'HIGH';
+        return l10n.threatIntelSeverityHigh;
       case AlertSeverity.medium:
-        return 'MEDIUM';
+        return l10n.threatIntelSeverityMedium;
       case AlertSeverity.low:
-        return 'LOW';
+        return l10n.threatIntelSeverityLow;
     }
   }
 
-  String _timeAgo() {
+  String _timeAgo(AppLocalizations l10n) {
     final diff = DateTime.now().difference(widget.alert.publishedAt);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return l10n.threatIntelJustNow;
+    if (diff.inHours < 1) return l10n.threatIntelMinutesAgo(diff.inMinutes);
+    if (diff.inDays < 1) return l10n.threatIntelHoursAgo(diff.inHours);
+    return l10n.threatIntelDaysAgo(diff.inDays);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final alert = widget.alert;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -89,7 +91,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    _severityBadge(),
+                    _severityBadge(l10n),
                   ],
                 ),
                 const SizedBox(height: 6),
@@ -106,7 +108,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      _timeAgo(),
+                      _timeAgo(l10n),
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: AppColors.textDisabled,
                         fontSize: 10,
@@ -174,7 +176,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
         .slideY(begin: 0.06, end: 0, duration: 350.ms);
   }
 
-  Widget _severityBadge() {
+  Widget _severityBadge(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
@@ -182,7 +184,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
         borderRadius: BorderRadius.circular(5),
       ),
       child: Text(
-        _severityLabel,
+        _severityLabel(l10n),
         style: TextStyle(
           fontSize: 9,
           fontWeight: FontWeight.w800,

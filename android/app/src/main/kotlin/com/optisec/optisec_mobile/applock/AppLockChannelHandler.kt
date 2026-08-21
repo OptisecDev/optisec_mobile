@@ -53,23 +53,6 @@ class AppLockChannelHandler(private val activity: Activity) {
                         store.setPin(pin)
                         result.success(null)
                     }
-                    "verifyPin" -> {
-                        val pin = call.argument<String>("pin")
-                        if (pin.isNullOrEmpty()) {
-                            result.error("INVALID_PIN", "PIN must not be empty", null)
-                            return@setMethodCallHandler
-                        }
-                        val remaining = store.getLockoutRemainingMillis()
-                        if (remaining > 0) {
-                            result.error(
-                                "LOCKED_OUT",
-                                "Too many failed attempts",
-                                remaining,
-                            )
-                            return@setMethodCallHandler
-                        }
-                        result.success(store.verifyPin(pin))
-                    }
                     "hasOverlayPermission" -> result.success(hasOverlayPermission())
                     "openOverlaySettings" -> {
                         openOverlaySettings()

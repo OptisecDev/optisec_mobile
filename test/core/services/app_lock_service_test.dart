@@ -7,8 +7,8 @@ import 'package:optisec_mobile/core/services/app_lock_service.dart';
 /// bookkeeping live natively in AppLockStore/PinHasher.kt and are not
 /// reachable from Dart, so they aren't covered here -- see the App Lock
 /// coverage notes in the task summary. What *is* Dart-side and covered by
-/// this file is how the service maps channel results/errors (including the
-/// LOCKED_OUT duration payload) into the Dart-facing result types.
+/// this file is how the service maps channel results/errors into the
+/// Dart-facing result types.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -166,81 +166,6 @@ void main() {
       );
 
       expect(await service.setPin(''), isFalse);
-    });
-  });
-
-  group('verifyPin', () {
-    test('sends the pin argument', () async {
-      stubHandler((call) async => true);
-
-      await service.verifyPin('1234');
-
-      expect(lastCall!.method, 'verifyPin');
-      expect(lastCall!.arguments, {'pin': '1234'});
-    });
-
-    test('maps a true result to success', () async {
-      stubHandler((call) async => true);
-
-      final result = await service.verifyPin('1234');
-
-      expect(result.status, PinVerifyStatus.success);
-      expect(result.isSuccess, isTrue);
-      expect(result.lockoutRemaining, isNull);
-    });
-
-    test('maps a false result to incorrect (wrong PIN rejected)', () async {
-      stubHandler((call) async => false);
-
-      final result = await service.verifyPin('0000');
-
-      expect(result.status, PinVerifyStatus.incorrect);
-      expect(result.isSuccess, isFalse);
-    });
-
-    test('maps a LOCKED_OUT PlatformException to lockedOut with remaining duration',
-        () async {
-      stubHandler(
-        (call) async => throw PlatformException(
-          code: 'LOCKED_OUT',
-          details: 30000,
-        ),
-      );
-
-      final result = await service.verifyPin('0000');
-
-      expect(result.status, PinVerifyStatus.lockedOut);
-      expect(result.lockoutRemaining, const Duration(milliseconds: 30000));
-    });
-
-    test('maps a LOCKED_OUT PlatformException with non-int details to zero duration',
-        () async {
-      stubHandler(
-        (call) async => throw PlatformException(code: 'LOCKED_OUT', details: 'oops'),
-      );
-
-      final result = await service.verifyPin('0000');
-
-      expect(result.status, PinVerifyStatus.lockedOut);
-      expect(result.lockoutRemaining, Duration.zero);
-    });
-
-    test('maps any other PlatformException to incorrect', () async {
-      stubHandler(
-        (call) async => throw PlatformException(code: 'INVALID_PIN'),
-      );
-
-      final result = await service.verifyPin('');
-
-      expect(result.status, PinVerifyStatus.incorrect);
-    });
-
-    test('maps a non-PlatformException error to incorrect', () async {
-      stubHandler((call) async => throw StateError('boom'));
-
-      final result = await service.verifyPin('0000');
-
-      expect(result.status, PinVerifyStatus.incorrect);
     });
   });
 

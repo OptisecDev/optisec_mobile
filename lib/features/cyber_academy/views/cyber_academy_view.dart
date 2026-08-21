@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/lesson_model.dart';
 import '../controllers/cyber_academy_controller.dart';
 import '../widgets/academy_hero_card.dart';
@@ -34,10 +35,11 @@ class _AcademyBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return CustomScrollView(
       slivers: [
-        _buildAppBar(context),
-        SliverToBoxAdapter(child: _buildSearchBar()),
+        _buildAppBar(context, l10n),
+        SliverToBoxAdapter(child: _buildSearchBar(l10n)),
         SliverToBoxAdapter(child: const SizedBox(height: 20)),
         SliverToBoxAdapter(child: const AcademyHeroCard()),
         SliverToBoxAdapter(child: const SizedBox(height: 24)),
@@ -51,16 +53,16 @@ class _AcademyBody extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  Widget _buildAppBar(BuildContext context, AppLocalizations l10n) {
     return SliverAppBar(
       expandedHeight: 0,
       floating: true,
       snap: true,
       backgroundColor: AppColors.background,
       surfaceTintColor: Colors.transparent,
-      title: const Text(
-        'Cyber Academy',
-        style: TextStyle(
+      title: Text(
+        l10n.cyberAcademy,
+        style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w800,
           color: AppColors.textPrimary,
@@ -85,7 +87,7 @@ class _AcademyBody extends StatelessWidget {
                         color: Color(0xFFFFD700), size: 14),
                     const SizedBox(width: 4),
                     Text(
-                      '${controller.badges.length} badges',
+                      l10n.cyberAcademyBadgesCount(controller.badges.length),
                       style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -100,7 +102,7 @@ class _AcademyBody extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
       child: TextField(
@@ -110,7 +112,7 @@ class _AcademyBody extends StatelessWidget {
           fontSize: 14,
         ),
         decoration: InputDecoration(
-          hintText: 'Search lessons, topics, tags…',
+          hintText: l10n.cyberAcademySearchHint,
           hintStyle: const TextStyle(
             color: AppColors.textDisabled,
             fontSize: 14,
@@ -146,6 +148,7 @@ class _FeaturedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       final featured = controller.featuredLessons;
       if (featured.isEmpty) return const SizedBox.shrink();
@@ -159,9 +162,9 @@ class _FeaturedSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                const Text(
-                  'Featured',
-                  style: TextStyle(
+                Text(
+                  l10n.cyberAcademyFeaturedTitle,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
                     color: AppColors.textPrimary,
@@ -169,9 +172,9 @@ class _FeaturedSection extends StatelessWidget {
                 ),
                 const Spacer(),
                 if (continueLesson != null)
-                  const Text(
-                    'CONTINUE WHERE YOU LEFT OFF',
-                    style: TextStyle(
+                  Text(
+                    l10n.cyberAcademyContinueWhereLeftOff,
+                    style: const TextStyle(
                       fontSize: 9,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.6,
@@ -212,23 +215,27 @@ class _CategoryFilterBar extends StatelessWidget {
   final CyberAcademyController controller;
   const _CategoryFilterBar({required this.controller});
 
-  static const _categories = [
-    (null, 'All', Icons.apps_rounded),
-    (LessonCategory.phishing, 'Phishing', Icons.phishing_rounded),
-    (LessonCategory.password, 'Passwords', Icons.lock_rounded),
-    (LessonCategory.network, 'Network', Icons.wifi_rounded),
-    (LessonCategory.privacy, 'Privacy', Icons.shield_rounded),
-  ];
+  List<(LessonCategory?, String, IconData)> _categories(AppLocalizations l10n) => [
+        (null, l10n.cyberAcademyCategoryAll, Icons.apps_rounded),
+        (LessonCategory.phishing, l10n.cyberAcademyCategoryPhishing,
+            Icons.phishing_rounded),
+        (LessonCategory.password, l10n.cyberAcademyCategoryPassword,
+            Icons.lock_rounded),
+        (LessonCategory.network, l10n.cyberAcademyCategoryNetwork,
+            Icons.wifi_rounded),
+        (LessonCategory.privacy, l10n.navPrivacy, Icons.shield_rounded),
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       final selected = controller.selectedCategory.value;
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
-          children: _categories.map((item) {
+          children: _categories(l10n).map((item) {
             final (cat, label, icon) = item;
             final active = selected == cat;
             final color = _catColor(cat);
@@ -290,18 +297,37 @@ class _LessonsSliver extends StatelessWidget {
   final CyberAcademyController controller;
   const _LessonsSliver({required this.controller});
 
+  String _sectionTitle(
+    AppLocalizations l10n,
+    LessonCategory? cat,
+    String query,
+  ) {
+    if (cat != null) {
+      switch (cat) {
+        case LessonCategory.phishing:
+          return l10n.cyberAcademySectionPhishingLessons;
+        case LessonCategory.password:
+          return l10n.cyberAcademySectionPasswordLessons;
+        case LessonCategory.network:
+          return l10n.cyberAcademySectionNetworkLessons;
+        case LessonCategory.privacy:
+          return l10n.cyberAcademySectionPrivacyLessons;
+      }
+    }
+    return query.isNotEmpty
+        ? l10n.cyberAcademySectionSearchResults
+        : l10n.cyberAcademySectionAllLessons;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Obx(() {
       final list = controller.filteredLessons;
       final query = controller.searchQuery.value.trim();
       final cat = controller.selectedCategory.value;
 
-      final sectionTitle = cat != null
-          ? '${cat.name[0].toUpperCase()}${cat.name.substring(1)} Lessons'
-          : query.isNotEmpty
-              ? 'Search Results'
-              : 'All Lessons';
+      final sectionTitle = _sectionTitle(l10n, cat, query);
 
       if (list.isEmpty) {
         return SliverToBoxAdapter(
@@ -314,7 +340,7 @@ class _LessonsSliver extends StatelessWidget {
                     color: AppColors.textDisabled, size: 40),
                 const SizedBox(height: 12),
                 Text(
-                  'No lessons found',
+                  l10n.cyberAcademyNoLessonsFound,
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -323,7 +349,7 @@ class _LessonsSliver extends StatelessWidget {
                 ),
                 if (query.isNotEmpty)
                   Text(
-                    'for "$query"',
+                    l10n.cyberAcademySearchResultsFor(query),
                     style: const TextStyle(
                       fontSize: 13,
                       color: AppColors.textDisabled,

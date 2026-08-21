@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/signal_bar.dart';
 
 /// Four-arc WiFi signal indicator mirroring the native icon style.
 class WifiSignalBars extends StatelessWidget {
@@ -8,11 +9,7 @@ class WifiSignalBars extends StatelessWidget {
 
   const WifiSignalBars({super.key, required this.percent, this.size = 22});
 
-  Color get _activeColor {
-    if (percent >= 70) return AppColors.safe;
-    if (percent >= 40) return AppColors.warning;
-    return AppColors.danger;
-  }
+  Color get _activeColor => signalColorFor(percent);
 
   // Returns how many bars (1–4) are lit
   int get _bars {

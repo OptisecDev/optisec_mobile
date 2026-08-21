@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/cyber_academy_controller.dart';
 
 class AcademyHeroCard extends StatelessWidget {
@@ -9,6 +10,7 @@ class AcademyHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<CyberAcademyController>();
+    final l10n = AppLocalizations.of(context);
     return Obx(() => Container(
           margin: const EdgeInsets.fromLTRB(20, 0, 20, 4),
           padding: const EdgeInsets.all(20),
@@ -33,7 +35,7 @@ class AcademyHeroCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Level ${c.userLevel.value} — Security Analyst',
+                          l10n.cyberAcademyLevelTitle(c.userLevel.value),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -42,7 +44,7 @@ class AcademyHeroCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '${c.userXp.value} XP total',
+                          l10n.cyberAcademyXpTotal(c.userXp.value),
                           style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -64,7 +66,7 @@ class AcademyHeroCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Progress to Level ${c.userLevel.value + 1}',
+                        l10n.cyberAcademyProgressToLevel(c.userLevel.value + 1),
                         style: const TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
@@ -129,21 +131,21 @@ class AcademyHeroCard extends StatelessWidget {
                   _StatPill(
                     icon: Icons.school_rounded,
                     label: '${c.completedCount}/${c.totalCount}',
-                    sublabel: 'Completed',
+                    sublabel: l10n.cyberAcademyCompletedLabel,
                     color: AppColors.primary,
                   ),
                   const SizedBox(width: 10),
                   _StatPill(
                     icon: Icons.emoji_events_rounded,
                     label: '${c.badges.length}',
-                    sublabel: 'Badges',
+                    sublabel: l10n.cyberAcademyBadgesLabel,
                     color: const Color(0xFFFFD700),
                   ),
                   const SizedBox(width: 10),
                   _StatPill(
                     icon: Icons.local_fire_department_rounded,
-                    label: '${c.streak.value}d',
-                    sublabel: 'Streak',
+                    label: l10n.cyberAcademyStreakDays(c.streak.value),
+                    sublabel: l10n.cyberAcademyStreakLabel,
                     color: const Color(0xFFFF6B35),
                   ),
                 ],
@@ -198,6 +200,7 @@ class _StreakBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
@@ -212,7 +215,7 @@ class _StreakBadge extends StatelessWidget {
               color: Color(0xFFFF6B35), size: 16),
           const SizedBox(width: 4),
           Text(
-            '${streak}d',
+            l10n.cyberAcademyStreakDays(streak),
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w800,

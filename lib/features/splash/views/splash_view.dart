@@ -2,7 +2,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
@@ -11,6 +13,7 @@ class SplashView extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -66,9 +69,9 @@ class SplashView extends GetView<SplashController> {
                     const SizedBox(height: 8),
 
                     // Tagline
-                    const Text(
-                      'Advanced Security Suite',
-                      style: TextStyle(
+                    Text(
+                      l10n.splashTagline,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textDisabled,
@@ -268,6 +271,14 @@ class _LoadingSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<SplashController>();
+    final l10n = AppLocalizations.of(context);
+    final statusMessages = [
+      l10n.splashStatusInit,
+      l10n.splashStatusThreatDb,
+      l10n.splashStatusNetwork,
+      l10n.splashStatusPrivacy,
+      l10n.splashStatusReady,
+    ];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -344,7 +355,7 @@ class _LoadingSection extends StatelessWidget {
                 ),
               ),
               child: Text(
-                c.statusText,
+                statusMessages[c.statusIndex.value],
                 key: ValueKey(c.statusIndex.value),
                 style: const TextStyle(
                   fontSize: 12,
@@ -359,12 +370,18 @@ class _LoadingSection extends StatelessWidget {
         const SizedBox(height: 32),
 
         // Version label
-        const Text(
-          'v1.0.0',
-          style: TextStyle(
-            fontSize: 11,
-            color: AppColors.textDisabled,
-          ),
+        FutureBuilder<PackageInfo>(
+          future: PackageInfo.fromPlatform(),
+          builder: (context, snapshot) {
+            final info = snapshot.data;
+            return Text(
+              info == null ? '' : 'v${info.version}',
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textDisabled,
+              ),
+            );
+          },
         )
             .animate()
             .fadeIn(delay: 1400.ms, duration: 400.ms),

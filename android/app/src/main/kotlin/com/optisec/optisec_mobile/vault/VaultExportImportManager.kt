@@ -123,11 +123,16 @@ class VaultExportImportManager(private val activity: MainActivity, private val s
 
                 val payload = JSONObject(String(payloadBytes, Charsets.UTF_8))
                 val entriesArray = payload.getJSONArray("entries")
+                // Materialize every entry object up front so a malformed
+                // element throws here, before wipeAllEntries() below --
+                // otherwise a "replace" import that fails partway through
+                // the loop would leave the vault wiped with only some of
+                // the imported entries restored.
+                val parsedEntries = (0 until entriesArray.length()).map { entriesArray.getJSONObject(it) }
 
                 if (!merge) store.wipeAllEntries()
 
-                for (i in 0 until entriesArray.length()) {
-                    val entry = entriesArray.getJSONObject(i)
+                for (entry in parsedEntries) {
                     store.upsertEntry(
                         id = null,
                         title = entry.optString("title"),

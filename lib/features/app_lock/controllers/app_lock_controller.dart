@@ -72,11 +72,12 @@ class AppLockController extends GetxController {
     if (lockedPackages.contains(packageName)) {
       lockedPackages.remove(packageName);
     } else {
-      final isFirstLockedApp = lockedPackages.isEmpty;
-      if (!isFirstLockedApp) {
+      // Checked against the actual limit every time -- including for the
+      // very first app -- rather than assuming freeAppLockLimit is 1 and
+      // special-casing "the first app is always free" separately from it.
+      if (lockedPackages.length >= FeatureGate.freeAppLockLimit) {
         final subscriptionController = Get.find<SubscriptionController>();
-        if (lockedPackages.length >= FeatureGate.freeAppLockLimit &&
-            !subscriptionController.checkAccessOrPrompt(feature: 'app_lock')) {
+        if (!subscriptionController.checkAccessOrPrompt(feature: 'app_lock')) {
           return;
         }
       }

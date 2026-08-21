@@ -127,7 +127,7 @@ class NetworkDetailSheet extends StatelessWidget {
             ],
           ),
         ),
-        RiskScoreBadge(score: network.riskScore),
+        RiskScoreBadge(score: network.riskScore, level: network.threatLevel),
       ],
     );
   }
@@ -311,7 +311,7 @@ class NetworkDetailSheet extends StatelessWidget {
           children: [
             Text(l10n.wifiRiskBreakdownTitle, style: theme.textTheme.titleSmall),
             const Spacer(),
-            RiskScoreBadge(score: network.riskScore),
+            RiskScoreBadge(score: network.riskScore, level: network.threatLevel),
           ],
         ),
         const SizedBox(height: 12),

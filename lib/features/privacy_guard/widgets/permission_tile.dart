@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/privacy_guard_controller.dart';
 import 'permission_detail_sheet.dart';
 
@@ -27,9 +28,21 @@ class PermissionTile extends StatelessWidget {
     }
   }
 
+  String _riskLabel(AppLocalizations l10n) {
+    switch (permission.risk) {
+      case 'high':
+        return l10n.privacySummaryHighRisk;
+      case 'medium':
+        return l10n.privacySummaryMediumRisk;
+      default:
+        return l10n.privacyLowRisk;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () => PermissionDetailSheet.show(context, permission, onRevoke),
       child: Container(
@@ -110,12 +123,12 @@ class PermissionTile extends StatelessWidget {
                             Row(
                               children: [
                                 _chip(
-                                  '${permission.appsCount} apps',
+                                  l10n.privacyAppsCountChip(permission.appsCount),
                                   AppColors.textDisabled,
                                 ),
                                 const SizedBox(width: 6),
                                 _chip(
-                                  permission.riskLabel,
+                                  _riskLabel(l10n),
                                   _riskColor,
                                 ),
                               ],
@@ -145,9 +158,9 @@ class PermissionTile extends StatelessWidget {
                                       color: AppColors.danger
                                           .withOpacity(0.25)),
                                 ),
-                                child: const Text(
-                                  'Revoke',
-                                  style: TextStyle(
+                                child: Text(
+                                  l10n.privacyRevoke,
+                                  style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.danger,
@@ -163,9 +176,9 @@ class PermissionTile extends StatelessWidget {
                                 color: AppColors.safe.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(7),
                               ),
-                              child: const Text(
-                                'Denied ✓',
-                                style: TextStyle(
+                              child: Text(
+                                l10n.privacyDeniedCheck,
+                                style: const TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.safe,

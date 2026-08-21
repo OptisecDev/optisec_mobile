@@ -857,35 +857,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get privacyRecMicTitle => 'تقييد الوصول إلى الميكروفون';
-
-  @override
-  String get privacyRecMicBody =>
-      'لديك 4 تطبيقات لديها وصول دائم إلى الميكروفون. فقط تطبيقات الصوت والمكالمات تحتاج إليه.';
-
-  @override
-  String get privacyRecMicAction => 'مراجعة تطبيقات الميكروفون';
-
-  @override
-  String get privacyRecLocationTitle =>
-      'استخدم \"أثناء الاستخدام\" لإذن الموقع';
-
-  @override
-  String get privacyRecLocationBody =>
-      'غيّر إذن الموقع من \"دائمًا\" إلى \"فقط أثناء استخدام التطبيق\".';
-
-  @override
-  String get privacyRecLocationAction => 'تحديث إذن الموقع';
-
-  @override
-  String get privacyRecContactsTitle => 'تقييد الوصول إلى جهات الاتصال';
-
-  @override
-  String get privacyRecContactsBody =>
-      'يمكن لـ 5 تطبيقات قراءة قائمة جهات اتصالك بالكامل. قصرها على تطبيقات المراسلة فقط.';
-
-  @override
-  String get privacyRecContactsAction => 'مراجعة جهات الاتصال';
+  String privacyRecGrantedTitle(String name) {
+    return 'تم منح إذن $name';
+  }
 
   @override
   String get privacyFix => 'إصلاح';
@@ -1159,4 +1133,388 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsDataResetBody => 'تم مسح جميع الإعدادات وبيانات الفحص.';
+
+  @override
+  String get threatIntelTitle => 'معلومات التهديدات';
+
+  @override
+  String get threatIntelEmpty => 'لا تتوفر معلومات تهديدات حالياً';
+
+  @override
+  String threatIntelFeedUpdated(String time) {
+    return 'آخر تحديث للخلاصة $time';
+  }
+
+  @override
+  String get threatIntelFeedNotLoaded => 'لم تُحمَّل الخلاصة بعد';
+
+  @override
+  String get threatIntelJustNow => 'الآن';
+
+  @override
+  String threatIntelMinutesAgo(int minutes) {
+    return 'قبل $minutes د';
+  }
+
+  @override
+  String threatIntelHoursAgo(int hours) {
+    return 'قبل $hours س';
+  }
+
+  @override
+  String threatIntelDaysAgo(int days) {
+    return 'قبل $days يوم';
+  }
+
+  @override
+  String get threatIntelSeverityCritical => 'حرج';
+
+  @override
+  String get threatIntelSeverityHigh => 'مرتفع';
+
+  @override
+  String get threatIntelSeverityMedium => 'متوسط';
+
+  @override
+  String get threatIntelSeverityLow => 'منخفض';
+
+  @override
+  String get licenseKeyScreenTitle => 'إدخال مفتاح الترخيص';
+
+  @override
+  String get licenseKeyIntro =>
+      'أدخل مفتاح الترخيص الذي استلمته عبر البريد الإلكتروني بعد شراء OptiSec Pro.';
+
+  @override
+  String get licenseKeyActivatedTitle => 'تم تفعيل الترخيص';
+
+  @override
+  String get licenseKeyActivatedBody => 'تم تفعيل OptiSec Pro على هذا الجهاز.';
+
+  @override
+  String get licenseKeyFieldLabel => 'مفتاح الترخيص';
+
+  @override
+  String get licenseKeyPasteTooltip => 'لصق';
+
+  @override
+  String get licenseKeyActivateButton => 'تفعيل';
+
+  @override
+  String get licenseKeyErrorInvalidFormat => 'هذا لا يبدو كمفتاح ترخيص صالح.';
+
+  @override
+  String get licenseKeyErrorInvalidSignature =>
+      'هذا المفتاح غير صالح أو تم العبث به.';
+
+  @override
+  String get licenseKeyErrorMalformed => 'هذا المفتاح تالف.';
+
+  @override
+  String get licenseKeyErrorExpired => 'انتهت صلاحية هذا الترخيص.';
+
+  @override
+  String licenseKeyErrorExpiredOn(String date) {
+    return 'انتهت صلاحية هذا الترخيص بتاريخ $date.';
+  }
+
+  @override
+  String get licenseKeyErrorUnknown => 'خطأ غير معروف.';
+
+  @override
+  String get paywallHaveLicenseKey => 'هل لديك مفتاح ترخيص؟';
+
+  @override
+  String get navPrivacy => 'الخصوصية';
+
+  @override
+  String get navAcademy => 'الأكاديمية';
+
+  @override
+  String paywallUnlockFeature(String feature) {
+    return 'افتح \"$feature\" مع OptiSec Pro';
+  }
+
+  @override
+  String get paywallBenefitEvilTwin => 'تحليل كامل لهجمات Evil Twin';
+
+  @override
+  String get paywallBenefitPdfReports => 'تقارير PDF أسبوعية';
+
+  @override
+  String get paywallBenefitAcademyLessons =>
+      'جميع دروس أكاديمية الأمن السيبراني';
+
+  @override
+  String get paywallBenefitPriorityAlerts => 'تنبيهات ذات أولوية';
+
+  @override
+  String get paywallRestorePurchases => 'استعادة المشتريات';
+
+  @override
+  String get paywallBestValueBadge => 'أفضل قيمة';
+
+  @override
+  String get paywallContinueButton => 'متابعة';
+
+  @override
+  String get appLockBatteryWarningTitle =>
+      'قد يوقف توفير البطارية قفل التطبيقات';
+
+  @override
+  String get appLockBatteryWarningBody =>
+      'اسمح بنشاط خلفية غير مقيّد ليبقى قفل التطبيقات فعّالاً.';
+
+  @override
+  String get appLockSetPinLabel => 'تعيين رمز PIN';
+
+  @override
+  String get pinSetupChooseTitle => 'اختر رمز PIN من 4 أرقام';
+
+  @override
+  String get pinSetupConfirmTitle => 'أكّد رمز PIN';
+
+  @override
+  String get pinSetupMismatchError => 'رمزا PIN غير متطابقين. حاول مجدداً.';
+
+  @override
+  String get pinSetupSaveError => 'تعذّر حفظ رمز PIN. حاول مجدداً.';
+
+  @override
+  String get appLockSearchHint => 'البحث عن تطبيقات';
+
+  @override
+  String get appLockNoAppsFound => 'لا توجد تطبيقات';
+
+  @override
+  String get appLockPinPromptTitle => 'عيّن رمز PIN لبدء قفل التطبيقات';
+
+  @override
+  String get appLockOverlayPermissionPrompt =>
+      'اسمح بإذن \"العرض فوق التطبيقات الأخرى\" ليظهر شاشة القفل';
+
+  @override
+  String get appLockAllowButton => 'سماح';
+
+  @override
+  String cyberAcademyBadgesCount(int count) {
+    return '$count شارة';
+  }
+
+  @override
+  String get cyberAcademySearchHint => 'البحث في الدروس والمواضيع والوسوم…';
+
+  @override
+  String get cyberAcademyFeaturedTitle => 'مميز';
+
+  @override
+  String get cyberAcademyContinueWhereLeftOff => 'تابع من حيث توقفت';
+
+  @override
+  String get cyberAcademyCategoryAll => 'الكل';
+
+  @override
+  String get cyberAcademyCategoryPhishing => 'التصيد الاحتيالي';
+
+  @override
+  String get cyberAcademyCategoryPassword => 'كلمات المرور';
+
+  @override
+  String get cyberAcademyCategoryNetwork => 'الشبكة';
+
+  @override
+  String get cyberAcademySectionAllLessons => 'جميع الدروس';
+
+  @override
+  String get cyberAcademySectionSearchResults => 'نتائج البحث';
+
+  @override
+  String get cyberAcademySectionPhishingLessons => 'دروس التصيد الاحتيالي';
+
+  @override
+  String get cyberAcademySectionPasswordLessons => 'دروس كلمات المرور';
+
+  @override
+  String get cyberAcademySectionNetworkLessons => 'دروس الشبكة';
+
+  @override
+  String get cyberAcademySectionPrivacyLessons => 'دروس الخصوصية';
+
+  @override
+  String get cyberAcademyNoLessonsFound => 'لم يُعثر على دروس';
+
+  @override
+  String cyberAcademySearchResultsFor(String query) {
+    return 'عن \"$query\"';
+  }
+
+  @override
+  String get cyberAcademyBadgeContinue => 'متابعة';
+
+  @override
+  String get cyberAcademyBadgeFeatured => 'مميز';
+
+  @override
+  String cyberAcademyPercentComplete(int percent) {
+    return 'اكتمل $percent٪';
+  }
+
+  @override
+  String cyberAcademyXpPoints(int xp) {
+    return '$xp نقطة خبرة';
+  }
+
+  @override
+  String cyberAcademyDurationMinutes(int minutes) {
+    return '$minutes د';
+  }
+
+  @override
+  String get cyberAcademyDifficultyBeginner => 'مبتدئ';
+
+  @override
+  String get cyberAcademyDifficultyIntermediate => 'متوسط';
+
+  @override
+  String get cyberAcademyDifficultyAdvanced => 'متقدم';
+
+  @override
+  String get cyberAcademyContinueButton => 'متابعة →';
+
+  @override
+  String get cyberAcademyStartLessonButton => 'ابدأ الدرس →';
+
+  @override
+  String cyberAcademyStepsCount(int count) {
+    return '$count خطوة';
+  }
+
+  @override
+  String get cyberAcademyStatusDone => '✓ اكتمل';
+
+  @override
+  String get cyberAcademyStatusStart => 'ابدأ';
+
+  @override
+  String cyberAcademyLevelTitle(int level) {
+    return 'المستوى $level — محلل أمني';
+  }
+
+  @override
+  String cyberAcademyXpTotal(int xp) {
+    return '$xp نقطة خبرة إجمالاً';
+  }
+
+  @override
+  String cyberAcademyProgressToLevel(int level) {
+    return 'التقدم نحو المستوى $level';
+  }
+
+  @override
+  String get cyberAcademyCompletedLabel => 'مكتمل';
+
+  @override
+  String get cyberAcademyBadgesLabel => 'الشارات';
+
+  @override
+  String get cyberAcademyStreakLabel => 'التتابع';
+
+  @override
+  String cyberAcademyStreakDays(int days) {
+    return '$days يوم';
+  }
+
+  @override
+  String cyberAcademyStepCounter(int step, int total) {
+    return 'الخطوة $step من $total';
+  }
+
+  @override
+  String get cyberAcademyKnowledgeCheck => 'اختبار معرفي';
+
+  @override
+  String get cyberAcademyCorrectFeedback => 'إجابة صحيحة! أحسنت.';
+
+  @override
+  String get cyberAcademyIncorrectFeedback =>
+      'ليست صحيحة تماماً — الإجابة الصحيحة مُظلَّلة أعلاه.';
+
+  @override
+  String get cyberAcademyCompleteLessonButton => 'إكمال الدرس';
+
+  @override
+  String get cyberAcademyNextStepButton => 'الخطوة التالية';
+
+  @override
+  String get cyberAcademyContentComingSoon => 'المحتوى قادم قريباً';
+
+  @override
+  String get cyberAcademyCloseButton => 'إغلاق';
+
+  @override
+  String get splashTagline => 'منظومة أمنية متقدمة';
+
+  @override
+  String get splashStatusInit => 'تهيئة محرك الأمان…';
+
+  @override
+  String get splashStatusThreatDb => 'تحميل قاعدة بيانات التهديدات…';
+
+  @override
+  String get splashStatusNetwork => 'فحص واجهات الشبكة…';
+
+  @override
+  String get splashStatusPrivacy => 'معايرة ماسح الخصوصية…';
+
+  @override
+  String get splashStatusReady => 'جميع الأنظمة جاهزة';
+
+  @override
+  String get onboardingSkipButton => 'تخطي';
+
+  @override
+  String get onboardingNextButton => 'التالي';
+
+  @override
+  String get onboardingGetStartedButton => 'ابدأ الآن';
+
+  @override
+  String get onboardingFeatureRealtimeThreatDetection => 'كشف التهديدات الفوري';
+
+  @override
+  String get onboardingFeatureNetworkPrivacyProtection =>
+      'حماية الشبكة والخصوصية';
+
+  @override
+  String get onboardingFeatureCybersecurityEducation =>
+      'التوعية بالأمن السيبراني';
+
+  @override
+  String get onboardingFeatureEvilTwinDetection => 'كشف هجمات التوأم الشرير';
+
+  @override
+  String get onboardingFeatureSignalRiskAnalysis => 'تحليل الإشارة والمخاطر';
+
+  @override
+  String get onboardingFeatureConnectedDeviceAudit => 'تدقيق الأجهزة المتصلة';
+
+  @override
+  String get onboardingFeaturePermissionAuditing => 'تدقيق الأذونات';
+
+  @override
+  String get onboardingFeatureRiskScoringPerApp => 'تقييم المخاطر لكل تطبيق';
+
+  @override
+  String get onboardingFeatureOneTapPermissionRevoke =>
+      'إلغاء الأذونات بنقرة واحدة';
+
+  @override
+  String get onboardingFeatureHandsOnLessons => 'أكثر من 8 دروس تطبيقية';
+
+  @override
+  String get onboardingFeatureKnowledgeQuizzes => 'اختبارات معرفية';
+
+  @override
+  String get onboardingFeatureXpLevelsBadges =>
+      'نقاط الخبرة والمستويات والشارات';
 }

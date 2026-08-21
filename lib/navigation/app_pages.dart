@@ -11,6 +11,7 @@ import '../features/cyber_academy/controllers/cyber_academy_controller.dart';
 import '../features/settings/views/settings_view.dart';
 import '../features/settings/controllers/settings_controller.dart';
 import '../features/subscription/views/paywall_view.dart';
+import '../features/subscription/views/license_key_view.dart';
 import '../features/subscription/controllers/subscription_controller.dart';
 import '../features/threat_intel/views/threat_intel_view.dart';
 import '../features/threat_intel/controllers/threat_intel_controller.dart';
@@ -80,6 +81,15 @@ class AppPages {
     GetPage(
       name: AppRoutes.paywall,
       page: () => const PaywallView(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut(() => SubscriptionController()),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: AppRoutes.licenseKeyEntry,
+      page: () => const LicenseKeyView(),
       binding: BindingsBuilder(
         () => Get.lazyPut(() => SubscriptionController()),
       ),

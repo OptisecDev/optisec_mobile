@@ -2,7 +2,6 @@ class AppConstants {
   AppConstants._();
 
   static const String appName = 'OptiSec';
-  static const String appVersion = '1.0.0';
 
   // Scan intervals
   static const Duration wifiScanInterval = Duration(seconds: 30);

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../shared/models/security_score_model.dart';
 
 class ScoreHistoryChart extends StatefulWidget {
   final List<double> scores;
@@ -24,12 +25,7 @@ class _ScoreHistoryChartState extends State<ScoreHistoryChart> {
     });
   }
 
-  Color _dotColor(double val) {
-    if (val >= 80) return AppColors.safe;
-    if (val >= 60) return AppColors.primary;
-    if (val >= 40) return AppColors.warning;
-    return AppColors.danger;
-  }
+  Color _dotColor(double val) => scoreColorFor(val.round());
 
   @override
   Widget build(BuildContext context) {

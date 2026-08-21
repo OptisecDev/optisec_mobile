@@ -4,9 +4,9 @@ import '../../shared/models/vault_entry_model.dart';
 
 enum MasterPasswordVerifyStatus { success, incorrect, lockedOut }
 
-/// Result of [PasswordVaultService.unlockWithMasterPassword]. Mirrors
-/// AppLock's `PinVerifyResult` shape so lockout UI stays consistent across
-/// both features.
+/// Result of [PasswordVaultService.unlockWithMasterPassword]. Same
+/// success/incorrect/lockedOut shape used for App Lock's PIN lockout UI, so
+/// lockout messaging stays consistent across both features.
 class MasterPasswordVerifyResult {
   final MasterPasswordVerifyStatus status;
   final Duration? lockoutRemaining;

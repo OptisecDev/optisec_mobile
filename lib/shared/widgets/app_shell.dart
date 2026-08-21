@@ -7,6 +7,7 @@ import '../../features/home/controllers/home_controller.dart';
 import '../../features/privacy_guard/views/privacy_guard_view.dart';
 import '../../features/settings/views/settings_view.dart';
 import '../../features/wifi_shield/views/wifi_shield_view.dart';
+import '../../l10n/app_localizations.dart';
 
 class AppShell extends GetView<HomeController> {
   const AppShell({super.key});
@@ -38,41 +39,43 @@ class _ShellNavBar extends StatelessWidget {
   final HomeController controller;
   const _ShellNavBar({required this.controller});
 
-  static const _tabs = [
-    _TabDef(
-      activeIcon: Icons.dashboard_rounded,
-      inactiveIcon: Icons.dashboard_outlined,
-      label: 'Dashboard',
-      color: AppColors.primary,
-    ),
-    _TabDef(
-      activeIcon: Icons.wifi_rounded,
-      inactiveIcon: Icons.wifi_outlined,
-      label: 'WiFi Shield',
-      color: AppColors.info,
-    ),
-    _TabDef(
-      activeIcon: Icons.shield_rounded,
-      inactiveIcon: Icons.shield_outlined,
-      label: 'Privacy',
-      color: AppColors.primary,
-    ),
-    _TabDef(
-      activeIcon: Icons.school_rounded,
-      inactiveIcon: Icons.school_outlined,
-      label: 'Academy',
-      color: AppColors.warning,
-    ),
-    _TabDef(
-      activeIcon: Icons.settings_rounded,
-      inactiveIcon: Icons.settings_outlined,
-      label: 'Settings',
-      color: Color(0xFF8B5CF6),
-    ),
-  ];
+  List<_TabDef> _tabs(AppLocalizations l10n) => [
+        _TabDef(
+          activeIcon: Icons.dashboard_rounded,
+          inactiveIcon: Icons.dashboard_outlined,
+          label: l10n.dashboard,
+          color: AppColors.primary,
+        ),
+        _TabDef(
+          activeIcon: Icons.wifi_rounded,
+          inactiveIcon: Icons.wifi_outlined,
+          label: l10n.wifiShield,
+          color: AppColors.info,
+        ),
+        _TabDef(
+          activeIcon: Icons.shield_rounded,
+          inactiveIcon: Icons.shield_outlined,
+          label: l10n.navPrivacy,
+          color: AppColors.primary,
+        ),
+        _TabDef(
+          activeIcon: Icons.school_rounded,
+          inactiveIcon: Icons.school_outlined,
+          label: l10n.navAcademy,
+          color: AppColors.warning,
+        ),
+        _TabDef(
+          activeIcon: Icons.settings_rounded,
+          inactiveIcon: Icons.settings_outlined,
+          label: l10n.settings,
+          color: const Color(0xFF8B5CF6),
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final tabs = _tabs(l10n);
     final bottomPad = MediaQuery.of(context).padding.bottom;
     return Container(
       decoration: const BoxDecoration(
@@ -92,7 +95,7 @@ class _ShellNavBar extends StatelessWidget {
         padding: EdgeInsets.only(bottom: bottomPad, top: 6),
         child: Obx(
           () => Row(
-            children: _tabs.asMap().entries.map((e) {
+            children: tabs.asMap().entries.map((e) {
               final idx = e.key;
               final tab = e.value;
               final active = controller.currentIndex.value == idx;

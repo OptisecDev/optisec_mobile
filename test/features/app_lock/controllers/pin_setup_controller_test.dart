@@ -1,8 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:optisec_mobile/features/app_lock/controllers/pin_setup_controller.dart';
+import 'package:optisec_mobile/l10n/app_localizations.dart';
 import 'package:optisec_mobile/navigation/app_routes.dart';
 
 /// PinSetupController talks to AppLockService.instance, which is a
@@ -39,10 +41,21 @@ void main() {
     Get.reset();
   });
 
-  Future<PinSetupController> pumpController(WidgetTester tester) async {
+  Future<PinSetupController> pumpController(
+    WidgetTester tester, {
+    Locale locale = const Locale('en'),
+  }) async {
     await tester.pumpWidget(
       GetMaterialApp(
         initialRoute: '/',
+        locale: locale,
+        supportedLocales: const [Locale('en'), Locale('ar')],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         getPages: [
           GetPage(name: '/', page: () => const SizedBox()),
           GetPage(name: AppRoutes.pinSetup, page: () => const SizedBox()),
@@ -197,6 +210,30 @@ void main() {
         expect(Get.currentRoute, AppRoutes.pinSetup);
       },
     );
+  });
+
+  group('Arabic locale error messages', () {
+    testWidgets('mismatched confirmation shows the Arabic error text',
+        (tester) async {
+      final controller =
+          await pumpController(tester, locale: const Locale('ar'));
+
+      await enterDigits(tester, controller, '1234');
+      await enterDigits(tester, controller, '9999');
+
+      expect(controller.errorMessage.value, 'رمزا PIN غير متطابقين. حاول مجدداً.');
+    });
+
+    testWidgets('setPin failure shows the Arabic error text', (tester) async {
+      setPinShouldSucceed = false;
+      final controller =
+          await pumpController(tester, locale: const Locale('ar'));
+
+      await enterDigits(tester, controller, '1234');
+      await enterDigits(tester, controller, '1234');
+
+      expect(controller.errorMessage.value, 'تعذّر حفظ رمز PIN. حاول مجدداً.');
+    });
   });
 
   group('isSaving guards input', () {

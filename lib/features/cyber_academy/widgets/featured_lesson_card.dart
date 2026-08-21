@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/lesson_model.dart';
 
 class FeaturedLessonCard extends StatelessWidget {
@@ -42,6 +43,7 @@ class FeaturedLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -89,7 +91,9 @@ class FeaturedLessonCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          isContinue ? 'CONTINUE' : 'FEATURED',
+                          isContinue
+                              ? l10n.cyberAcademyBadgeContinue
+                              : l10n.cyberAcademyBadgeFeatured,
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.w800,
@@ -136,14 +140,15 @@ class FeaturedLessonCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${lesson.progressPercent}% complete',
+                          l10n.cyberAcademyPercentComplete(
+                              lesson.progressPercent),
                           style: const TextStyle(
                             fontSize: 10,
                             color: AppColors.textDisabled,
                           ),
                         ),
                         Text(
-                          '${lesson.xpPoints} XP',
+                          l10n.cyberAcademyXpPoints(lesson.xpPoints),
                           style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
@@ -168,13 +173,14 @@ class FeaturedLessonCard extends StatelessWidget {
                       spacing: 6,
                       children: [
                         _meta(Icons.schedule_rounded,
-                            '${lesson.durationMinutes} min'),
+                            l10n.cyberAcademyDurationMinutes(
+                                lesson.durationMinutes)),
                         _meta(Icons.star_rounded,
-                            '${lesson.xpPoints} XP',
+                            l10n.cyberAcademyXpPoints(lesson.xpPoints),
                             color: const Color(0xFFFFD700)),
                         _meta(
                           _difficultyIcon(lesson.difficulty),
-                          _difficultyLabel(lesson.difficulty),
+                          _difficultyLabel(l10n, lesson.difficulty),
                           color: _difficultyColor(lesson.difficulty),
                         ),
                       ],
@@ -198,7 +204,9 @@ class FeaturedLessonCard extends StatelessWidget {
                         elevation: 0,
                       ),
                       child: Text(
-                        isContinue ? 'Continue →' : 'Start Lesson →',
+                        isContinue
+                            ? l10n.cyberAcademyContinueButton
+                            : l10n.cyberAcademyStartLessonButton,
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
@@ -252,14 +260,14 @@ class FeaturedLessonCard extends StatelessWidget {
     }
   }
 
-  String _difficultyLabel(Difficulty d) {
+  String _difficultyLabel(AppLocalizations l10n, Difficulty d) {
     switch (d) {
       case Difficulty.beginner:
-        return 'Beginner';
+        return l10n.cyberAcademyDifficultyBeginner;
       case Difficulty.intermediate:
-        return 'Intermediate';
+        return l10n.cyberAcademyDifficultyIntermediate;
       case Difficulty.advanced:
-        return 'Advanced';
+        return l10n.cyberAcademyDifficultyAdvanced;
     }
   }
 

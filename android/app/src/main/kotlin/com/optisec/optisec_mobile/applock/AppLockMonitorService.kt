@@ -46,6 +46,7 @@ class AppLockMonitorService : Service() {
         overlayManager = LockOverlayManager.getInstance(this)
         usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         lastEventTime = System.currentTimeMillis() - POLL_INTERVAL_MS
+        checkAlreadyForegroundLockedApp()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -86,6 +87,46 @@ class AppLockMonitorService : Service() {
 
         if (latestForeground != null && latestForeground != currentForegroundPackage) {
             onForegroundChanged(latestForeground, lockedPackages)
+        }
+    }
+
+    /**
+     * The transition-based [poll] only ever sees new MOVE_TO_FOREGROUND
+     * events. If Android kills and restarts this service mid-session (e.g.
+     * for battery optimization) while a locked app is already sitting in
+     * the foreground, no new transition event fires within the poll
+     * window — [poll] alone would never lock it again for the rest of
+     * that session, leaving the vault fully exposed. Ask
+     * [UsageStatsManager] directly for the actual current foreground app
+     * once per (re)start and re-evaluate it through the normal
+     * [onForegroundChanged] path, exactly as if a transition had just
+     * been observed.
+     */
+    private fun checkAlreadyForegroundLockedApp() {
+        if (!store.isFeatureEnabled()) return
+        val lockedPackages = store.getLockedPackages()
+        if (lockedPackages.isEmpty()) return
+
+        val pkg = currentForegroundPackageFromStats() ?: return
+        onForegroundChanged(pkg, lockedPackages)
+    }
+
+    private fun currentForegroundPackageFromStats(): String? {
+        val now = System.currentTimeMillis()
+        return try {
+            usageStatsManager
+                .queryUsageStats(
+                    UsageStatsManager.INTERVAL_DAILY,
+                    now - FOREGROUND_LOOKUP_WINDOW_MS,
+                    now,
+                )
+                ?.filter { it.lastTimeUsed > 0 }
+                ?.maxByOrNull { it.lastTimeUsed }
+                ?.packageName
+        } catch (_: Exception) {
+            // Usage Access may have been revoked; fall back to the normal
+            // transition-based poll picking things up once it's re-granted.
+            null
         }
     }
 
@@ -155,6 +196,7 @@ class AppLockMonitorService : Service() {
 
     companion object {
         private const val POLL_INTERVAL_MS = 700L
+        private const val FOREGROUND_LOOKUP_WINDOW_MS = 10 * 60 * 1000L
         private const val NOTIFICATION_CHANNEL_ID = "app_lock_monitor"
         private const val NOTIFICATION_ID = 4201
 

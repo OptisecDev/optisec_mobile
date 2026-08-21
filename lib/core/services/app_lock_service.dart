@@ -2,29 +2,6 @@ import 'package:flutter/services.dart';
 
 import '../../shared/models/installed_app_info.dart';
 
-enum PinVerifyStatus { success, incorrect, lockedOut }
-
-/// Result of [AppLockService.verifyPin]. Distinguishes an incorrect PIN
-/// (user can retry immediately) from a lockout (retry blocked for
-/// [lockoutRemaining]) so the UI can show the right message.
-class PinVerifyResult {
-  final PinVerifyStatus status;
-  final Duration? lockoutRemaining;
-
-  const PinVerifyResult.success()
-      : status = PinVerifyStatus.success,
-        lockoutRemaining = null;
-
-  const PinVerifyResult.incorrect()
-      : status = PinVerifyStatus.incorrect,
-        lockoutRemaining = null;
-
-  const PinVerifyResult.lockedOut(this.lockoutRemaining)
-      : status = PinVerifyStatus.lockedOut;
-
-  bool get isSuccess => status == PinVerifyStatus.success;
-}
-
 /// MethodChannel wrapper over the native App Lock stack (foreground
 /// monitor service, overlay, BiometricPrompt + PIN lock screen). Only
 /// available on Android; every method degrades to a safe default
@@ -86,24 +63,6 @@ class AppLockService {
       return true;
     } catch (_) {
       return false;
-    }
-  }
-
-  Future<PinVerifyResult> verifyPin(String pin) async {
-    try {
-      final success =
-          await _channel.invokeMethod<bool>('verifyPin', {'pin': pin});
-      return success == true
-          ? const PinVerifyResult.success()
-          : const PinVerifyResult.incorrect();
-    } on PlatformException catch (e) {
-      if (e.code == 'LOCKED_OUT') {
-        final remainingMs = e.details is int ? e.details as int : 0;
-        return PinVerifyResult.lockedOut(Duration(milliseconds: remainingMs));
-      }
-      return const PinVerifyResult.incorrect();
-    } catch (_) {
-      return const PinVerifyResult.incorrect();
     }
   }
 

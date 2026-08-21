@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/privacy_guard_controller.dart';
 
 class PermissionDetailSheet extends StatelessWidget {
@@ -40,6 +41,7 @@ class PermissionDetailSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return DraggableScrollableSheet(
       initialChildSize: 0.65,
       maxChildSize: 0.9,
@@ -96,7 +98,7 @@ class PermissionDetailSheet extends StatelessWidget {
                                   fontFamily: 'Cairo', fontSize: 13),
                             ),
                             const SizedBox(height: 4),
-                            _RiskBadge(risk: permission.risk),
+                            _RiskBadge(l10n: l10n, risk: permission.risk),
                           ],
                         ),
                       ),
@@ -106,7 +108,7 @@ class PermissionDetailSheet extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   // Status row
-                  _StatusCard(permission: permission, riskColor: _riskColor, theme: theme),
+                  _StatusCard(permission: permission, riskColor: _riskColor, theme: theme, l10n: l10n),
 
                   const SizedBox(height: 20),
 
@@ -114,9 +116,9 @@ class PermissionDetailSheet extends StatelessWidget {
                   _Section(
                     theme: theme,
                     icon: Icons.info_outline_rounded,
-                    title: 'What This Permission Does',
+                    title: l10n.privacyWhatPermissionDoes,
                     child: Text(
-                      permission.descriptionEn,
+                      permission.description(context),
                       style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
                     ),
                   ),
@@ -128,9 +130,9 @@ class PermissionDetailSheet extends StatelessWidget {
                     theme: theme,
                     icon: Icons.lightbulb_outline_rounded,
                     iconColor: AppColors.warning,
-                    title: 'Recommendation',
+                    title: l10n.privacyRecommendationTitle,
                     child: Text(
-                      permission.recommendationEn,
+                      permission.recommendation(context),
                       style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
                     ),
                   ),
@@ -142,7 +144,7 @@ class PermissionDetailSheet extends StatelessWidget {
                       theme: theme,
                       icon: Icons.apps_rounded,
                       title:
-                          'Apps with Access (${permission.appNames.length})',
+                          '${l10n.appsWithAccess} (${permission.appNames.length})',
                       child: Column(
                         children: permission.appNames
                             .asMap()
@@ -152,6 +154,7 @@ class PermissionDetailSheet extends StatelessWidget {
                                   index: e.key,
                                   isGranted: permission.isGranted,
                                   theme: theme,
+                                  l10n: l10n,
                                 ))
                             .toList(),
                       ),
@@ -172,7 +175,7 @@ class PermissionDetailSheet extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
                         icon: const Icon(Icons.block_rounded, size: 18),
-                        label: const Text('Open Settings to Revoke'),
+                        label: Text(l10n.privacyOpenSettingsToRevoke),
                       ),
                     )
                   else
@@ -191,7 +194,7 @@ class PermissionDetailSheet extends StatelessWidget {
                           const Icon(Icons.check_circle_rounded,
                               color: AppColors.safe, size: 18),
                           const SizedBox(width: 8),
-                          Text('Permission Denied — You\'re Protected',
+                          Text(l10n.privacyPermissionDeniedProtected,
                               style: theme.textTheme.labelMedium
                                   ?.copyWith(color: AppColors.safe)),
                         ],
@@ -209,9 +212,10 @@ class PermissionDetailSheet extends StatelessWidget {
 }
 
 class _RiskBadge extends StatelessWidget {
+  final AppLocalizations l10n;
   final String risk;
 
-  const _RiskBadge({required this.risk});
+  const _RiskBadge({required this.l10n, required this.risk});
 
   Color get _color {
     switch (risk) {
@@ -227,11 +231,11 @@ class _RiskBadge extends StatelessWidget {
   String get _label {
     switch (risk) {
       case 'high':
-        return 'High Risk';
+        return l10n.privacySummaryHighRisk;
       case 'medium':
-        return 'Medium Risk';
+        return l10n.privacySummaryMediumRisk;
       default:
-        return 'Low Risk';
+        return l10n.privacyLowRisk;
     }
   }
 
@@ -259,11 +263,24 @@ class _StatusCard extends StatelessWidget {
   final PermissionInfo permission;
   final Color riskColor;
   final ThemeData theme;
+  final AppLocalizations l10n;
 
   const _StatusCard(
       {required this.permission,
       required this.riskColor,
-      required this.theme});
+      required this.theme,
+      required this.l10n});
+
+  String get _riskLabel {
+    switch (permission.risk) {
+      case 'high':
+        return l10n.privacySummaryHighRisk;
+      case 'medium':
+        return l10n.privacySummaryMediumRisk;
+      default:
+        return l10n.privacyLowRisk;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -279,22 +296,22 @@ class _StatusCard extends StatelessWidget {
           Expanded(
             child: _statCol(
               theme,
-              permission.isGranted ? 'Granted' : 'Denied',
-              'Status',
+              permission.isGranted ? l10n.privacyGranted : l10n.privacyDenied,
+              l10n.privacyStatusLabel,
               permission.isGranted ? AppColors.danger : AppColors.safe,
             ),
           ),
           Container(
               width: 1, height: 40, color: AppColors.cardBorder),
           Expanded(
-            child: _statCol(theme, '${permission.appsCount}', 'Apps',
+            child: _statCol(theme, '${permission.appsCount}', l10n.privacyAppsLabel,
                 AppColors.info),
           ),
           Container(
               width: 1, height: 40, color: AppColors.cardBorder),
           Expanded(
             child: _statCol(
-                theme, permission.riskLabel, 'Risk Level', riskColor),
+                theme, _riskLabel, l10n.privacyRiskLevelLabel, riskColor),
           ),
         ],
       ),
@@ -367,12 +384,14 @@ class _AppRow extends StatelessWidget {
   final int index;
   final bool isGranted;
   final ThemeData theme;
+  final AppLocalizations l10n;
 
   const _AppRow({
     required this.name,
     required this.index,
     required this.isGranted,
     required this.theme,
+    required this.l10n,
   });
 
   @override
@@ -403,7 +422,7 @@ class _AppRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
-              isGranted ? 'Granted' : 'Denied',
+              isGranted ? l10n.privacyGranted : l10n.privacyDenied,
               style: TextStyle(
                 fontSize: 9,
                 fontWeight: FontWeight.w700,

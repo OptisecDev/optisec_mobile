@@ -102,10 +102,18 @@ class ThreatIntelService {
         return _cachedAlerts;
       }
 
-      final alerts = alertsJson
-          .map((e) =>
-              ThreatAlert.fromJson(Map<String, dynamic>.from(e as Map)))
-          .toList();
+      // Each element is parsed independently so one malformed alert in the
+      // feed (missing/wrong-typed field) just gets skipped instead of
+      // throwing out of the .map() and discarding every other, valid alert
+      // in the same batch via the catch-all below.
+      final alerts = <ThreatAlert>[];
+      for (final e in alertsJson) {
+        try {
+          alerts.add(ThreatAlert.fromJson(Map<String, dynamic>.from(e as Map)));
+        } catch (_) {
+          // Skip just this one malformed entry.
+        }
+      }
 
       final fetchedAt = DateTime.now();
       _cachedAlerts = alerts;

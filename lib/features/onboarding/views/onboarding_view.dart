@@ -3,14 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../controllers/onboarding_controller.dart';
 import '../widgets/onboarding_page_data.dart';
+
+String _featureLabel(AppLocalizations l10n, OnboardingFeatureKey key) {
+  switch (key) {
+    case OnboardingFeatureKey.realtimeThreatDetection:
+      return l10n.onboardingFeatureRealtimeThreatDetection;
+    case OnboardingFeatureKey.networkPrivacyProtection:
+      return l10n.onboardingFeatureNetworkPrivacyProtection;
+    case OnboardingFeatureKey.cybersecurityEducation:
+      return l10n.onboardingFeatureCybersecurityEducation;
+    case OnboardingFeatureKey.evilTwinDetection:
+      return l10n.onboardingFeatureEvilTwinDetection;
+    case OnboardingFeatureKey.signalRiskAnalysis:
+      return l10n.onboardingFeatureSignalRiskAnalysis;
+    case OnboardingFeatureKey.connectedDeviceAudit:
+      return l10n.onboardingFeatureConnectedDeviceAudit;
+    case OnboardingFeatureKey.permissionAuditing:
+      return l10n.onboardingFeaturePermissionAuditing;
+    case OnboardingFeatureKey.riskScoringPerApp:
+      return l10n.onboardingFeatureRiskScoringPerApp;
+    case OnboardingFeatureKey.oneTapPermissionRevoke:
+      return l10n.onboardingFeatureOneTapPermissionRevoke;
+    case OnboardingFeatureKey.handsOnLessons:
+      return l10n.onboardingFeatureHandsOnLessons;
+    case OnboardingFeatureKey.knowledgeQuizzes:
+      return l10n.onboardingFeatureKnowledgeQuizzes;
+    case OnboardingFeatureKey.xpLevelsBadges:
+      return l10n.onboardingFeatureXpLevelsBadges;
+  }
+}
 
 class OnboardingView extends GetView<OnboardingController> {
   const OnboardingView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
@@ -37,9 +68,9 @@ class OnboardingView extends GetView<OnboardingController> {
                   duration: const Duration(milliseconds: 200),
                   child: TextButton(
                     onPressed: controller.skip,
-                    child: const Text(
-                      'Skip',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.onboardingSkipButton,
+                      style: const TextStyle(
                         color: AppColors.textDisabled,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -259,6 +290,7 @@ class _ContentArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(28, 0, 28, 120),
       child: Column(
@@ -350,7 +382,7 @@ class _ContentArea extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    e.value.label,
+                    _featureLabel(l10n, e.value.labelKey),
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -375,6 +407,7 @@ class _BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<OnboardingController>();
+    final l10n = AppLocalizations.of(context);
     final bottomPad = MediaQuery.of(context).padding.bottom;
 
     return Container(
@@ -403,7 +436,9 @@ class _BottomBar extends StatelessWidget {
             final isLast = c.isLastPage;
             final pageData = kOnboardingPages[c.currentPage.value];
             return _NextButton(
-              label: isLast ? 'Get Started' : 'Next',
+              label: isLast
+                  ? l10n.onboardingGetStartedButton
+                  : l10n.onboardingNextButton,
               color: pageData.color,
               isLast: isLast,
               onTap: c.nextPage,

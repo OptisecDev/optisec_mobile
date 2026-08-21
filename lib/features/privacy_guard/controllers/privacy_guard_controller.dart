@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../core/services/permission_usage_service.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/permission_usage_record.dart';
 import '../../subscription/controllers/subscription_controller.dart';
 
@@ -18,7 +19,9 @@ class PermissionInfo {
   final int appsCount;
   final String risk; // 'low' | 'medium' | 'high'
   final String descriptionEn;
+  final String descriptionAr;
   final String recommendationEn;
+  final String recommendationAr;
   final List<String> appNames;
 
   const PermissionInfo({
@@ -30,9 +33,24 @@ class PermissionInfo {
     required this.appsCount,
     required this.risk,
     required this.descriptionEn,
+    required this.descriptionAr,
     required this.recommendationEn,
+    required this.recommendationAr,
     this.appNames = const [],
   });
+
+  String name(BuildContext context) =>
+      Localizations.localeOf(context).languageCode == 'ar' ? nameAr : nameEn;
+
+  String description(BuildContext context) =>
+      Localizations.localeOf(context).languageCode == 'ar'
+          ? descriptionAr
+          : descriptionEn;
+
+  String recommendation(BuildContext context) =>
+      Localizations.localeOf(context).languageCode == 'ar'
+          ? recommendationAr
+          : recommendationEn;
 
   Color riskColor(BuildContext context) {
     switch (risk) {
@@ -45,16 +63,6 @@ class PermissionInfo {
     }
   }
 
-  String get riskLabel {
-    switch (risk) {
-      case 'high':
-        return 'High Risk';
-      case 'medium':
-        return 'Medium Risk';
-      default:
-        return 'Low Risk';
-    }
-  }
 }
 
 class PrivacyGuardController extends GetxController with WidgetsBindingObserver {
@@ -64,9 +72,6 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
   final permissions = <PermissionInfo>[].obs;
   final filterMode = PrivacyFilterMode.all.obs;
   final sortMode = PrivacySortMode.risk.obs;
-
-  // 7-day privacy score history
-  final scoreHistory = <double>[72, 68, 75, 70, 80, 78, 0].obs;
 
   // Permission usage timeline (Pro-only)
   final usageRecords = <PermissionUsageRecord>[].obs;
@@ -144,8 +149,12 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         risk: statuses[0].isGranted ? 'medium' : 'low',
         descriptionEn:
             'Allows apps to access your precise GPS location. Commonly used by maps, weather, and delivery apps.',
+        descriptionAr:
+            'يسمح للتطبيقات بالوصول إلى موقعك الجغرافي الدقيق عبر GPS. تستخدمه عادةً تطبيقات الخرائط والطقس والتوصيل.',
         recommendationEn:
             'Change to "Only while using" and disable for apps that don\'t need navigation.',
+        recommendationAr:
+            'غيّره إلى "فقط أثناء الاستخدام" وعطّله للتطبيقات التي لا تحتاج إلى الملاحة.',
         appNames: appsFor('location'),
       ),
       PermissionInfo(
@@ -158,8 +167,12 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         risk: statuses[1].isGranted ? 'medium' : 'low',
         descriptionEn:
             'Grants access to take photos and record video. Misused by spyware to capture images silently.',
+        descriptionAr:
+            'يمنح إمكانية التقاط الصور وتسجيل الفيديو. قد تسيء برامج التجسس استخدامه لالتقاط صور خفية.',
         recommendationEn:
             'Only grant camera access to apps that genuinely need it like camera or video call apps.',
+        recommendationAr:
+            'امنح إذن الكاميرا فقط للتطبيقات التي تحتاجه فعليًا مثل تطبيقات الكاميرا أو مكالمات الفيديو.',
         appNames: appsFor('camera'),
       ),
       PermissionInfo(
@@ -172,8 +185,12 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         risk: statuses[2].isGranted ? 'high' : 'low',
         descriptionEn:
             'One of the highest-risk permissions. Apps with mic access can record conversations without obvious indication.',
+        descriptionAr:
+            'من أخطر الأذونات. يمكن للتطبيقات التي لديها وصول إلى الميكروفون تسجيل المحادثات دون مؤشر واضح.',
         recommendationEn:
             'Revoke microphone from all apps except voice calls and voice assistants.',
+        recommendationAr:
+            'ألغِ إذن الميكروفون من جميع التطبيقات باستثناء المكالمات الصوتية والمساعدات الصوتية.',
         appNames: appsFor('microphone'),
       ),
       PermissionInfo(
@@ -186,8 +203,12 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         risk: statuses[3].isGranted ? 'high' : 'low',
         descriptionEn:
             'Exposes the full contact list including names, phone numbers, and email addresses of everyone you know.',
+        descriptionAr:
+            'يكشف قائمة جهات الاتصال بالكامل بما في ذلك أسماء وأرقام هواتف وعناوين بريد إلكتروني لكل من تعرفهم.',
         recommendationEn:
             'Only messaging and dialer apps need contacts. Revoke from all social and utility apps.',
+        recommendationAr:
+            'فقط تطبيقات المراسلة والاتصال تحتاج إلى جهات الاتصال. ألغِ الإذن من جميع تطبيقات التواصل الاجتماعي والأدوات المساعدة.',
         appNames: appsFor('contacts'),
       ),
       PermissionInfo(
@@ -200,8 +221,12 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         risk: statuses[4].isGranted ? 'high' : 'low',
         descriptionEn:
             'Allows apps to read your phone number, IMEI, and call history. Can be used for device fingerprinting.',
+        descriptionAr:
+            'يسمح للتطبيقات بقراءة رقم هاتفك ورقم IMEI وسجل المكالمات. يمكن استخدامه لتتبع بصمة الجهاز.',
         recommendationEn:
             'Only grant to your primary dialer app. Revoke from all other applications immediately.',
+        recommendationAr:
+            'امنحه فقط لتطبيق الاتصال الأساسي. ألغِه فورًا من جميع التطبيقات الأخرى.',
         appNames: appsFor('phone'),
       ),
       PermissionInfo(
@@ -214,14 +239,17 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
         risk: statuses[5].isGranted ? 'medium' : 'low',
         descriptionEn:
             'Grants read/write access to your files, photos, and documents. Can expose sensitive files to third parties.',
+        descriptionAr:
+            'يمنح إمكانية القراءة والكتابة لملفاتك وصورك ومستنداتك. قد يعرّض الملفات الحساسة لأطراف خارجية.',
         recommendationEn:
             'Use the file picker instead of granting broad storage access. Review which apps really need it.',
+        recommendationAr:
+            'استخدم منتقي الملفات بدلاً من منح إذن وصول واسع للتخزين. راجع أي التطبيقات تحتاجه فعليًا.',
         appNames: appsFor('storage'),
       ),
     ];
 
     _calculateScore();
-    scoreHistory[6] = privacyScore.value.toDouble();
     isLoading.value = false;
   }
 
@@ -229,9 +257,10 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
     isScanning.value = true;
     await checkPermissions();
     isScanning.value = false;
+    final l10n = AppLocalizations.of(Get.context!);
     Get.snackbar(
-      'Privacy Scan Complete',
-      'Found $highRiskCount high-risk and $mediumRiskCount medium-risk permissions.',
+      l10n.privacyScanCompleteTitle,
+      l10n.privacyScanCompleteBody(highRiskCount, mediumRiskCount),
       snackPosition: SnackPosition.BOTTOM,
     );
   }
@@ -282,6 +311,13 @@ class PrivacyGuardController extends GetxController with WidgetsBindingObserver 
   }
 
   Future<void> loadPermissionUsage() async {
+    // Guards against overlapping calls: didChangeAppLifecycleState() can
+    // fire this automatically on resume at roughly the same moment the user
+    // taps a manual retry button, and without this two concurrent loads
+    // could finish in either order and race on which one's result
+    // (usageRecords/hasUsageAccess/hasUsageError) ends up applied last.
+    if (isLoadingUsage.value) return;
+
     final subscriptionController = Get.find<SubscriptionController>();
     if (!subscriptionController.checkAccessOrPrompt(
         feature: 'Permission usage timeline')) {

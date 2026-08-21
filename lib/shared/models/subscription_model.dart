@@ -12,17 +12,24 @@ class ProductIds {
   static const Set<String> all = {proMonthly, proYearly, proLifetime};
 }
 
+/// Where a granted Pro entitlement came from -- used only for display
+/// (e.g. Settings showing "Licensed to ...") and diagnostics, not for any
+/// gating logic (that's `isPro` alone, regardless of source).
+enum EntitlementSource { iap, licenseKey }
+
 class SubscriptionModel {
   final SubscriptionTier tier;
-  final SubscriptionProduct? activeProduct;
   final DateTime? expiryDate;
   final bool isActive;
+  final EntitlementSource? source;
+  final String? licenseeLabel;
 
   const SubscriptionModel({
     required this.tier,
-    this.activeProduct,
     this.expiryDate,
     required this.isActive,
+    this.source,
+    this.licenseeLabel,
   });
 
   factory SubscriptionModel.free() => const SubscriptionModel(
@@ -31,23 +38,26 @@ class SubscriptionModel {
       );
 
   factory SubscriptionModel.pro({
-    required SubscriptionProduct product,
     DateTime? expiryDate,
+    required EntitlementSource source,
+    String? licenseeLabel,
   }) =>
       SubscriptionModel(
         tier: SubscriptionTier.pro,
-        activeProduct: product,
         expiryDate: expiryDate,
         isActive: true,
+        source: source,
+        licenseeLabel: licenseeLabel,
       );
 
   bool get isPro => tier == SubscriptionTier.pro && isActive;
 
   Map<String, dynamic> toJson() => {
         'tier': tier.name,
-        'activeProduct': activeProduct?.name,
         'expiryDate': expiryDate?.toIso8601String(),
         'isActive': isActive,
+        'source': source?.name,
+        'licenseeLabel': licenseeLabel,
       };
 
   factory SubscriptionModel.fromJson(Map<String, dynamic> json) {
@@ -56,16 +66,17 @@ class SubscriptionModel {
         (t) => t.name == json['tier'],
         orElse: () => SubscriptionTier.free,
       ),
-      activeProduct: json['activeProduct'] == null
-          ? null
-          : SubscriptionProduct.values.firstWhere(
-              (p) => p.name == json['activeProduct'],
-              orElse: () => SubscriptionProduct.proMonthly,
-            ),
       expiryDate: json['expiryDate'] == null
           ? null
           : DateTime.parse(json['expiryDate'] as String),
       isActive: json['isActive'] as bool? ?? false,
+      source: json['source'] == null
+          ? null
+          : EntitlementSource.values.firstWhere(
+              (s) => s.name == json['source'],
+              orElse: () => EntitlementSource.iap,
+            ),
+      licenseeLabel: json['licenseeLabel'] as String?,
     );
   }
 }
@@ -76,10 +87,4 @@ class FeatureGate {
   static const int freeScansPerDay = 3;
   static const int freeAppLockLimit = 1;
   static const int freeVaultEntryLimit = 12;
-
-  static const bool wifiUnlimitedScans = true;
-  static const bool weeklySecurityReport = true;
-  static const bool advancedLessons = true;
-  static const bool evilTwinDeepAnalysis = true;
-  static const bool pdfExport = true;
 }

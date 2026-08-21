@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/models/permission_usage_record.dart';
 
 class PermissionTimelineTile extends StatelessWidget {
@@ -24,19 +25,20 @@ class PermissionTimelineTile extends StatelessWidget {
     }
   }
 
-  String get _relativeTime {
+  String _relativeTime(AppLocalizations l10n) {
     final time = record.lastForegroundTime;
-    if (time == null) return 'Never';
+    if (time == null) return l10n.privacyNever;
     final diff = DateTime.now().difference(time);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inMinutes < 1) return l10n.privacyJustNow;
+    if (diff.inMinutes < 60) return l10n.privacyMinutesAgo(diff.inMinutes);
+    if (diff.inHours < 24) return l10n.privacyHoursAgo(diff.inHours);
+    return l10n.privacyDaysAgo(diff.inDays);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
@@ -72,14 +74,14 @@ class PermissionTimelineTile extends StatelessWidget {
                     if (record.isCurrentlyInForeground) ...[
                       _activeDot(),
                       const SizedBox(width: 5),
-                      const Text('Open now',
-                          style: TextStyle(
+                      Text(l10n.privacyOpenNow,
+                          style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: AppColors.danger)),
                       const SizedBox(width: 8),
                     ],
-                    Text(_relativeTime,
+                    Text(_relativeTime(l10n),
                         style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.textDisabled, fontSize: 11)),
                   ],
@@ -87,7 +89,7 @@ class PermissionTimelineTile extends StatelessWidget {
               ],
             ),
           ),
-          _countBadge(),
+          _countBadge(l10n),
         ],
       ),
     )
@@ -105,7 +107,7 @@ class PermissionTimelineTile extends StatelessWidget {
     ).animate(onPlay: (c) => c.repeat(reverse: true)).fadeIn(duration: 600.ms);
   }
 
-  Widget _countBadge() {
+  Widget _countBadge(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -113,7 +115,7 @@ class PermissionTimelineTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(7),
       ),
       child: Text(
-        '${record.foregroundSessionCountLast7Days}× / 7d',
+        l10n.privacyTimesPerWeek(record.foregroundSessionCountLast7Days),
         style: const TextStyle(
             fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.info),
       ),

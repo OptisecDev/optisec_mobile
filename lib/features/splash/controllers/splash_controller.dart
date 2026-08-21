@@ -9,16 +9,6 @@ class SplashController extends GetxController {
   final loadingProgress = 0.0.obs;
   final statusIndex = 0.obs;
 
-  static const _statusMessages = [
-    'Initializing security engine…',
-    'Loading threat database…',
-    'Checking network interfaces…',
-    'Calibrating privacy scanner…',
-    'All systems ready',
-  ];
-
-  String get statusText => _statusMessages[statusIndex.value];
-
   @override
   void onReady() {
     super.onReady();

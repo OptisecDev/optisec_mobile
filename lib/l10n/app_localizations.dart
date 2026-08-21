@@ -1628,59 +1628,11 @@ abstract class AppLocalizations {
   /// **'{count}× / 7d'**
   String privacyTimesPerWeek(int count);
 
-  /// No description provided for @privacyRecMicTitle.
+  ///
   ///
   /// In en, this message translates to:
-  /// **'Restrict Microphone Access'**
-  String get privacyRecMicTitle;
-
-  /// No description provided for @privacyRecMicBody.
-  ///
-  /// In en, this message translates to:
-  /// **'You have 4 apps with permanent microphone access. Only voice/call apps need it.'**
-  String get privacyRecMicBody;
-
-  /// No description provided for @privacyRecMicAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Review Mic Apps'**
-  String get privacyRecMicAction;
-
-  /// No description provided for @privacyRecLocationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Use \"While Using\" for Location'**
-  String get privacyRecLocationTitle;
-
-  /// No description provided for @privacyRecLocationBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Switch location permission from \"Always\" to \"Only while using the app.\"'**
-  String get privacyRecLocationBody;
-
-  /// No description provided for @privacyRecLocationAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Update Location'**
-  String get privacyRecLocationAction;
-
-  /// No description provided for @privacyRecContactsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Limit Contacts Access'**
-  String get privacyRecContactsTitle;
-
-  /// No description provided for @privacyRecContactsBody.
-  ///
-  /// In en, this message translates to:
-  /// **'5 apps can read your full contact list. Restrict to messaging apps only.'**
-  String get privacyRecContactsBody;
-
-  /// No description provided for @privacyRecContactsAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Review Contacts'**
-  String get privacyRecContactsAction;
+  /// **'{name} Access Granted'**
+  String privacyRecGrantedTitle(String name);
 
   /// No description provided for @privacyFix.
   ///
@@ -2179,6 +2131,684 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All settings and scan data have been cleared.'**
   String get settingsDataResetBody;
+
+  /// No description provided for @threatIntelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Threat Intel'**
+  String get threatIntelTitle;
+
+  /// No description provided for @threatIntelEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No threat intel available'**
+  String get threatIntelEmpty;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Feed updated {time}'**
+  String threatIntelFeedUpdated(String time);
+
+  /// No description provided for @threatIntelFeedNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed not yet loaded'**
+  String get threatIntelFeedNotLoaded;
+
+  /// No description provided for @threatIntelJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get threatIntelJustNow;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m ago'**
+  String threatIntelMinutesAgo(int minutes);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h ago'**
+  String threatIntelHoursAgo(int hours);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d ago'**
+  String threatIntelDaysAgo(int days);
+
+  /// No description provided for @threatIntelSeverityCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'CRITICAL'**
+  String get threatIntelSeverityCritical;
+
+  /// No description provided for @threatIntelSeverityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'HIGH'**
+  String get threatIntelSeverityHigh;
+
+  /// No description provided for @threatIntelSeverityMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'MEDIUM'**
+  String get threatIntelSeverityMedium;
+
+  /// No description provided for @threatIntelSeverityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'LOW'**
+  String get threatIntelSeverityLow;
+
+  /// No description provided for @licenseKeyScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter License Key'**
+  String get licenseKeyScreenTitle;
+
+  /// No description provided for @licenseKeyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the license key you received by email after your OptiSec Pro purchase.'**
+  String get licenseKeyIntro;
+
+  /// No description provided for @licenseKeyActivatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'License Activated'**
+  String get licenseKeyActivatedTitle;
+
+  /// No description provided for @licenseKeyActivatedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'OptiSec Pro is now unlocked on this device.'**
+  String get licenseKeyActivatedBody;
+
+  /// No description provided for @licenseKeyFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'License Key'**
+  String get licenseKeyFieldLabel;
+
+  /// No description provided for @licenseKeyPasteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste'**
+  String get licenseKeyPasteTooltip;
+
+  /// No description provided for @licenseKeyActivateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get licenseKeyActivateButton;
+
+  /// No description provided for @licenseKeyErrorInvalidFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'That doesn\'t look like a valid license key.'**
+  String get licenseKeyErrorInvalidFormat;
+
+  /// No description provided for @licenseKeyErrorInvalidSignature.
+  ///
+  /// In en, this message translates to:
+  /// **'This key is invalid or has been tampered with.'**
+  String get licenseKeyErrorInvalidSignature;
+
+  /// No description provided for @licenseKeyErrorMalformed.
+  ///
+  /// In en, this message translates to:
+  /// **'This key is corrupted.'**
+  String get licenseKeyErrorMalformed;
+
+  /// No description provided for @licenseKeyErrorExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This license has expired.'**
+  String get licenseKeyErrorExpired;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'This license expired on {date}.'**
+  String licenseKeyErrorExpiredOn(String date);
+
+  /// No description provided for @licenseKeyErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error.'**
+  String get licenseKeyErrorUnknown;
+
+  /// No description provided for @paywallHaveLicenseKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a License Key?'**
+  String get paywallHaveLicenseKey;
+
+  /// No description provided for @navPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get navPrivacy;
+
+  /// No description provided for @navAcademy.
+  ///
+  /// In en, this message translates to:
+  /// **'Academy'**
+  String get navAcademy;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock \"{feature}\" with OptiSec Pro'**
+  String paywallUnlockFeature(String feature);
+
+  /// No description provided for @paywallBenefitEvilTwin.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Evil Twin analysis'**
+  String get paywallBenefitEvilTwin;
+
+  /// No description provided for @paywallBenefitPdfReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly PDF reports'**
+  String get paywallBenefitPdfReports;
+
+  /// No description provided for @paywallBenefitAcademyLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'All Cyber Academy lessons'**
+  String get paywallBenefitAcademyLessons;
+
+  /// No description provided for @paywallBenefitPriorityAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority alerts'**
+  String get paywallBenefitPriorityAlerts;
+
+  /// No description provided for @paywallRestorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get paywallRestorePurchases;
+
+  /// No description provided for @paywallBestValueBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'BEST VALUE'**
+  String get paywallBestValueBadge;
+
+  /// No description provided for @paywallContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get paywallContinueButton;
+
+  /// No description provided for @appLockBatteryWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery optimization may stop App Lock'**
+  String get appLockBatteryWarningTitle;
+
+  /// No description provided for @appLockBatteryWarningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow unrestricted background activity so locked apps stay protected.'**
+  String get appLockBatteryWarningBody;
+
+  /// No description provided for @appLockSetPinLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Set PIN'**
+  String get appLockSetPinLabel;
+
+  /// No description provided for @pinSetupChooseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a 4-digit PIN'**
+  String get pinSetupChooseTitle;
+
+  /// No description provided for @pinSetupConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your PIN'**
+  String get pinSetupConfirmTitle;
+
+  /// No description provided for @pinSetupMismatchError.
+  ///
+  /// In en, this message translates to:
+  /// **'PINs don\'t match. Try again.'**
+  String get pinSetupMismatchError;
+
+  /// No description provided for @pinSetupSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save PIN. Try again.'**
+  String get pinSetupSaveError;
+
+  /// No description provided for @appLockSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search apps'**
+  String get appLockSearchHint;
+
+  /// No description provided for @appLockNoAppsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No apps found'**
+  String get appLockNoAppsFound;
+
+  /// No description provided for @appLockPinPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a PIN to start locking apps'**
+  String get appLockPinPromptTitle;
+
+  /// No description provided for @appLockOverlayPermissionPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow \"Display over other apps\" so the lock screen can appear'**
+  String get appLockOverlayPermissionPrompt;
+
+  /// No description provided for @appLockAllowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get appLockAllowButton;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{count} badges'**
+  String cyberAcademyBadgesCount(int count);
+
+  /// No description provided for @cyberAcademySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search lessons, topics, tags…'**
+  String get cyberAcademySearchHint;
+
+  /// No description provided for @cyberAcademyFeaturedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get cyberAcademyFeaturedTitle;
+
+  /// No description provided for @cyberAcademyContinueWhereLeftOff.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTINUE WHERE YOU LEFT OFF'**
+  String get cyberAcademyContinueWhereLeftOff;
+
+  /// No description provided for @cyberAcademyCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get cyberAcademyCategoryAll;
+
+  /// No description provided for @cyberAcademyCategoryPhishing.
+  ///
+  /// In en, this message translates to:
+  /// **'Phishing'**
+  String get cyberAcademyCategoryPhishing;
+
+  /// No description provided for @cyberAcademyCategoryPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords'**
+  String get cyberAcademyCategoryPassword;
+
+  /// No description provided for @cyberAcademyCategoryNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network'**
+  String get cyberAcademyCategoryNetwork;
+
+  /// No description provided for @cyberAcademySectionAllLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'All Lessons'**
+  String get cyberAcademySectionAllLessons;
+
+  /// No description provided for @cyberAcademySectionSearchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Results'**
+  String get cyberAcademySectionSearchResults;
+
+  /// No description provided for @cyberAcademySectionPhishingLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Phishing Lessons'**
+  String get cyberAcademySectionPhishingLessons;
+
+  /// No description provided for @cyberAcademySectionPasswordLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Lessons'**
+  String get cyberAcademySectionPasswordLessons;
+
+  /// No description provided for @cyberAcademySectionNetworkLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Network Lessons'**
+  String get cyberAcademySectionNetworkLessons;
+
+  /// No description provided for @cyberAcademySectionPrivacyLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Lessons'**
+  String get cyberAcademySectionPrivacyLessons;
+
+  /// No description provided for @cyberAcademyNoLessonsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons found'**
+  String get cyberAcademyNoLessonsFound;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'for \"{query}\"'**
+  String cyberAcademySearchResultsFor(String query);
+
+  /// No description provided for @cyberAcademyBadgeContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTINUE'**
+  String get cyberAcademyBadgeContinue;
+
+  /// No description provided for @cyberAcademyBadgeFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'FEATURED'**
+  String get cyberAcademyBadgeFeatured;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% complete'**
+  String cyberAcademyPercentComplete(int percent);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{xp} XP'**
+  String cyberAcademyXpPoints(int xp);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String cyberAcademyDurationMinutes(int minutes);
+
+  /// No description provided for @cyberAcademyDifficultyBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get cyberAcademyDifficultyBeginner;
+
+  /// No description provided for @cyberAcademyDifficultyIntermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get cyberAcademyDifficultyIntermediate;
+
+  /// No description provided for @cyberAcademyDifficultyAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get cyberAcademyDifficultyAdvanced;
+
+  /// No description provided for @cyberAcademyContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue →'**
+  String get cyberAcademyContinueButton;
+
+  /// No description provided for @cyberAcademyStartLessonButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Lesson →'**
+  String get cyberAcademyStartLessonButton;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{count} steps'**
+  String cyberAcademyStepsCount(int count);
+
+  /// No description provided for @cyberAcademyStatusDone.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Done'**
+  String get cyberAcademyStatusDone;
+
+  /// No description provided for @cyberAcademyStatusStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get cyberAcademyStatusStart;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level} — Security Analyst'**
+  String cyberAcademyLevelTitle(int level);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{xp} XP total'**
+  String cyberAcademyXpTotal(int xp);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Progress to Level {level}'**
+  String cyberAcademyProgressToLevel(int level);
+
+  /// No description provided for @cyberAcademyCompletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get cyberAcademyCompletedLabel;
+
+  /// No description provided for @cyberAcademyBadgesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get cyberAcademyBadgesLabel;
+
+  /// No description provided for @cyberAcademyStreakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get cyberAcademyStreakLabel;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d'**
+  String cyberAcademyStreakDays(int days);
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
+  String cyberAcademyStepCounter(int step, int total);
+
+  /// No description provided for @cyberAcademyKnowledgeCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'KNOWLEDGE CHECK'**
+  String get cyberAcademyKnowledgeCheck;
+
+  /// No description provided for @cyberAcademyCorrectFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct! Well done.'**
+  String get cyberAcademyCorrectFeedback;
+
+  /// No description provided for @cyberAcademyIncorrectFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Not quite — the correct answer is highlighted above.'**
+  String get cyberAcademyIncorrectFeedback;
+
+  /// No description provided for @cyberAcademyCompleteLessonButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Lesson'**
+  String get cyberAcademyCompleteLessonButton;
+
+  /// No description provided for @cyberAcademyNextStepButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Step'**
+  String get cyberAcademyNextStepButton;
+
+  /// No description provided for @cyberAcademyContentComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Content coming soon'**
+  String get cyberAcademyContentComingSoon;
+
+  /// No description provided for @cyberAcademyCloseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get cyberAcademyCloseButton;
+
+  /// No description provided for @splashTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Security Suite'**
+  String get splashTagline;
+
+  /// No description provided for @splashStatusInit.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing security engine…'**
+  String get splashStatusInit;
+
+  /// No description provided for @splashStatusThreatDb.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading threat database…'**
+  String get splashStatusThreatDb;
+
+  /// No description provided for @splashStatusNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking network interfaces…'**
+  String get splashStatusNetwork;
+
+  /// No description provided for @splashStatusPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Calibrating privacy scanner…'**
+  String get splashStatusPrivacy;
+
+  /// No description provided for @splashStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'All systems ready'**
+  String get splashStatusReady;
+
+  /// No description provided for @onboardingSkipButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkipButton;
+
+  /// No description provided for @onboardingNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNextButton;
+
+  /// No description provided for @onboardingGetStartedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStartedButton;
+
+  /// No description provided for @onboardingFeatureRealtimeThreatDetection.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time threat detection'**
+  String get onboardingFeatureRealtimeThreatDetection;
+
+  /// No description provided for @onboardingFeatureNetworkPrivacyProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Network & privacy protection'**
+  String get onboardingFeatureNetworkPrivacyProtection;
+
+  /// No description provided for @onboardingFeatureCybersecurityEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cybersecurity education'**
+  String get onboardingFeatureCybersecurityEducation;
+
+  /// No description provided for @onboardingFeatureEvilTwinDetection.
+  ///
+  /// In en, this message translates to:
+  /// **'Evil Twin detection'**
+  String get onboardingFeatureEvilTwinDetection;
+
+  /// No description provided for @onboardingFeatureSignalRiskAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Signal & risk analysis'**
+  String get onboardingFeatureSignalRiskAnalysis;
+
+  /// No description provided for @onboardingFeatureConnectedDeviceAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected device audit'**
+  String get onboardingFeatureConnectedDeviceAudit;
+
+  /// No description provided for @onboardingFeaturePermissionAuditing.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission auditing'**
+  String get onboardingFeaturePermissionAuditing;
+
+  /// No description provided for @onboardingFeatureRiskScoringPerApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk scoring per app'**
+  String get onboardingFeatureRiskScoringPerApp;
+
+  /// No description provided for @onboardingFeatureOneTapPermissionRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'One-tap permission revoke'**
+  String get onboardingFeatureOneTapPermissionRevoke;
+
+  /// No description provided for @onboardingFeatureHandsOnLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'8+ hands-on lessons'**
+  String get onboardingFeatureHandsOnLessons;
+
+  /// No description provided for @onboardingFeatureKnowledgeQuizzes.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge quizzes'**
+  String get onboardingFeatureKnowledgeQuizzes;
+
+  /// No description provided for @onboardingFeatureXpLevelsBadges.
+  ///
+  /// In en, this message translates to:
+  /// **'XP, levels & badges'**
+  String get onboardingFeatureXpLevelsBadges;
 }
 
 class _AppLocalizationsDelegate

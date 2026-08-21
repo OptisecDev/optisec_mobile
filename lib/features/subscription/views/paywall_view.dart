@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../navigation/app_routes.dart';
 import '../../../shared/models/subscription_model.dart';
 import '../controllers/subscription_controller.dart';
 import '../widgets/plan_card.dart';
@@ -9,16 +11,18 @@ import '../widgets/plan_card.dart';
 class PaywallView extends GetView<SubscriptionController> {
   const PaywallView({super.key});
 
-  static const _benefits = [
-    ('Unlimited WiFi scans', Icons.wifi_tethering_rounded),
-    ('Full Evil Twin analysis', Icons.security_rounded),
-    ('Weekly PDF reports', Icons.picture_as_pdf_rounded),
-    ('All Cyber Academy lessons', Icons.school_rounded),
-    ('Priority alerts', Icons.notifications_active_rounded),
-  ];
+  List<(String, IconData)> _benefits(AppLocalizations l10n) => [
+        (l10n.wifiUnlimitedScansFeature, Icons.wifi_tethering_rounded),
+        (l10n.paywallBenefitEvilTwin, Icons.security_rounded),
+        (l10n.paywallBenefitPdfReports, Icons.picture_as_pdf_rounded),
+        (l10n.paywallBenefitAcademyLessons, Icons.school_rounded),
+        (l10n.paywallBenefitPriorityAlerts, Icons.notifications_active_rounded),
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final benefits = _benefits(l10n);
     final args = Get.arguments;
     final feature = args is Map ? args['feature'] as String? : null;
 
@@ -43,7 +47,7 @@ class PaywallView extends GetView<SubscriptionController> {
                     border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                   ),
                   child: Text(
-                    'Unlock "$feature" with OptiSec Pro',
+                    l10n.paywallUnlockFeature(feature),
                     style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w700,
@@ -53,8 +57,8 @@ class PaywallView extends GetView<SubscriptionController> {
                 ),
                 const SizedBox(height: 16),
               ],
-              ...List.generate(_benefits.length, (i) {
-                final (label, icon) = _benefits[i];
+              ...List.generate(benefits.length, (i) {
+                final (label, icon) = benefits[i];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Row(
@@ -80,9 +84,19 @@ class PaywallView extends GetView<SubscriptionController> {
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () => controller.restore(),
-                child: const Text(
-                  'Restore Purchases',
-                  style: TextStyle(color: AppColors.textSecondary),
+                child: Text(
+                  l10n.paywallRestorePurchases,
+                  style: const TextStyle(color: AppColors.textSecondary),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Get.toNamed(AppRoutes.licenseKeyEntry),
+                child: Text(
+                  l10n.paywallHaveLicenseKey,
+                  style: const TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -109,6 +123,7 @@ class _PlanSelectorState extends State<_PlanSelector> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<SubscriptionController>();
+    final l10n = AppLocalizations.of(context);
 
     return Obx(() {
       if (controller.isLoading.value && controller.products.isEmpty) {
@@ -133,8 +148,9 @@ class _PlanSelectorState extends State<_PlanSelector> {
                 final product = products[index];
                 return PlanCard(
                   product: product,
-                  badge:
-                      product.id == ProductIds.proYearly ? 'BEST VALUE' : null,
+                  badge: product.id == ProductIds.proYearly
+                      ? l10n.paywallBestValueBadge
+                      : null,
                   isSelected: _selectedId == product.id,
                   onTap: () => setState(() => _selectedId = product.id),
                 );
@@ -157,9 +173,9 @@ class _PlanSelectorState extends State<_PlanSelector> {
                         color: AppColors.textOnPrimary,
                       ),
                     )
-                  : const Text(
-                      'Continue',
-                      style: TextStyle(fontWeight: FontWeight.w800),
+                  : Text(
+                      l10n.paywallContinueButton,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
                     ),
             ),
           ),

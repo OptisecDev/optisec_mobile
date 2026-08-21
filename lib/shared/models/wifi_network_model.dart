@@ -40,7 +40,11 @@ class WifiNetworkModel {
   int get signalPercent => ((level + 100) / 60 * 100).clamp(0, 100).toInt();
 
   int get channel {
-    if (frequency >= 2412 && frequency <= 2484) {
+    // Channel 14 is a special case: it sits 12MHz above channel 13 (2472MHz),
+    // not the usual 5MHz spacing, so the linear formula below would compute
+    // channel 15 for it.
+    if (frequency == 2484) return 14;
+    if (frequency >= 2412 && frequency <= 2472) {
       return ((frequency - 2412) / 5 + 1).round();
     } else if (frequency >= 5170 && frequency <= 5825) {
       return ((frequency - 5170) / 5 + 34).round();
@@ -69,13 +73,6 @@ class WifiNetworkModel {
       case WifiSecurity.unknown:
         return 'Unknown';
     }
-  }
-
-  String get riskLabel {
-    if (riskScore >= 70) return 'Critical';
-    if (riskScore >= 45) return 'High';
-    if (riskScore >= 20) return 'Medium';
-    return 'Low';
   }
 
   WifiNetworkModel copyWith({

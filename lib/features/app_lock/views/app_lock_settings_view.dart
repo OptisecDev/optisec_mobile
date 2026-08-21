@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../navigation/app_routes.dart';
 import '../controllers/app_lock_controller.dart';
 import '../widgets/app_lock_tile.dart';
@@ -12,11 +13,12 @@ class AppLockSettingsView extends GetView<AppLockController> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text('App Lock'),
+        title: Text(l10n.settingsAppLockTitle),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -40,7 +42,7 @@ class AppLockSettingsView extends GetView<AppLockController> {
                   onChanged: (v) => controller.searchQuery.value = v,
                   style: const TextStyle(color: AppColors.textPrimary),
                   decoration: InputDecoration(
-                    hintText: 'Search apps',
+                    hintText: l10n.appLockSearchHint,
                     hintStyle: const TextStyle(color: AppColors.textDisabled),
                     prefixIcon: const Icon(
                       Icons.search_rounded,
@@ -60,10 +62,10 @@ class AppLockSettingsView extends GetView<AppLockController> {
                 child: Builder(builder: (context) {
                   final apps = controller.filteredApps;
                   if (apps.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
-                        'No apps found',
-                        style: TextStyle(color: AppColors.textDisabled),
+                        l10n.appLockNoAppsFound,
+                        style: const TextStyle(color: AppColors.textDisabled),
                       ),
                     );
                   }
@@ -93,6 +95,7 @@ class AppLockSettingsView extends GetView<AppLockController> {
 class _PinSetupPrompt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       padding: const EdgeInsets.all(14),
@@ -105,10 +108,10 @@ class _PinSetupPrompt extends StatelessWidget {
         children: [
           const Icon(Icons.pin_rounded, color: AppColors.primary),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Set a PIN to start locking apps',
-              style: TextStyle(
+              l10n.appLockPinPromptTitle,
+              style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -117,7 +120,7 @@ class _PinSetupPrompt extends StatelessWidget {
           ),
           TextButton(
             onPressed: () => Get.toNamed(AppRoutes.pinSetup),
-            child: const Text('Set PIN'),
+            child: Text(l10n.appLockSetPinLabel),
           ),
         ],
       ),
@@ -132,6 +135,7 @@ class _OverlayPermissionPrompt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       padding: const EdgeInsets.all(14),
@@ -144,10 +148,10 @@ class _OverlayPermissionPrompt extends StatelessWidget {
         children: [
           const Icon(Icons.layers_rounded, color: AppColors.danger),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Allow "Display over other apps" so the lock screen can appear',
-              style: TextStyle(
+              l10n.appLockOverlayPermissionPrompt,
+              style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -159,7 +163,7 @@ class _OverlayPermissionPrompt extends StatelessWidget {
               await controller.openOverlaySettings();
               await controller.refreshPermissionStatus();
             },
-            child: const Text('Allow'),
+            child: Text(l10n.appLockAllowButton),
           ),
         ],
       ),

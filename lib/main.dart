@@ -7,6 +7,7 @@ import 'core/services/network_trust_service.dart';
 import 'core/services/purchase_service.dart';
 import 'core/services/threat_intel_service.dart';
 import 'core/theme/app_theme.dart';
+import 'features/settings/controllers/settings_controller.dart';
 import 'l10n/app_localizations.dart';
 import 'navigation/app_pages.dart';
 import 'navigation/app_routes.dart';
@@ -26,6 +27,12 @@ Future<void> main() async {
   // Loads the last cached threat-intel feed so the dashboard has offline data
   await ThreatIntelService.instance.init();
 
+  // SettingsController is lazy-loaded and may not exist yet at boot, so
+  // read the persisted language directly to avoid a flash of English.
+  final savedLanguage =
+      GetStorage().read<String>(SettingsController.languageStorageKey) ??
+          'en';
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -40,11 +47,13 @@ Future<void> main() async {
     ),
   );
 
-  runApp(const OptiSecApp());
+  runApp(OptiSecApp(initialLocale: Locale(savedLanguage)));
 }
 
 class OptiSecApp extends StatelessWidget {
-  const OptiSecApp({super.key});
+  final Locale initialLocale;
+
+  const OptiSecApp({super.key, required this.initialLocale});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +65,7 @@ class OptiSecApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
 
       // Locale & localization
-      locale: const Locale('en'),
+      locale: initialLocale,
       fallbackLocale: const Locale('en'),
       supportedLocales: const [
         Locale('en'),

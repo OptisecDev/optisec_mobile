@@ -861,34 +861,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get privacyRecMicTitle => 'Restrict Microphone Access';
-
-  @override
-  String get privacyRecMicBody =>
-      'You have 4 apps with permanent microphone access. Only voice/call apps need it.';
-
-  @override
-  String get privacyRecMicAction => 'Review Mic Apps';
-
-  @override
-  String get privacyRecLocationTitle => 'Use \"While Using\" for Location';
-
-  @override
-  String get privacyRecLocationBody =>
-      'Switch location permission from \"Always\" to \"Only while using the app.\"';
-
-  @override
-  String get privacyRecLocationAction => 'Update Location';
-
-  @override
-  String get privacyRecContactsTitle => 'Limit Contacts Access';
-
-  @override
-  String get privacyRecContactsBody =>
-      '5 apps can read your full contact list. Restrict to messaging apps only.';
-
-  @override
-  String get privacyRecContactsAction => 'Review Contacts';
+  String privacyRecGrantedTitle(String name) {
+    return '$name Access Granted';
+  }
 
   @override
   String get privacyFix => 'Fix';
@@ -1164,4 +1139,389 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsDataResetBody =>
       'All settings and scan data have been cleared.';
+
+  @override
+  String get threatIntelTitle => 'Threat Intel';
+
+  @override
+  String get threatIntelEmpty => 'No threat intel available';
+
+  @override
+  String threatIntelFeedUpdated(String time) {
+    return 'Feed updated $time';
+  }
+
+  @override
+  String get threatIntelFeedNotLoaded => 'Feed not yet loaded';
+
+  @override
+  String get threatIntelJustNow => 'Just now';
+
+  @override
+  String threatIntelMinutesAgo(int minutes) {
+    return '${minutes}m ago';
+  }
+
+  @override
+  String threatIntelHoursAgo(int hours) {
+    return '${hours}h ago';
+  }
+
+  @override
+  String threatIntelDaysAgo(int days) {
+    return '${days}d ago';
+  }
+
+  @override
+  String get threatIntelSeverityCritical => 'CRITICAL';
+
+  @override
+  String get threatIntelSeverityHigh => 'HIGH';
+
+  @override
+  String get threatIntelSeverityMedium => 'MEDIUM';
+
+  @override
+  String get threatIntelSeverityLow => 'LOW';
+
+  @override
+  String get licenseKeyScreenTitle => 'Enter License Key';
+
+  @override
+  String get licenseKeyIntro =>
+      'Enter the license key you received by email after your OptiSec Pro purchase.';
+
+  @override
+  String get licenseKeyActivatedTitle => 'License Activated';
+
+  @override
+  String get licenseKeyActivatedBody =>
+      'OptiSec Pro is now unlocked on this device.';
+
+  @override
+  String get licenseKeyFieldLabel => 'License Key';
+
+  @override
+  String get licenseKeyPasteTooltip => 'Paste';
+
+  @override
+  String get licenseKeyActivateButton => 'Activate';
+
+  @override
+  String get licenseKeyErrorInvalidFormat =>
+      'That doesn\'t look like a valid license key.';
+
+  @override
+  String get licenseKeyErrorInvalidSignature =>
+      'This key is invalid or has been tampered with.';
+
+  @override
+  String get licenseKeyErrorMalformed => 'This key is corrupted.';
+
+  @override
+  String get licenseKeyErrorExpired => 'This license has expired.';
+
+  @override
+  String licenseKeyErrorExpiredOn(String date) {
+    return 'This license expired on $date.';
+  }
+
+  @override
+  String get licenseKeyErrorUnknown => 'Unknown error.';
+
+  @override
+  String get paywallHaveLicenseKey => 'Have a License Key?';
+
+  @override
+  String get navPrivacy => 'Privacy';
+
+  @override
+  String get navAcademy => 'Academy';
+
+  @override
+  String paywallUnlockFeature(String feature) {
+    return 'Unlock \"$feature\" with OptiSec Pro';
+  }
+
+  @override
+  String get paywallBenefitEvilTwin => 'Full Evil Twin analysis';
+
+  @override
+  String get paywallBenefitPdfReports => 'Weekly PDF reports';
+
+  @override
+  String get paywallBenefitAcademyLessons => 'All Cyber Academy lessons';
+
+  @override
+  String get paywallBenefitPriorityAlerts => 'Priority alerts';
+
+  @override
+  String get paywallRestorePurchases => 'Restore Purchases';
+
+  @override
+  String get paywallBestValueBadge => 'BEST VALUE';
+
+  @override
+  String get paywallContinueButton => 'Continue';
+
+  @override
+  String get appLockBatteryWarningTitle =>
+      'Battery optimization may stop App Lock';
+
+  @override
+  String get appLockBatteryWarningBody =>
+      'Allow unrestricted background activity so locked apps stay protected.';
+
+  @override
+  String get appLockSetPinLabel => 'Set PIN';
+
+  @override
+  String get pinSetupChooseTitle => 'Choose a 4-digit PIN';
+
+  @override
+  String get pinSetupConfirmTitle => 'Confirm your PIN';
+
+  @override
+  String get pinSetupMismatchError => 'PINs don\'t match. Try again.';
+
+  @override
+  String get pinSetupSaveError => 'Couldn\'t save PIN. Try again.';
+
+  @override
+  String get appLockSearchHint => 'Search apps';
+
+  @override
+  String get appLockNoAppsFound => 'No apps found';
+
+  @override
+  String get appLockPinPromptTitle => 'Set a PIN to start locking apps';
+
+  @override
+  String get appLockOverlayPermissionPrompt =>
+      'Allow \"Display over other apps\" so the lock screen can appear';
+
+  @override
+  String get appLockAllowButton => 'Allow';
+
+  @override
+  String cyberAcademyBadgesCount(int count) {
+    return '$count badges';
+  }
+
+  @override
+  String get cyberAcademySearchHint => 'Search lessons, topics, tags…';
+
+  @override
+  String get cyberAcademyFeaturedTitle => 'Featured';
+
+  @override
+  String get cyberAcademyContinueWhereLeftOff => 'CONTINUE WHERE YOU LEFT OFF';
+
+  @override
+  String get cyberAcademyCategoryAll => 'All';
+
+  @override
+  String get cyberAcademyCategoryPhishing => 'Phishing';
+
+  @override
+  String get cyberAcademyCategoryPassword => 'Passwords';
+
+  @override
+  String get cyberAcademyCategoryNetwork => 'Network';
+
+  @override
+  String get cyberAcademySectionAllLessons => 'All Lessons';
+
+  @override
+  String get cyberAcademySectionSearchResults => 'Search Results';
+
+  @override
+  String get cyberAcademySectionPhishingLessons => 'Phishing Lessons';
+
+  @override
+  String get cyberAcademySectionPasswordLessons => 'Password Lessons';
+
+  @override
+  String get cyberAcademySectionNetworkLessons => 'Network Lessons';
+
+  @override
+  String get cyberAcademySectionPrivacyLessons => 'Privacy Lessons';
+
+  @override
+  String get cyberAcademyNoLessonsFound => 'No lessons found';
+
+  @override
+  String cyberAcademySearchResultsFor(String query) {
+    return 'for \"$query\"';
+  }
+
+  @override
+  String get cyberAcademyBadgeContinue => 'CONTINUE';
+
+  @override
+  String get cyberAcademyBadgeFeatured => 'FEATURED';
+
+  @override
+  String cyberAcademyPercentComplete(int percent) {
+    return '$percent% complete';
+  }
+
+  @override
+  String cyberAcademyXpPoints(int xp) {
+    return '$xp XP';
+  }
+
+  @override
+  String cyberAcademyDurationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get cyberAcademyDifficultyBeginner => 'Beginner';
+
+  @override
+  String get cyberAcademyDifficultyIntermediate => 'Intermediate';
+
+  @override
+  String get cyberAcademyDifficultyAdvanced => 'Advanced';
+
+  @override
+  String get cyberAcademyContinueButton => 'Continue →';
+
+  @override
+  String get cyberAcademyStartLessonButton => 'Start Lesson →';
+
+  @override
+  String cyberAcademyStepsCount(int count) {
+    return '$count steps';
+  }
+
+  @override
+  String get cyberAcademyStatusDone => '✓ Done';
+
+  @override
+  String get cyberAcademyStatusStart => 'Start';
+
+  @override
+  String cyberAcademyLevelTitle(int level) {
+    return 'Level $level — Security Analyst';
+  }
+
+  @override
+  String cyberAcademyXpTotal(int xp) {
+    return '$xp XP total';
+  }
+
+  @override
+  String cyberAcademyProgressToLevel(int level) {
+    return 'Progress to Level $level';
+  }
+
+  @override
+  String get cyberAcademyCompletedLabel => 'Completed';
+
+  @override
+  String get cyberAcademyBadgesLabel => 'Badges';
+
+  @override
+  String get cyberAcademyStreakLabel => 'Streak';
+
+  @override
+  String cyberAcademyStreakDays(int days) {
+    return '${days}d';
+  }
+
+  @override
+  String cyberAcademyStepCounter(int step, int total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String get cyberAcademyKnowledgeCheck => 'KNOWLEDGE CHECK';
+
+  @override
+  String get cyberAcademyCorrectFeedback => 'Correct! Well done.';
+
+  @override
+  String get cyberAcademyIncorrectFeedback =>
+      'Not quite — the correct answer is highlighted above.';
+
+  @override
+  String get cyberAcademyCompleteLessonButton => 'Complete Lesson';
+
+  @override
+  String get cyberAcademyNextStepButton => 'Next Step';
+
+  @override
+  String get cyberAcademyContentComingSoon => 'Content coming soon';
+
+  @override
+  String get cyberAcademyCloseButton => 'Close';
+
+  @override
+  String get splashTagline => 'Advanced Security Suite';
+
+  @override
+  String get splashStatusInit => 'Initializing security engine…';
+
+  @override
+  String get splashStatusThreatDb => 'Loading threat database…';
+
+  @override
+  String get splashStatusNetwork => 'Checking network interfaces…';
+
+  @override
+  String get splashStatusPrivacy => 'Calibrating privacy scanner…';
+
+  @override
+  String get splashStatusReady => 'All systems ready';
+
+  @override
+  String get onboardingSkipButton => 'Skip';
+
+  @override
+  String get onboardingNextButton => 'Next';
+
+  @override
+  String get onboardingGetStartedButton => 'Get Started';
+
+  @override
+  String get onboardingFeatureRealtimeThreatDetection =>
+      'Real-time threat detection';
+
+  @override
+  String get onboardingFeatureNetworkPrivacyProtection =>
+      'Network & privacy protection';
+
+  @override
+  String get onboardingFeatureCybersecurityEducation =>
+      'Cybersecurity education';
+
+  @override
+  String get onboardingFeatureEvilTwinDetection => 'Evil Twin detection';
+
+  @override
+  String get onboardingFeatureSignalRiskAnalysis => 'Signal & risk analysis';
+
+  @override
+  String get onboardingFeatureConnectedDeviceAudit => 'Connected device audit';
+
+  @override
+  String get onboardingFeaturePermissionAuditing => 'Permission auditing';
+
+  @override
+  String get onboardingFeatureRiskScoringPerApp => 'Risk scoring per app';
+
+  @override
+  String get onboardingFeatureOneTapPermissionRevoke =>
+      'One-tap permission revoke';
+
+  @override
+  String get onboardingFeatureHandsOnLessons => '8+ hands-on lessons';
+
+  @override
+  String get onboardingFeatureKnowledgeQuizzes => 'Knowledge quizzes';
+
+  @override
+  String get onboardingFeatureXpLevelsBadges => 'XP, levels & badges';
 }

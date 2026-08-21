@@ -40,6 +40,15 @@ class LockScreenActivity : FragmentActivity() {
     private var countDownTimer: CountDownTimer? = null
     private var pinLocked = false
 
+    // True for the brief window between a completed 4-digit entry and the
+    // background verifyPin() result coming back. Without this, a backspace
+    // during that window could mutate enteredPin while the async result is
+    // still in flight, and onPinVerified()'s enteredPin.clear() on failure
+    // would silently wipe whatever the user had already started typing as
+    // their next attempt. Not a bypass -- verifyEnteredPin() already
+    // snapshots the PIN string before dispatching -- just UI state.
+    private var isVerifying = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.LockScreenTheme)
@@ -192,7 +201,7 @@ class LockScreenActivity : FragmentActivity() {
     }
 
     private fun onDigitEntered(digit: Char) {
-        if (pinLocked || enteredPin.length >= PIN_LENGTH) return
+        if (pinLocked || isVerifying || enteredPin.length >= PIN_LENGTH) return
         enteredPin.append(digit)
         updateDots()
         if (enteredPin.length == PIN_LENGTH) {
@@ -201,7 +210,7 @@ class LockScreenActivity : FragmentActivity() {
     }
 
     private fun onBackspace() {
-        if (pinLocked || enteredPin.isEmpty()) return
+        if (pinLocked || isVerifying || enteredPin.isEmpty()) return
         enteredPin.deleteCharAt(enteredPin.length - 1)
         updateDots()
     }
@@ -221,6 +230,7 @@ class LockScreenActivity : FragmentActivity() {
 
     private fun verifyEnteredPin() {
         val pin = enteredPin.toString()
+        isVerifying = true
         verifyExecutor.execute {
             val success = store.verifyPin(pin)
             mainHandler.post { onPinVerified(success) }
@@ -228,6 +238,7 @@ class LockScreenActivity : FragmentActivity() {
     }
 
     private fun onPinVerified(success: Boolean) {
+        isVerifying = false
         if (success) {
             onUnlocked()
             return

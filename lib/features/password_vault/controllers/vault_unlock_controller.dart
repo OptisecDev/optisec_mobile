@@ -71,7 +71,7 @@ class VaultUnlockController extends GetxController {
         errorMessage.value = l10n.vaultErrorIncorrectMasterPassword;
         break;
       case MasterPasswordVerifyStatus.lockedOut:
-        _startLockoutCountdown(result.lockoutRemaining ?? Duration.zero);
+        _startLockoutCountdown(l10n, result.lockoutRemaining ?? Duration.zero);
         break;
     }
   }
@@ -88,7 +88,7 @@ class VaultUnlockController extends GetxController {
         Get.offAllNamed(AppRoutes.vault);
         break;
       case BiometricUnlockStatus.lockedOut:
-        _startLockoutCountdown(result.lockoutRemaining ?? Duration.zero);
+        _startLockoutCountdown(l10n, result.lockoutRemaining ?? Duration.zero);
         break;
       case BiometricUnlockStatus.keyInvalidated:
         biometricEnabled.value = false;
@@ -103,10 +103,10 @@ class VaultUnlockController extends GetxController {
     }
   }
 
-  void _startLockoutCountdown(Duration remaining) {
+  void _startLockoutCountdown(AppLocalizations l10n, Duration remaining) {
     _countdownTimer?.cancel();
     lockoutRemaining.value = remaining;
-    errorMessage.value = AppLocalizations.of(Get.context!).vaultErrorTooManyAttempts;
+    errorMessage.value = l10n.vaultErrorTooManyAttempts;
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final current = lockoutRemaining.value ?? Duration.zero;
       final next = current - const Duration(seconds: 1);

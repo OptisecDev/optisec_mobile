@@ -191,7 +191,10 @@ class VaultListView extends GetView<VaultController> {
               ),
             ),
             const SizedBox(height: 8),
-            Obx(() => PasswordStrengthMeter(password: exportPassword.value)),
+            Obx(() => PasswordStrengthMeter(
+                  password: exportPassword.value,
+                  strict: true,
+                )),
           ],
         ),
         actions: [
@@ -212,7 +215,10 @@ class VaultListView extends GetView<VaultController> {
           ),
         ],
       ),
-    );
+    ).then((_) {
+      masterPasswordCtrl.dispose();
+      exportPasswordCtrl.dispose();
+    });
   }
 
   void _showExportResultSnackbar(AppLocalizations l10n, VaultExportStatus status) {
@@ -287,7 +293,7 @@ class VaultListView extends GetView<VaultController> {
           ),
         ],
       ),
-    );
+    ).then((_) => exportPasswordCtrl.dispose());
   }
 
   void _showImportResultSnackbar(AppLocalizations l10n, VaultImportStatus status) {

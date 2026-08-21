@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import '../../core/theme/app_colors.dart';
+
 enum ThreatSeverity { low, medium, high, critical }
 
 class ThreatItem {
@@ -16,6 +20,45 @@ class ThreatItem {
     required this.category,
     required this.detectedAt,
   });
+}
+
+/// Score → severity tier boundaries, and what each tier maps to. Single
+/// source of truth for the >=80/>=60/>=40 thresholds that used to be
+/// hand-copied independently in score_ring.dart, score_history_chart.dart,
+/// security_report_pdf_service.dart, and privacy_guard_view.dart.
+enum ScoreTier { safe, good, warning, critical }
+
+ScoreTier scoreTierFor(int score) {
+  if (score >= 80) return ScoreTier.safe;
+  if (score >= 60) return ScoreTier.good;
+  if (score >= 40) return ScoreTier.warning;
+  return ScoreTier.critical;
+}
+
+Color scoreColorFor(int score) {
+  switch (scoreTierFor(score)) {
+    case ScoreTier.safe:
+      return AppColors.safe;
+    case ScoreTier.good:
+      return AppColors.primary;
+    case ScoreTier.warning:
+      return AppColors.warning;
+    case ScoreTier.critical:
+      return AppColors.danger;
+  }
+}
+
+String scoreStatusLabelFor(int score) {
+  switch (scoreTierFor(score)) {
+    case ScoreTier.safe:
+      return 'Excellent';
+    case ScoreTier.good:
+      return 'Good';
+    case ScoreTier.warning:
+      return 'Fair';
+    case ScoreTier.critical:
+      return 'Critical';
+  }
 }
 
 class SecurityScoreModel {
@@ -51,12 +94,7 @@ class SecurityScoreModel {
         lastScan: DateTime.now(),
       );
 
-  String get statusLabel {
-    if (overall >= 80) return 'Excellent';
-    if (overall >= 60) return 'Good';
-    if (overall >= 40) return 'Fair';
-    return 'Critical';
-  }
+  String get statusLabel => scoreStatusLabelFor(overall);
 
   SecurityScoreModel copyWith({
     int? overall,

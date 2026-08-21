@@ -149,6 +149,13 @@ class VaultChannelHandler(private val activity: MainActivity) {
             result.error("INVALID_ARGUMENT", "masterPassword is required", null)
             return
         }
+        // Defense-in-depth: the Dart-side setup form already enforces this
+        // same minimum (VaultSetupController.minPasswordLength), so this
+        // never rejects a request the UI would have allowed through.
+        if (masterPassword.length < MIN_MASTER_PASSWORD_LENGTH) {
+            result.error("INVALID_ARGUMENT", "masterPassword is too short", null)
+            return
+        }
         store.setupVault(masterPassword.toCharArray())
         result.success(null)
     }
@@ -218,5 +225,6 @@ class VaultChannelHandler(private val activity: MainActivity) {
 
     companion object {
         const val CHANNEL_NAME = "com.optisec.mobile/password_vault"
+        private const val MIN_MASTER_PASSWORD_LENGTH = 8
     }
 }

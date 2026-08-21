@@ -21,6 +21,16 @@ enum FilterMode { all, safe, threats, evilTwin }
 /// separate follow-up outside this fix's scope).
 enum _OuiMismatchConfidence { low, medium, high }
 
+/// Shared failure-reason shape both [CanStartScan] and [CanGetScannedResults]
+/// map onto -- see [WifiShieldController._scanErrorMessage].
+enum _ScanFailureReason {
+  permissionDenied,
+  locationServiceDisabled,
+  locationAccuracy,
+  notSupported,
+  generic,
+}
+
 class WifiShieldController extends GetxController with WidgetsBindingObserver {
   final _allNetworks = <WifiNetworkModel>[];
 
@@ -179,12 +189,12 @@ class WifiShieldController extends GetxController with WidgetsBindingObserver {
             _incrementTodayScanCount();
           }
         } else {
-          scanError.value =
-              _canGetResultsError(AppLocalizations.of(Get.context!), canGet);
+          scanError.value = _scanErrorMessage(
+              AppLocalizations.of(Get.context!), _getResultsFailureReason(canGet));
         }
       } else {
-        scanError.value =
-            _canStartScanError(AppLocalizations.of(Get.context!), canScan);
+        scanError.value = _scanErrorMessage(
+            AppLocalizations.of(Get.context!), _startScanFailureReason(canScan));
       }
     } catch (e) {
       debugPrint('WiFi scan failed: $e');
@@ -194,42 +204,58 @@ class WifiShieldController extends GetxController with WidgetsBindingObserver {
     }
   }
 
-  /// Maps a non-[CanStartScan.yes] result to a message that tells the user
-  /// exactly what to fix, instead of leaving [scanError] empty and letting
-  /// the scan silently no-op.
-  String _canStartScanError(AppLocalizations l10n, CanStartScan reason) {
+  /// Maps a non-[CanStartScan.yes]/non-[CanGetScannedResults.yes] result to a
+  /// message that tells the user exactly what to fix, instead of leaving
+  /// [scanError] empty and letting the scan silently no-op. [CanStartScan]
+  /// and [CanGetScannedResults] are two distinct enums from the wifi_scan
+  /// package with the same underlying set of failure reasons, so the two
+  /// mappers below just translate each into this shared [_ScanFailureReason]
+  /// and the actual user-facing text lives in exactly one place.
+  String _scanErrorMessage(AppLocalizations l10n, _ScanFailureReason reason) {
     switch (reason) {
-      case CanStartScan.noLocationPermissionDenied:
-      case CanStartScan.noLocationPermissionRequired:
+      case _ScanFailureReason.permissionDenied:
         return l10n.wifiScanErrorPermissionDenied;
-      case CanStartScan.noLocationServiceDisabled:
+      case _ScanFailureReason.locationServiceDisabled:
         return l10n.wifiScanErrorLocationServiceDisabled;
-      case CanStartScan.noLocationPermissionUpgradeAccuracy:
+      case _ScanFailureReason.locationAccuracy:
         return l10n.wifiScanErrorLocationAccuracy;
-      case CanStartScan.notSupported:
+      case _ScanFailureReason.notSupported:
         return l10n.wifiScanErrorNotSupported;
-      case CanStartScan.failed:
-      case CanStartScan.yes:
+      case _ScanFailureReason.generic:
         return l10n.wifiScanErrorGeneric;
     }
   }
 
-  /// Same as [_canStartScanError] but for the [CanGetScannedResults] result
-  /// returned after the scan itself started successfully.
-  String _canGetResultsError(
-      AppLocalizations l10n, CanGetScannedResults reason) {
+  _ScanFailureReason _startScanFailureReason(CanStartScan reason) {
+    switch (reason) {
+      case CanStartScan.noLocationPermissionDenied:
+      case CanStartScan.noLocationPermissionRequired:
+        return _ScanFailureReason.permissionDenied;
+      case CanStartScan.noLocationServiceDisabled:
+        return _ScanFailureReason.locationServiceDisabled;
+      case CanStartScan.noLocationPermissionUpgradeAccuracy:
+        return _ScanFailureReason.locationAccuracy;
+      case CanStartScan.notSupported:
+        return _ScanFailureReason.notSupported;
+      case CanStartScan.failed:
+      case CanStartScan.yes:
+        return _ScanFailureReason.generic;
+    }
+  }
+
+  _ScanFailureReason _getResultsFailureReason(CanGetScannedResults reason) {
     switch (reason) {
       case CanGetScannedResults.noLocationPermissionDenied:
       case CanGetScannedResults.noLocationPermissionRequired:
-        return l10n.wifiScanErrorPermissionDenied;
+        return _ScanFailureReason.permissionDenied;
       case CanGetScannedResults.noLocationServiceDisabled:
-        return l10n.wifiScanErrorLocationServiceDisabled;
+        return _ScanFailureReason.locationServiceDisabled;
       case CanGetScannedResults.noLocationPermissionUpgradeAccuracy:
-        return l10n.wifiScanErrorLocationAccuracy;
+        return _ScanFailureReason.locationAccuracy;
       case CanGetScannedResults.notSupported:
-        return l10n.wifiScanErrorNotSupported;
+        return _ScanFailureReason.notSupported;
       case CanGetScannedResults.yes:
-        return l10n.wifiScanErrorGeneric;
+        return _ScanFailureReason.generic;
     }
   }
 
