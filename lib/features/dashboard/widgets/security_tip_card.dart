@@ -33,12 +33,12 @@ class _SecurityTipCardState extends State<SecurityTipCard> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withOpacity(0.12),
-            AppColors.accent.withOpacity(0.06),
+            AppColors.primary.withValues(alpha: 0.12),
+            AppColors.accent.withValues(alpha: 0.06),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +98,7 @@ class _SecurityTipCardState extends State<SecurityTipCard> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
+                          color: AppColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(

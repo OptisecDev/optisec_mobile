@@ -77,10 +77,10 @@ class PermissionDetailSheet extends StatelessWidget {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          color: _riskColor.withOpacity(0.12),
+                          color: _riskColor.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                              color: _riskColor.withOpacity(0.3)),
+                              color: _riskColor.withValues(alpha: 0.3)),
                         ),
                         child: Icon(permission.icon,
                             color: _riskColor, size: 28),
@@ -183,10 +183,10 @@ class PermissionDetailSheet extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: AppColors.safe.withOpacity(0.1),
+                        color: AppColors.safe.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                            color: AppColors.safe.withOpacity(0.3)),
+                            color: AppColors.safe.withValues(alpha: 0.3)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +244,7 @@ class _RiskBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.12),
+        color: _color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
@@ -417,8 +417,8 @@ class _AppRow extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               color: isGranted
-                  ? AppColors.danger.withOpacity(0.1)
-                  : AppColors.safe.withOpacity(0.1),
+                  ? AppColors.danger.withValues(alpha: 0.1)
+                  : AppColors.safe.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(

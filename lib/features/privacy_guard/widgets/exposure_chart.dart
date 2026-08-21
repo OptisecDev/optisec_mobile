@@ -59,7 +59,7 @@ class _ExposureRow extends StatelessWidget {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              color: _riskColor.withOpacity(0.1),
+              color: _riskColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(perm.icon, size: 15, color: _riskColor),
@@ -116,7 +116,7 @@ class _ExposureRow extends StatelessWidget {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                _riskColor.withOpacity(0.6),
+                                _riskColor.withValues(alpha: 0.6),
                                 _riskColor,
                               ],
                             ),

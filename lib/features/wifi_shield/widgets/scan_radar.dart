@@ -80,13 +80,13 @@ class _RadarPainter extends CustomPainter {
 
     for (int i = 1; i <= 4; i++) {
       final r = maxR * (i / 4) * pulseScale;
-      ringPaint.color = AppColors.primary.withOpacity(0.08 + i * 0.04);
+      ringPaint.color = AppColors.primary.withValues(alpha: 0.08 + i * 0.04);
       canvas.drawCircle(center, r, ringPaint);
     }
 
     // Cross-hairs
     final crossPaint = Paint()
-      ..color = AppColors.primary.withOpacity(0.1)
+      ..color = AppColors.primary.withValues(alpha: 0.1)
       ..strokeWidth = 0.8;
     canvas.drawLine(
         Offset(center.dx, 0), Offset(center.dx, size.height), crossPaint);
@@ -101,8 +101,8 @@ class _RadarPainter extends CustomPainter {
         startAngle: sweepAngle - 1.2,
         endAngle: sweepAngle,
         colors: [
-          AppColors.primary.withOpacity(0.0),
-          AppColors.primary.withOpacity(0.25),
+          AppColors.primary.withValues(alpha: 0.0),
+          AppColors.primary.withValues(alpha: 0.25),
         ],
       ).createShader(Rect.fromCircle(center: center, radius: maxR));
 
@@ -116,7 +116,7 @@ class _RadarPainter extends CustomPainter {
 
     // Sweep leading edge line
     final linePaint = Paint()
-      ..color = AppColors.primary.withOpacity(0.7)
+      ..color = AppColors.primary.withValues(alpha: 0.7)
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round;
     final endX = center.dx + maxR * 0.95 * pulseScale * math.cos(sweepAngle);

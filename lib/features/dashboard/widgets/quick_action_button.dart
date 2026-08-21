@@ -24,9 +24,9 @@ class QuickActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
-          color: c.withOpacity(0.08),
+          color: c.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: c.withOpacity(0.25)),
+          border: Border.all(color: c.withValues(alpha: 0.25)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

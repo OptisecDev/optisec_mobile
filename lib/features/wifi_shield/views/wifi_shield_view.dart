@@ -55,10 +55,10 @@ class _PermissionView extends StatelessWidget {
                 width: 88,
                 height: 88,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.08),
+                  color: AppColors.primary.withValues(alpha: 0.08),
                   shape: BoxShape.circle,
                   border: Border.all(
-                      color: AppColors.primary.withOpacity(0.2), width: 2),
+                      color: AppColors.primary.withValues(alpha: 0.2), width: 2),
                 ),
                 child: const Icon(Icons.location_on_rounded,
                     color: AppColors.primary, size: 42),
@@ -408,9 +408,9 @@ class _SummaryCard extends StatelessWidget {
     Widget card = Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.07),
+        color: color.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
@@ -426,7 +426,7 @@ class _SummaryCard extends StatelessWidget {
           ),
           Text(label,
               style: theme.textTheme.labelSmall?.copyWith(
-                color: color.withOpacity(0.7),
+                color: color.withValues(alpha: 0.7),
               )),
         ],
       ),
@@ -435,7 +435,7 @@ class _SummaryCard extends StatelessWidget {
     if (pulse) {
       card = card
           .animate(onPlay: (c) => c.repeat(reverse: true))
-          .shimmer(duration: 1200.ms, color: color.withOpacity(0.15));
+          .shimmer(duration: 1200.ms, color: color.withValues(alpha: 0.15));
     }
 
     return card
@@ -473,12 +473,12 @@ class _ConnectedCard extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              primaryC.withOpacity(0.1),
+              primaryC.withValues(alpha: 0.1),
               AppColors.surface,
             ],
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: primaryC.withOpacity(0.35), width: 1.5),
+          border: Border.all(color: primaryC.withValues(alpha: 0.35), width: 1.5),
         ),
         child: Row(
           children: [
@@ -486,7 +486,7 @@ class _ConnectedCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: primaryC.withOpacity(0.1),
+                color: primaryC.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -557,7 +557,7 @@ class _ConnectedCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: primaryC.withOpacity(0.1),
+                  color: primaryC.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
@@ -565,7 +565,7 @@ class _ConnectedCard extends StatelessWidget {
                     Text(l10n.wifiRiskLabel,
                         style: TextStyle(
                             fontSize: 9,
-                            color: primaryC.withOpacity(0.7),
+                            color: primaryC.withValues(alpha: 0.7),
                             fontWeight: FontWeight.w600)),
                     Text(
                       '${connected.riskScore}',
@@ -651,7 +651,7 @@ class _FilterSortBar extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         decoration: BoxDecoration(
-          color: active ? color.withOpacity(0.15) : AppColors.card,
+          color: active ? color.withValues(alpha: 0.15) : AppColors.card,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: active ? color : AppColors.cardBorder,
@@ -685,7 +685,7 @@ class _FilterSortBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: active
-              ? AppColors.primary.withOpacity(0.1)
+              ? AppColors.primary.withValues(alpha: 0.1)
               : AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(

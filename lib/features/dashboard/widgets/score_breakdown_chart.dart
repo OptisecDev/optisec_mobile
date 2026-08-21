@@ -31,7 +31,7 @@ class ScoreBreakdownChart extends StatelessWidget {
                     RadarEntry(value: 100),
                   ],
                   borderColor: Colors.transparent,
-                  fillColor: AppColors.cardBorder.withOpacity(0.15),
+                  fillColor: AppColors.cardBorder.withValues(alpha: 0.15),
                   borderWidth: 0,
                   entryRadius: 0,
                 ),
@@ -43,7 +43,7 @@ class ScoreBreakdownChart extends StatelessWidget {
                     RadarEntry(value: appScore.toDouble()),
                   ],
                   borderColor: AppColors.primary,
-                  fillColor: AppColors.primary.withOpacity(0.15),
+                  fillColor: AppColors.primary.withValues(alpha: 0.15),
                   borderWidth: 2,
                   entryRadius: 4,
                 ),
@@ -54,7 +54,7 @@ class ScoreBreakdownChart extends StatelessWidget {
               gridBorderData: const BorderSide(
                   color: AppColors.cardBorder, width: 1),
               tickBorderData: BorderSide(
-                  color: AppColors.cardBorder.withOpacity(0.4), width: 1),
+                  color: AppColors.cardBorder.withValues(alpha: 0.4), width: 1),
               tickCount: 4,
               ticksTextStyle: const TextStyle(
                   color: Colors.transparent, fontSize: 0),

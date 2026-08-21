@@ -52,14 +52,14 @@ class FeaturedLessonCard extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              _categoryColor.withOpacity(0.18),
+              _categoryColor.withValues(alpha: 0.18),
               AppColors.card,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: _categoryColor.withOpacity(0.3)),
+          border: Border.all(color: _categoryColor.withValues(alpha: 0.3)),
         ),
         child: Stack(
           children: [
@@ -70,7 +70,7 @@ class FeaturedLessonCard extends StatelessWidget {
               child: Icon(
                 _categoryIcon,
                 size: 100,
-                color: _categoryColor.withOpacity(0.05),
+                color: _categoryColor.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -86,8 +86,8 @@ class FeaturedLessonCard extends StatelessWidget {
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
                           color: isContinue
-                              ? AppColors.primary.withOpacity(0.2)
-                              : _categoryColor.withOpacity(0.15),
+                              ? AppColors.primary.withValues(alpha: 0.2)
+                              : _categoryColor.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -228,7 +228,7 @@ class FeaturedLessonCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        color: c.withOpacity(0.1),
+        color: c.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(

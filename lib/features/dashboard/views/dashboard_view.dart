@@ -6,7 +6,6 @@ import '../../../core/theme/app_colors.dart';
 import '../../../features/home/controllers/home_controller.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../navigation/app_routes.dart';
-import '../../../shared/models/security_score_model.dart';
 import '../../../shared/widgets/score_ring.dart';
 import '../../threat_intel/controllers/threat_intel_controller.dart';
 import '../../threat_intel/widgets/threat_alert_card.dart';
@@ -185,7 +184,7 @@ class _ScoreHeroCard extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [
               AppColors.surface,
-              AppColors.primary.withOpacity(0.06),
+              AppColors.primary.withValues(alpha: 0.06),
             ],
           ),
           borderRadius: BorderRadius.circular(24),
@@ -258,9 +257,9 @@ class _DeltaBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -615,7 +614,6 @@ class _ChartsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -735,7 +733,7 @@ class _ChartTab extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
         decoration: BoxDecoration(
           color: active
-              ? AppColors.primary.withOpacity(0.15)
+              ? AppColors.primary.withValues(alpha: 0.15)
               : AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
@@ -780,7 +778,7 @@ class _ThreatsSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 7, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppColors.danger.withOpacity(0.15),
+                  color: AppColors.danger.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(

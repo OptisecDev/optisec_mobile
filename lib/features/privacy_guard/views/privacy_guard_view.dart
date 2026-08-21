@@ -152,10 +152,10 @@ class _ScoreHero extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.surface, accentColor.withOpacity(0.06)],
+            colors: [AppColors.surface, accentColor.withValues(alpha: 0.06)],
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: accentColor.withOpacity(0.2)),
+          border: Border.all(color: accentColor.withValues(alpha: 0.2)),
         ),
         child: Row(
           children: [
@@ -309,9 +309,9 @@ class _SummaryCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.07),
+          color: color.withValues(alpha: 0.07),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
         child: Column(
           children: [
@@ -325,7 +325,7 @@ class _SummaryCard extends StatelessWidget {
                 )),
             Text(label,
                 style: theme.textTheme.labelSmall
-                    ?.copyWith(color: color.withOpacity(0.7), fontSize: 10),
+                    ?.copyWith(color: color.withValues(alpha: 0.7), fontSize: 10),
                 textAlign: TextAlign.center),
           ],
         ),
@@ -643,7 +643,7 @@ class _FilterBar extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: active ? color.withOpacity(0.15) : AppColors.card,
+          color: active ? color.withValues(alpha: 0.15) : AppColors.card,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
               color: active ? color : AppColors.cardBorder),
@@ -691,7 +691,7 @@ class _UsageTimelineSection extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.12),
+                  color: AppColors.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(

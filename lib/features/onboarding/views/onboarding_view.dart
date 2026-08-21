@@ -162,8 +162,8 @@ class _IllustrationAreaState extends State<_IllustrationArea>
                 center: const Alignment(0, 0.2),
                 radius: 0.85,
                 colors: [
-                  color.withOpacity(0.10),
-                  color.withOpacity(0.04),
+                  color.withValues(alpha: 0.10),
+                  color.withValues(alpha: 0.04),
                   AppColors.background,
                 ],
               ),
@@ -209,16 +209,16 @@ class _IllustrationAreaState extends State<_IllustrationArea>
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                color.withOpacity(0.25),
-                color.withOpacity(0.08),
+                color.withValues(alpha: 0.25),
+                color.withValues(alpha: 0.08),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            border: Border.all(color: color.withOpacity(0.35), width: 1.5),
+            border: Border.all(color: color.withValues(alpha: 0.35), width: 1.5),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.25),
+                color: color.withValues(alpha: 0.25),
                 blurRadius: 30,
                 spreadRadius: 4,
               ),
@@ -252,7 +252,7 @@ class _Ring extends StatelessWidget {
       height: radius * 2,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: color.withOpacity(opacity), width: 1),
+        border: Border.all(color: color.withValues(alpha: opacity), width: 1),
       ),
     );
   }
@@ -270,10 +270,10 @@ class _OrbitBubble extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color.withOpacity(0.15),
-        border: Border.all(color: color.withOpacity(0.35), width: 1),
+        color: color.withValues(alpha: 0.15),
+        border: Border.all(color: color.withValues(alpha: 0.35), width: 1),
         boxShadow: [
-          BoxShadow(color: color.withOpacity(0.2), blurRadius: 8),
+          BoxShadow(color: color.withValues(alpha: 0.2), blurRadius: 8),
         ],
       ),
       child: Icon(icon, color: color, size: 18),
@@ -301,7 +301,7 @@ class _ContentArea extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: data.color.withOpacity(0.12),
+              color: data.color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
@@ -374,7 +374,7 @@ class _ContentArea extends StatelessWidget {
                     width: 28,
                     height: 28,
                     decoration: BoxDecoration(
-                      color: data.color.withOpacity(0.12),
+                      color: data.color.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(7),
                     ),
                     child:
@@ -514,7 +514,7 @@ class _NextButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.35),
+              color: color.withValues(alpha: 0.35),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),

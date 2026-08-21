@@ -54,8 +54,8 @@ class RiskScoreBadge extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _color.withOpacity(0.12),
-        border: Border.all(color: _color.withOpacity(0.4), width: 1.5),
+        color: _color.withValues(alpha: 0.12),
+        border: Border.all(color: _color.withValues(alpha: 0.4), width: 1.5),
       ),
       child: Center(
         child: Text(
@@ -75,9 +75,9 @@ class RiskScoreBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.12),
+        color: _color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: _color.withOpacity(0.3)),
+        border: Border.all(color: _color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -96,7 +96,7 @@ class RiskScoreBadge extends StatelessWidget {
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: _color.withOpacity(0.8),
+              color: _color.withValues(alpha: 0.8),
             ),
           ),
         ],

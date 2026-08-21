@@ -32,7 +32,7 @@ class PrivacyRecommendationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.25)),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
       ),
       child: IntrinsicHeight(
         child: Row(
@@ -58,7 +58,7 @@ class PrivacyRecommendationCard extends StatelessWidget {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.1),
+                        color: color.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(permission.icon, color: color, size: 20),
@@ -87,9 +87,9 @@ class PrivacyRecommendationCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 7),
                         decoration: BoxDecoration(
-                          color: color.withOpacity(0.1),
+                          color: color.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: color.withOpacity(0.3)),
+                          border: Border.all(color: color.withValues(alpha: 0.3)),
                         ),
                         child: Text(
                           l10n.privacyFix,

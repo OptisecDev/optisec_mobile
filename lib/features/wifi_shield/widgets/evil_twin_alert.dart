@@ -85,12 +85,12 @@ class _EvilTwinBanner extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            accentColor.withOpacity(0.18),
-            accentColor.withOpacity(0.08),
+            accentColor.withValues(alpha: 0.18),
+            accentColor.withValues(alpha: 0.08),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: accentColor.withOpacity(0.5), width: 1.5),
+        border: Border.all(color: accentColor.withValues(alpha: 0.5), width: 1.5),
       ),
       child: Column(
         children: [
@@ -98,7 +98,7 @@ class _EvilTwinBanner extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.15),
+              color: accentColor.withValues(alpha: 0.15),
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(14)),
             ),
@@ -121,7 +121,7 @@ class _EvilTwinBanner extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: accentColor.withOpacity(0.18),
+                    color: accentColor.withValues(alpha: 0.18),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -137,7 +137,7 @@ class _EvilTwinBanner extends StatelessWidget {
                 GestureDetector(
                   onTap: onDismiss,
                   child: Icon(Icons.close_rounded,
-                      color: accentColor.withOpacity(0.7), size: 18),
+                      color: accentColor.withValues(alpha: 0.7), size: 18),
                 ),
               ],
             ),
@@ -246,9 +246,9 @@ class _EvilTwinBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.25)),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
       ),
       child: Text(
         label,
@@ -302,7 +302,7 @@ class _PulsingIconState extends State<_PulsingIcon>
         width: 28,
         height: 28,
         decoration: BoxDecoration(
-          color: widget.color.withOpacity(0.2),
+          color: widget.color.withValues(alpha: 0.2),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.gpp_bad_rounded, color: widget.color, size: 16),

@@ -19,6 +19,7 @@ import 'package:optisec_mobile/shared/models/wifi_network_model.dart';
 /// test drive the exact risk-relevant getters DashboardController reads.
 class _StubWifiShieldController extends WifiShieldController {
   @override
+  // ignore: must_call_super
   void onInit() {}
 
   @override
@@ -39,6 +40,7 @@ class _StubWifiShieldController extends WifiShieldController {
 
 class _StubPrivacyGuardController extends PrivacyGuardController {
   @override
+  // ignore: must_call_super
   void onInit() {}
 }
 

@@ -73,7 +73,7 @@ class AnimatedScoreRing extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.12),
+                      color: color.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -161,7 +161,7 @@ class _RingPainter extends CustomPainter {
         center: Alignment.center,
         startAngle: _startAngle,
         endAngle: _startAngle + sweepAngle,
-        colors: [color.withOpacity(0.5), color],
+        colors: [color.withValues(alpha: 0.5), color],
         stops: const [0.0, 1.0],
       ).createShader(rect);
     canvas.drawArc(rect, _startAngle, sweepAngle, false, progressPaint);
@@ -178,7 +178,7 @@ class _RingPainter extends CustomPainter {
       tip,
       strokeWidth * 0.9,
       Paint()
-        ..color = color.withOpacity(0.3)
+        ..color = color.withValues(alpha: 0.3)
         ..maskFilter =
             const MaskFilter.blur(BlurStyle.normal, 10),
     );

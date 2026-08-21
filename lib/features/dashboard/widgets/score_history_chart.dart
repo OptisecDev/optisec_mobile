@@ -75,7 +75,7 @@ class _ScoreHistoryChartState extends State<ScoreHistoryChart> {
           getDrawingHorizontalLine: (val) => FlLine(
             color: val == 0 || val == 100
                 ? Colors.transparent
-                : AppColors.cardBorder.withOpacity(0.6),
+                : AppColors.cardBorder.withValues(alpha: 0.6),
             strokeWidth: 1,
             dashArray: [4, 4],
           ),
@@ -156,8 +156,8 @@ class _ScoreHistoryChartState extends State<ScoreHistoryChart> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  AppColors.primary.withOpacity(0.18),
-                  AppColors.primary.withOpacity(0.0),
+                  AppColors.primary.withValues(alpha: 0.18),
+                  AppColors.primary.withValues(alpha: 0.0),
                 ],
               ),
             ),

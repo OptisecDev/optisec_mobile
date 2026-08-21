@@ -8,8 +8,8 @@ class OnboardingPageData {
   final String descriptionAr;
   final IconData icon;
   final Color color;
-  final List<_Feature> features;
-  final List<_OrbitItem> orbitItems;
+  final List<OnboardingFeature> features;
+  final List<OnboardingOrbitItem> orbitItems;
 
   const OnboardingPageData({
     required this.title,
@@ -23,7 +23,7 @@ class OnboardingPageData {
   });
 }
 
-/// Identifies which localized string [_Feature.label] refers to. The raw
+/// Identifies which localized string [OnboardingFeature.label] refers to. The raw
 /// English text is only used as a lookup key here — the actual displayed
 /// text comes from AppLocalizations, keyed by this enum, in the view.
 enum OnboardingFeatureKey {
@@ -41,17 +41,17 @@ enum OnboardingFeatureKey {
   xpLevelsBadges,
 }
 
-class _Feature {
+class OnboardingFeature {
   final IconData icon;
   final OnboardingFeatureKey labelKey;
-  const _Feature(this.icon, this.labelKey);
+  const OnboardingFeature(this.icon, this.labelKey);
 }
 
-class _OrbitItem {
+class OnboardingOrbitItem {
   final IconData icon;
   final Color color;
   final double angle; // radians
-  const _OrbitItem(this.icon, this.color, this.angle);
+  const OnboardingOrbitItem(this.icon, this.color, this.angle);
 }
 
 const kOnboardingPages = [
@@ -65,14 +65,14 @@ const kOnboardingPages = [
     icon: Icons.security_rounded,
     color: AppColors.primary,
     features: [
-      _Feature(Icons.radar_rounded, OnboardingFeatureKey.realtimeThreatDetection),
-      _Feature(Icons.shield_rounded, OnboardingFeatureKey.networkPrivacyProtection),
-      _Feature(Icons.school_rounded, OnboardingFeatureKey.cybersecurityEducation),
+      OnboardingFeature(Icons.radar_rounded, OnboardingFeatureKey.realtimeThreatDetection),
+      OnboardingFeature(Icons.shield_rounded, OnboardingFeatureKey.networkPrivacyProtection),
+      OnboardingFeature(Icons.school_rounded, OnboardingFeatureKey.cybersecurityEducation),
     ],
     orbitItems: [
-      _OrbitItem(Icons.wifi_rounded, AppColors.info, 0.0),
-      _OrbitItem(Icons.lock_rounded, AppColors.warning, 2.09),
-      _OrbitItem(Icons.bug_report_rounded, AppColors.danger, 4.19),
+      OnboardingOrbitItem(Icons.wifi_rounded, AppColors.info, 0.0),
+      OnboardingOrbitItem(Icons.lock_rounded, AppColors.warning, 2.09),
+      OnboardingOrbitItem(Icons.bug_report_rounded, AppColors.danger, 4.19),
     ],
   ),
 
@@ -86,14 +86,14 @@ const kOnboardingPages = [
     icon: Icons.wifi_rounded,
     color: AppColors.info,
     features: [
-      _Feature(Icons.wifi_tethering_error_rounded, OnboardingFeatureKey.evilTwinDetection),
-      _Feature(Icons.signal_cellular_alt_rounded, OnboardingFeatureKey.signalRiskAnalysis),
-      _Feature(Icons.devices_rounded, OnboardingFeatureKey.connectedDeviceAudit),
+      OnboardingFeature(Icons.wifi_tethering_error_rounded, OnboardingFeatureKey.evilTwinDetection),
+      OnboardingFeature(Icons.signal_cellular_alt_rounded, OnboardingFeatureKey.signalRiskAnalysis),
+      OnboardingFeature(Icons.devices_rounded, OnboardingFeatureKey.connectedDeviceAudit),
     ],
     orbitItems: [
-      _OrbitItem(Icons.router_rounded, AppColors.info, 0.5),
-      _OrbitItem(Icons.security_rounded, AppColors.primary, 2.6),
-      _OrbitItem(Icons.warning_rounded, AppColors.danger, 4.7),
+      OnboardingOrbitItem(Icons.router_rounded, AppColors.info, 0.5),
+      OnboardingOrbitItem(Icons.security_rounded, AppColors.primary, 2.6),
+      OnboardingOrbitItem(Icons.warning_rounded, AppColors.danger, 4.7),
     ],
   ),
 
@@ -107,14 +107,14 @@ const kOnboardingPages = [
     icon: Icons.shield_rounded,
     color: AppColors.safe,
     features: [
-      _Feature(Icons.verified_user_rounded, OnboardingFeatureKey.permissionAuditing),
-      _Feature(Icons.bar_chart_rounded, OnboardingFeatureKey.riskScoringPerApp),
-      _Feature(Icons.touch_app_rounded, OnboardingFeatureKey.oneTapPermissionRevoke),
+      OnboardingFeature(Icons.verified_user_rounded, OnboardingFeatureKey.permissionAuditing),
+      OnboardingFeature(Icons.bar_chart_rounded, OnboardingFeatureKey.riskScoringPerApp),
+      OnboardingFeature(Icons.touch_app_rounded, OnboardingFeatureKey.oneTapPermissionRevoke),
     ],
     orbitItems: [
-      _OrbitItem(Icons.mic_rounded, AppColors.danger, 1.0),
-      _OrbitItem(Icons.location_on_rounded, AppColors.warning, 3.1),
-      _OrbitItem(Icons.camera_alt_rounded, AppColors.info, 5.2),
+      OnboardingOrbitItem(Icons.mic_rounded, AppColors.danger, 1.0),
+      OnboardingOrbitItem(Icons.location_on_rounded, AppColors.warning, 3.1),
+      OnboardingOrbitItem(Icons.camera_alt_rounded, AppColors.info, 5.2),
     ],
   ),
 
@@ -128,14 +128,14 @@ const kOnboardingPages = [
     icon: Icons.school_rounded,
     color: AppColors.warning,
     features: [
-      _Feature(Icons.menu_book_rounded, OnboardingFeatureKey.handsOnLessons),
-      _Feature(Icons.quiz_rounded, OnboardingFeatureKey.knowledgeQuizzes),
-      _Feature(Icons.emoji_events_rounded, OnboardingFeatureKey.xpLevelsBadges),
+      OnboardingFeature(Icons.menu_book_rounded, OnboardingFeatureKey.handsOnLessons),
+      OnboardingFeature(Icons.quiz_rounded, OnboardingFeatureKey.knowledgeQuizzes),
+      OnboardingFeature(Icons.emoji_events_rounded, OnboardingFeatureKey.xpLevelsBadges),
     ],
     orbitItems: [
-      _OrbitItem(Icons.lock_rounded, AppColors.primary, 0.3),
-      _OrbitItem(Icons.phishing_rounded, AppColors.danger, 2.4),
-      _OrbitItem(Icons.emoji_events_rounded, AppColors.warning, 4.5),
+      OnboardingOrbitItem(Icons.lock_rounded, AppColors.primary, 0.3),
+      OnboardingOrbitItem(Icons.phishing_rounded, AppColors.danger, 2.4),
+      OnboardingOrbitItem(Icons.emoji_events_rounded, AppColors.warning, 4.5),
     ],
   ),
 ];

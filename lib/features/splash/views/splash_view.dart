@@ -32,8 +32,8 @@ class SplashView extends GetView<SplashController> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.12),
-                    AppColors.primary.withOpacity(0.0),
+                    AppColors.primary.withValues(alpha: 0.12),
+                    AppColors.primary.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -150,7 +150,7 @@ class _LogoStackState extends State<_LogoStack>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.15),
+                color: AppColors.primary.withValues(alpha: 0.15),
                 width: 1,
               ),
             ),
@@ -172,12 +172,12 @@ class _LogoStackState extends State<_LogoStack>
                 end: Alignment.bottomRight,
               ),
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.4),
+                color: AppColors.primary.withValues(alpha: 0.4),
                 width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withOpacity(0.3),
+                  color: AppColors.primary.withValues(alpha: 0.3),
                   blurRadius: 24,
                   spreadRadius: 4,
                 ),
@@ -197,7 +197,7 @@ class _LogoStackState extends State<_LogoStack>
               .then(delay: 200.ms)
               .shimmer(
                 duration: 1800.ms,
-                color: AppColors.primary.withOpacity(0.25),
+                color: AppColors.primary.withValues(alpha: 0.25),
                 angle: math.pi / 4,
               ),
         ],
@@ -217,7 +217,7 @@ class _ScanRingPainter extends CustomPainter {
 
     // Static outer ring
     final trackPaint = Paint()
-      ..color = AppColors.primary.withOpacity(0.1)
+      ..color = AppColors.primary.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     canvas.drawCircle(center, radius, trackPaint);
@@ -229,7 +229,7 @@ class _ScanRingPainter extends CustomPainter {
         endAngle: 3 * math.pi / 2,
         colors: [
           Colors.transparent,
-          AppColors.primary.withOpacity(0.6),
+          AppColors.primary.withValues(alpha: 0.6),
           AppColors.primary,
           Colors.transparent,
         ],
@@ -325,7 +325,7 @@ class _LoadingSection extends StatelessWidget {
                           borderRadius: BorderRadius.circular(2),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.primary.withOpacity(0.5),
+                              color: AppColors.primary.withValues(alpha: 0.5),
                               blurRadius: 6,
                             ),
                           ],
@@ -404,7 +404,7 @@ class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.primary.withOpacity(0.03)
+      ..color = AppColors.primary.withValues(alpha: 0.03)
       ..strokeWidth = 0.5;
 
     const step = 40.0;

@@ -24,9 +24,9 @@ class _ThreatTimelineChartState extends State<ThreatTimelineChart> {
   }
 
   Color _barColor(double val, bool touched) {
-    if (val == 0) return AppColors.safe.withOpacity(touched ? 1.0 : 0.7);
-    if (val <= 2) return AppColors.warning.withOpacity(touched ? 1.0 : 0.8);
-    return AppColors.danger.withOpacity(touched ? 1.0 : 0.85);
+    if (val == 0) return AppColors.safe.withValues(alpha: touched ? 1.0 : 0.7);
+    if (val <= 2) return AppColors.warning.withValues(alpha: touched ? 1.0 : 0.8);
+    return AppColors.danger.withValues(alpha: touched ? 1.0 : 0.85);
   }
 
   @override
@@ -113,7 +113,7 @@ class _ThreatTimelineChartState extends State<ThreatTimelineChart> {
           show: true,
           drawVerticalLine: false,
           getDrawingHorizontalLine: (_) => FlLine(
-            color: AppColors.cardBorder.withOpacity(0.5),
+            color: AppColors.cardBorder.withValues(alpha: 0.5),
             strokeWidth: 1,
             dashArray: [4, 4],
           ),
@@ -135,7 +135,7 @@ class _ThreatTimelineChartState extends State<ThreatTimelineChart> {
                 backDrawRodData: BackgroundBarChartRodData(
                   show: true,
                   toY: maxY,
-                  color: AppColors.cardBorder.withOpacity(0.15),
+                  color: AppColors.cardBorder.withValues(alpha: 0.15),
                 ),
               ),
             ],

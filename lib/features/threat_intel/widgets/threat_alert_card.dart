@@ -66,7 +66,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: _color.withOpacity(0.3)),
+        border: Border.all(color: _color.withValues(alpha: 0.3)),
       ),
       child: Material(
         color: Colors.transparent,
@@ -144,7 +144,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 7, vertical: 3),
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.12),
+                              color: AppColors.primary.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -180,7 +180,7 @@ class _ThreatAlertCardState extends State<ThreatAlertCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.12),
+        color: _color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Text(

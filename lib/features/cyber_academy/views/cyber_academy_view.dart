@@ -75,10 +75,10 @@ class _AcademyBody extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFD700).withOpacity(0.15),
+                  color: const Color(0xFFFFD700).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                      color: const Color(0xFFFFD700).withOpacity(0.3)),
+                      color: const Color(0xFFFFD700).withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -247,7 +247,7 @@ class _CategoryFilterBar extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 14, vertical: 9),
                 decoration: BoxDecoration(
-                  color: active ? color.withOpacity(0.15) : AppColors.card,
+                  color: active ? color.withValues(alpha: 0.15) : AppColors.card,
                   borderRadius: BorderRadius.circular(22),
                   border: Border.all(
                     color: active ? color : AppColors.cardBorder,

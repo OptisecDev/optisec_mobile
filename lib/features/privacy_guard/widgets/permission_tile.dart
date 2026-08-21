@@ -52,7 +52,7 @@ class PermissionTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: permission.isGranted
-                ? _riskColor.withOpacity(0.3)
+                ? _riskColor.withValues(alpha: 0.3)
                 : AppColors.cardBorder,
           ),
         ),
@@ -84,7 +84,7 @@ class PermissionTile extends StatelessWidget {
                         height: 44,
                         decoration: BoxDecoration(
                           color: permission.isGranted
-                              ? _riskColor.withOpacity(0.1)
+                              ? _riskColor.withValues(alpha: 0.1)
                               : AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(11),
                         ),
@@ -152,11 +152,11 @@ class PermissionTile extends StatelessWidget {
                                     horizontal: 10, vertical: 5),
                                 decoration: BoxDecoration(
                                   color:
-                                      AppColors.danger.withOpacity(0.1),
+                                      AppColors.danger.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(7),
                                   border: Border.all(
                                       color: AppColors.danger
-                                          .withOpacity(0.25)),
+                                          .withValues(alpha: 0.25)),
                                 ),
                                 child: Text(
                                   l10n.privacyRevoke,
@@ -173,7 +173,7 @@ class PermissionTile extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                color: AppColors.safe.withOpacity(0.1),
+                                color: AppColors.safe.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(7),
                               ),
                               child: Text(
@@ -208,7 +208,7 @@ class PermissionTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Text(

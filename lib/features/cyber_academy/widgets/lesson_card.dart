@@ -64,7 +64,7 @@ class LessonCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isCompleted
-                ? AppColors.safe.withOpacity(0.3)
+                ? AppColors.safe.withValues(alpha: 0.3)
                 : AppColors.cardBorder,
           ),
         ),
@@ -95,7 +95,7 @@ class LessonCard extends StatelessWidget {
                             width: 42,
                             height: 42,
                             decoration: BoxDecoration(
-                              color: _categoryColor.withOpacity(0.1),
+                              color: _categoryColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(11),
                             ),
                             child: Stack(
@@ -283,9 +283,9 @@ class _StatusChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.25)),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
       ),
       child: Text(
         label,

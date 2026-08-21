@@ -25,17 +25,17 @@ class NetworkTile extends StatelessWidget {
       _isHighConfidenceEvilTwin ? AppColors.danger : AppColors.warning;
 
   Color get _borderColor {
-    if (network.isEvilTwin) return _evilTwinColor.withOpacity(0.5);
-    if (network.isConnected) return AppColors.primary.withOpacity(0.4);
+    if (network.isEvilTwin) return _evilTwinColor.withValues(alpha: 0.5);
+    if (network.isConnected) return AppColors.primary.withValues(alpha: 0.4);
     if (network.threatLevel == ThreatLevel.warning) {
-      return AppColors.warning.withOpacity(0.3);
+      return AppColors.warning.withValues(alpha: 0.3);
     }
     return AppColors.cardBorder;
   }
 
   Color get _bgColor {
-    if (network.isEvilTwin) return _evilTwinColor.withOpacity(0.05);
-    if (network.isConnected) return AppColors.primary.withOpacity(0.06);
+    if (network.isEvilTwin) return _evilTwinColor.withValues(alpha: 0.05);
+    if (network.isConnected) return AppColors.primary.withValues(alpha: 0.06);
     return AppColors.card;
   }
 
@@ -61,7 +61,7 @@ class NetworkTile extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                 decoration: BoxDecoration(
-                  color: _evilTwinColor.withOpacity(0.12),
+                  color: _evilTwinColor.withValues(alpha: 0.12),
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(13)),
                 ),
@@ -85,7 +85,7 @@ class NetworkTile extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: _evilTwinColor.withOpacity(0.18),
+                        color: _evilTwinColor.withValues(alpha: 0.18),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -225,7 +225,7 @@ class NetworkTile extends StatelessWidget {
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       fontSize: 11,
                                       color: network.isEvilTwin
-                                          ? _evilTwinColor.withOpacity(0.9)
+                                          ? _evilTwinColor.withValues(alpha: 0.9)
                                           : AppColors.warning,
                                     ),
                                     maxLines: 1,
@@ -261,7 +261,7 @@ class NetworkTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Row(
@@ -356,7 +356,7 @@ class _SignalProgressBar extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(2),
                 gradient: LinearGradient(
-                  colors: [_color.withOpacity(0.6), _color],
+                  colors: [_color.withValues(alpha: 0.6), _color],
                 ),
               ),
             ),

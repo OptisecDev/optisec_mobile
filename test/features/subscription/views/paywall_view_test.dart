@@ -19,6 +19,7 @@ import 'package:optisec_mobile/l10n/app_localizations.dart';
 /// (false/empty) without onInit ever running.
 class _StubSubscriptionController extends SubscriptionController {
   @override
+  // ignore: must_call_super
   void onInit() {}
 }
 

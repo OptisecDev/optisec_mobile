@@ -137,7 +137,7 @@ class _AppHeaderCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
@@ -154,7 +154,7 @@ class _AppHeaderCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withOpacity(0.35),
+                  color: AppColors.primary.withValues(alpha: 0.35),
                   blurRadius: 14,
                   spreadRadius: 2,
                 ),
@@ -189,7 +189,7 @@ class _AppHeaderCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.safe.withOpacity(0.12),
+                    color: AppColors.safe.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -559,7 +559,7 @@ class _DangerSection extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return _SettingsGroup(
       delay: 300,
-      borderColor: AppColors.danger.withOpacity(0.25),
+      borderColor: AppColors.danger.withValues(alpha: 0.25),
       children: [
         _ActionTile(
           icon: Icons.history_rounded,
@@ -772,7 +772,7 @@ class _SwitchTile extends StatelessWidget {
               value: value,
               onChanged: onChanged,
               activeColor: AppColors.primary,
-              activeTrackColor: AppColors.primary.withOpacity(0.3),
+              activeTrackColor: AppColors.primary.withValues(alpha: 0.3),
               inactiveTrackColor: AppColors.cardBorder,
               inactiveThumbColor: AppColors.textDisabled,
               trackOutlineColor:
@@ -988,9 +988,9 @@ class _ActionTile extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
               decoration: BoxDecoration(
-                color: actionColor.withOpacity(0.1),
+                color: actionColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(9),
-                border: Border.all(color: actionColor.withOpacity(0.3)),
+                border: Border.all(color: actionColor.withValues(alpha: 0.3)),
               ),
               child: loading
                   ? SizedBox(
@@ -1029,7 +1029,7 @@ class _IconBox extends StatelessWidget {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(9),
       ),
       child: Icon(icon, color: color, size: 18),
@@ -1127,7 +1127,7 @@ class _LangOption extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
           decoration: BoxDecoration(
             color: selected
-                ? AppColors.primary.withOpacity(0.1)
+                ? AppColors.primary.withValues(alpha: 0.1)
                 : AppColors.card,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
@@ -1246,7 +1246,7 @@ class _IntervalSheet extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                     decoration: BoxDecoration(
                       color: selected
-                          ? AppColors.primary.withOpacity(0.1)
+                          ? AppColors.primary.withValues(alpha: 0.1)
                           : AppColors.card,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(

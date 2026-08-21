@@ -27,6 +27,7 @@ class _StubDashboardController extends DashboardController {
   int clearHistoryCalls = 0;
 
   @override
+  // ignore: must_call_super
   void onInit() {}
 
   @override

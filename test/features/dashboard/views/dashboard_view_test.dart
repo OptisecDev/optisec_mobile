@@ -26,11 +26,13 @@ import 'package:optisec_mobile/shared/models/security_score_model.dart';
 /// which this test needs, since the score shown is set directly.
 class _StubDashboardController extends DashboardController {
   @override
+  // ignore: must_call_super
   void onInit() {}
 }
 
 class _StubThreatIntelController extends ThreatIntelController {
   @override
+  // ignore: must_call_super
   void onInit() {}
 }
 

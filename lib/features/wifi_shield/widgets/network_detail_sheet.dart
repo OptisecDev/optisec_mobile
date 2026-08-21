@@ -86,8 +86,8 @@ class NetworkDetailSheet extends StatelessWidget {
           height: 52,
           decoration: BoxDecoration(
             color: network.isEvilTwin
-                ? AppColors.danger.withOpacity(0.12)
-                : AppColors.primary.withOpacity(0.1),
+                ? AppColors.danger.withValues(alpha: 0.12)
+                : AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(14),
           ),
           child: Center(
@@ -136,9 +136,9 @@ class NetworkDetailSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.danger.withOpacity(0.08),
+        color: AppColors.danger.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.danger.withOpacity(0.3)),
+        border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,9 +273,9 @@ class NetworkDetailSheet extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.warning.withOpacity(0.06),
+              color: AppColors.warning.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.warning.withOpacity(0.2)),
+              border: Border.all(color: AppColors.warning.withValues(alpha: 0.2)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,9 +382,9 @@ class NetworkDetailSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.danger.withOpacity(0.12),
+        color: AppColors.danger.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppColors.danger.withOpacity(0.3)),
+        border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -406,7 +406,7 @@ class NetworkDetailSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.12),
+        color: AppColors.primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(

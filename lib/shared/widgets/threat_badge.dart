@@ -10,11 +10,11 @@ class ThreatBadge extends StatelessWidget {
   Color get _bg {
     switch (level) {
       case ThreatLevel.safe:
-        return AppColors.safe.withOpacity(0.15);
+        return AppColors.safe.withValues(alpha: 0.15);
       case ThreatLevel.warning:
-        return AppColors.warning.withOpacity(0.15);
+        return AppColors.warning.withValues(alpha: 0.15);
       case ThreatLevel.danger:
-        return AppColors.danger.withOpacity(0.15);
+        return AppColors.danger.withValues(alpha: 0.15);
     }
   }
 

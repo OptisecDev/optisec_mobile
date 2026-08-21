@@ -303,7 +303,7 @@ class _QuizStep extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: AppColors.accent.withOpacity(0.15),
+            color: AppColors.accent.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
@@ -359,20 +359,20 @@ class _QuizStep extends StatelessWidget {
           if (answered) {
             if (isCorrect) {
               borderColor = AppColors.safe;
-              bgColor = AppColors.safe.withOpacity(0.1);
+              bgColor = AppColors.safe.withValues(alpha: 0.1);
               textColor = AppColors.safe;
               trailingIcon = const Icon(Icons.check_circle_rounded,
                   color: AppColors.safe, size: 18);
             } else if (isSelected) {
               borderColor = AppColors.danger;
-              bgColor = AppColors.danger.withOpacity(0.08);
+              bgColor = AppColors.danger.withValues(alpha: 0.08);
               textColor = AppColors.danger;
               trailingIcon = const Icon(Icons.cancel_rounded,
                   color: AppColors.danger, size: 18);
             }
           } else if (isSelected) {
             borderColor = AppColors.primary;
-            bgColor = AppColors.primary.withOpacity(0.1);
+            bgColor = AppColors.primary.withValues(alpha: 0.1);
           }
 
           return GestureDetector(
@@ -392,7 +392,7 @@ class _QuizStep extends StatelessWidget {
                     height: 26,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: borderColor.withOpacity(0.15),
+                      color: borderColor.withValues(alpha: 0.15),
                       border: Border.all(color: borderColor),
                     ),
                     child: Center(
@@ -436,13 +436,13 @@ class _QuizStep extends StatelessWidget {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: correct
-                    ? AppColors.safe.withOpacity(0.08)
-                    : AppColors.danger.withOpacity(0.08),
+                    ? AppColors.safe.withValues(alpha: 0.08)
+                    : AppColors.danger.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: correct
-                      ? AppColors.safe.withOpacity(0.3)
-                      : AppColors.danger.withOpacity(0.3),
+                      ? AppColors.safe.withValues(alpha: 0.3)
+                      : AppColors.danger.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(

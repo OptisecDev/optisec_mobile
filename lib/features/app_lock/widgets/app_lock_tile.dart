@@ -59,7 +59,7 @@ class AppLockTile extends StatelessWidget {
             value: isLocked,
             onChanged: onChanged,
             activeColor: AppColors.primary,
-            activeTrackColor: AppColors.primary.withOpacity(0.3),
+            activeTrackColor: AppColors.primary.withValues(alpha: 0.3),
             inactiveTrackColor: AppColors.cardBorder,
             inactiveThumbColor: AppColors.textDisabled,
             trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
