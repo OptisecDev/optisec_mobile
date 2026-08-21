@@ -37,24 +37,33 @@ class DashboardView extends GetView<DashboardController> {
           _buildAppBar(context),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                _ScoreHeroCard(controller: controller),
-                const SizedBox(height: 20),
-                _CategoryBreakdown(controller: controller),
-                const SizedBox(height: 20),
-                _StatsGrid(controller: controller),
-                const SizedBox(height: 20),
-                _QuickActions(controller: controller),
-                const SizedBox(height: 20),
-                const _ThreatIntelPreview(),
-                const SizedBox(height: 20),
-                _ChartsSection(controller: controller),
-                const SizedBox(height: 20),
-                _ThreatsSection(key: _threatsSectionKey, controller: controller),
-                const SizedBox(height: 20),
-                SecurityTipCard(controller: controller),
-              ]),
+            // SliverToBoxAdapter + Column (not SliverList), so every section
+            // -- including _ThreatsSection -- is built immediately rather
+            // than lazily as it scrolls into the sliver viewport. The
+            // AppBar's notification bell looks up _threatsSectionKey's
+            // context on tap; with lazy sliver building that context is
+            // null (and the tap silently no-ops) until the user has
+            // already scrolled the section near-visible.
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  _ScoreHeroCard(controller: controller),
+                  const SizedBox(height: 20),
+                  _CategoryBreakdown(controller: controller),
+                  const SizedBox(height: 20),
+                  _StatsGrid(controller: controller),
+                  const SizedBox(height: 20),
+                  _QuickActions(controller: controller),
+                  const SizedBox(height: 20),
+                  const _ThreatIntelPreview(),
+                  const SizedBox(height: 20),
+                  _ChartsSection(controller: controller),
+                  const SizedBox(height: 20),
+                  _ThreatsSection(key: _threatsSectionKey, controller: controller),
+                  const SizedBox(height: 20),
+                  SecurityTipCard(controller: controller),
+                ],
+              ),
             ),
           ),
         ],
