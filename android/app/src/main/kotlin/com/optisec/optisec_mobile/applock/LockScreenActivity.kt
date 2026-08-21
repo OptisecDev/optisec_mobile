@@ -54,6 +54,15 @@ class LockScreenActivity : FragmentActivity() {
         setTheme(R.style.LockScreenTheme)
         setContentView(R.layout.activity_lock_screen)
 
+        // TYPE_APPLICATION_OVERLAY windows z-order above normal Activity
+        // windows unconditionally, so AppLockMonitorService's curtain would
+        // otherwise stay plastered over this screen's own PIN pad forever
+        // (previously it was only ever dismissed on back-press or a
+        // successful unlock). Posting to the decor view's queue lets this
+        // Activity's own first frame get laid out before the curtain drops,
+        // so there's still no visible flash of whatever app sits beneath it.
+        window.decorView.post { LockOverlayManager.getInstance(this).hide() }
+
         val pkg = intent?.getStringExtra(EXTRA_TARGET_PACKAGE)
         store = AppLockStore.getInstance(this)
 

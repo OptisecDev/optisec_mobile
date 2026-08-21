@@ -1,3 +1,6 @@
+# Local-only notes (never publish — may contain unpatched security details)
+PROGRESS_REPORT_PRIVATE*.md
+
 # Miscellaneous
 *.class
 *.log

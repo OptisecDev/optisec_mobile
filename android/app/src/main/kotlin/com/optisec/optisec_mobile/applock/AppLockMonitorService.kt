@@ -33,6 +33,11 @@ class AppLockMonitorService : Service() {
     private var lastEventTime: Long = 0L
     private var currentForegroundPackage: String? = null
 
+    // The package a lock screen launch was already dispatched for, so a
+    // second detection of the same still-foregrounded package (see
+    // onForegroundChanged) doesn't call triggerLock() again.
+    private var lockTriggeredPackage: String? = null
+
     private val pollRunnable = object : Runnable {
         override fun run() {
             poll()
@@ -137,8 +142,23 @@ class AppLockMonitorService : Service() {
         if (pkg != unlockedPackage) {
             unlockedPackage = null
         }
+        if (pkg != lockTriggeredPackage) {
+            lockTriggeredPackage = null
+        }
 
-        if (pkg in lockedPackages && pkg != unlockedPackage) {
+        // Without this guard, checkAlreadyForegroundLockedApp() (run once
+        // from onCreate) and the very first poll() tick (scheduled by the
+        // same onCreate -> onStartCommand sequence, and reading usage
+        // events from the same lookback window) can both observe the same
+        // foreground transition and call triggerLock() twice for it.
+        // LockScreenActivity is launch-mode singleInstance, so the second
+        // startActivity() just redelivers via onNewIntent() rather than
+        // running onCreate() again -- meaning the curtain that onCreate()
+        // schedules a hide() for the first time never gets a matching
+        // second hide(), and the second triggerLock()'s show() call
+        // recreates it, leaving it stuck on screen permanently.
+        if (pkg in lockedPackages && pkg != unlockedPackage && pkg != lockTriggeredPackage) {
+            lockTriggeredPackage = pkg
             triggerLock(pkg)
         }
     }
