@@ -112,6 +112,19 @@ a fresh attempt. The full project test suite passes at **193/193**.
   reasons to the user instead of a silent empty state.
 - Fixed a GetX crash in the Evil Twin alert on its first render.
 
+## Dashboard icon fix and app icon rebrand
+
+- Fixed the dashboard security-tip icons: they were stored as raw `int`
+  codepoints and wrapped in `IconData` only at render time, which broke
+  tree-shaking/const-eval assumptions. `IconData` is now built once on the
+  tip record itself (`DashboardController`), and `SecurityTipCard` just
+  renders it directly.
+- Regenerated the Android app icon as a proper branded adaptive icon
+  (background/foreground/monochrome layers) via `flutter_launcher_icons`,
+  sourced from new branding artwork under `assets/branding/`.
+- Verified with `flutter analyze` (0 errors, same pre-existing info-level
+  lints) and a full `flutter test` pass — **242/242**.
+
 ---
 
 *This file tracks completed, verified work only. Work in progress is
