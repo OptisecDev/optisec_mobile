@@ -102,7 +102,7 @@ class _SecurityTipCardState extends State<SecurityTipCard> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(
-                          IconData(tip.icon, fontFamily: 'MaterialIcons'),
+                          tip.icon,
                           color: AppColors.primary,
                           size: 20,
                         ),

@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -37,31 +38,31 @@ class DashboardController extends GetxController {
   // Security tips shown in tip carousel
   static const _tips = [
     (
-      icon: 0xe8f4, // Icons.wifi_lock
+      icon: IconData(0xe8f4, fontFamily: 'MaterialIcons'), // Icons.wifi_lock
       title: 'Avoid Open WiFi',
       body:
           'Never access banking or personal accounts on unsecured public WiFi. Use a VPN when you must connect.',
     ),
     (
-      icon: 0xe73c, // Icons.lock
+      icon: IconData(0xe73c, fontFamily: 'MaterialIcons'), // Icons.lock
       title: 'Use WPA3 Networks',
       body:
           'WPA3 is the latest WiFi security standard. Prefer networks using WPA3 over WPA2 when available.',
     ),
     (
-      icon: 0xe0da, // Icons.phone_android
+      icon: IconData(0xe0da, fontFamily: 'MaterialIcons'), // Icons.phone_android
       title: 'Review App Permissions',
       body:
           'Audit app permissions monthly. Remove microphone or location access from apps that don\'t need it.',
     ),
     (
-      icon: 0xe897, // Icons.update
+      icon: IconData(0xe897, fontFamily: 'MaterialIcons'), // Icons.update
       title: 'Keep Software Updated',
       body:
           'Security patches ship in OS updates. Enable automatic updates to stay protected against known exploits.',
     ),
     (
-      icon: 0xe532, // Icons.password
+      icon: IconData(0xe532, fontFamily: 'MaterialIcons'), // Icons.password
       title: 'Enable 2FA Everywhere',
       body:
           'Two-factor authentication blocks 99% of account takeovers even if your password is stolen.',
@@ -70,7 +71,8 @@ class DashboardController extends GetxController {
 
   int get tipCount => _tips.length;
 
-  ({int icon, String title, String body}) tipAt(int i) => _tips[i % _tips.length];
+  ({IconData icon, String title, String body}) tipAt(int i) =>
+      _tips[i % _tips.length];
 
   @override
   void onInit() {
