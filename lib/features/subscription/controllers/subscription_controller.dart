@@ -69,7 +69,7 @@ class SubscriptionController extends GetxController {
     isActivatingLicense.value = true;
     licenseKeyError.value = null;
     try {
-      final result = LicenseKeyService.instance.activate(rawKey.trim());
+      final result = await LicenseKeyService.instance.activate(rawKey.trim());
       if (!result.isValid) {
         licenseKeyError.value = _messageFor(result);
         return false;
@@ -95,6 +95,8 @@ class SubscriptionController extends GetxController {
             ? l10n.licenseKeyErrorExpired
             : l10n.licenseKeyErrorExpiredOn(
                 expiredOn.toLocal().toString().split(' ').first);
+      case LicenseKeyError.deviceMismatch:
+        return l10n.licenseKeyErrorDeviceMismatch;
       case null:
         return l10n.licenseKeyErrorUnknown;
     }

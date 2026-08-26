@@ -30,6 +30,7 @@ import java.time.Instant
 class MainActivity : FlutterFragmentActivity() {
     private val channelName = "com.optisec.mobile/permission_usage"
     private val screenSecurityChannelName = "com.optisec.mobile/screen_security"
+    private val deviceIdChannelName = "com.optisec.mobile/device_id"
 
     // The permission ops we proxy usage for. Real per-op history
     // (AppOpsManager.getPackageOpsForOps) is a hidden @SystemApi guarded by
@@ -115,6 +116,21 @@ class MainActivity : FlutterFragmentActivity() {
                             window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
                         }
                         result.success(null)
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+
+        // Used by LicenseDeviceBinding (see license_key_service.dart) to bind
+        // an offline license key to the device it was first activated on.
+        // ANDROID_ID needs no permission and, since Android 8, is already
+        // scoped per app-signing-key + device + user -- it survives a plain
+        // uninstall/reinstall but not a factory reset.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, deviceIdChannelName)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "getDeviceId" -> {
+                        result.success(Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID))
                     }
                     else -> result.notImplemented()
                 }

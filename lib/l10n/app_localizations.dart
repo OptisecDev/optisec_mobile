@@ -2276,6 +2276,12 @@ abstract class AppLocalizations {
   /// **'This license expired on {date}.'**
   String licenseKeyErrorExpiredOn(String date);
 
+  /// No description provided for @licenseKeyErrorDeviceMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'This license key is already active on a different device.'**
+  String get licenseKeyErrorDeviceMismatch;
+
   /// No description provided for @licenseKeyErrorUnknown.
   ///
   /// In en, this message translates to:

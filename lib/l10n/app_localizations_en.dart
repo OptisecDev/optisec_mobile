@@ -1227,6 +1227,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get licenseKeyErrorDeviceMismatch =>
+      'This license key is already active on a different device.';
+
+  @override
   String get licenseKeyErrorUnknown => 'Unknown error.';
 
   @override

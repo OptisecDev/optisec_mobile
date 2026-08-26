@@ -1219,6 +1219,10 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get licenseKeyErrorDeviceMismatch =>
+      'مفتاح الترخيص هذا مُفعّل بالفعل على جهاز آخر.';
+
+  @override
   String get licenseKeyErrorUnknown => 'خطأ غير معروف.';
 
   @override

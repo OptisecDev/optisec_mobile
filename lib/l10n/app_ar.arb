@@ -365,6 +365,7 @@
   "licenseKeyErrorMalformed": "هذا المفتاح تالف.",
   "licenseKeyErrorExpired": "انتهت صلاحية هذا الترخيص.",
   "licenseKeyErrorExpiredOn": "انتهت صلاحية هذا الترخيص بتاريخ {date}.",
+  "licenseKeyErrorDeviceMismatch": "مفتاح الترخيص هذا مُفعّل بالفعل على جهاز آخر.",
   "licenseKeyErrorUnknown": "خطأ غير معروف.",
   "paywallHaveLicenseKey": "هل لديك مفتاح ترخيص؟",
 

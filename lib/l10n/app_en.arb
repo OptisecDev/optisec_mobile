@@ -631,6 +631,7 @@
       }
     }
   },
+  "licenseKeyErrorDeviceMismatch": "This license key is already active on a different device.",
   "licenseKeyErrorUnknown": "Unknown error.",
   "paywallHaveLicenseKey": "Have a License Key?",
 
